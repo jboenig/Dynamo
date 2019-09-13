@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>Headway Software</Copyright>
+    <Authors>Headway Software</Authors>
+    <AssemblyName>Headway.Dynamo</AssemblyName>
+    <RootNamespace>Headway.Dynamo</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UnitTests\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
+    <None Remove="UnitTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repository\IRepositoryManager.cs" />
+    <Compile Remove="Runtime\IObjectRepository.cs" />
+    <Compile Remove="Runtime\PrimaryKeyValue.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Conditions\" />
+    <Folder Include="Repository\FlatFile\" />
+    <Folder Include="Rules\" />
+    <Folder Include="Collections\" />
+    <Folder Include="Metadata\Attributes\" />
+    <Folder Include="Reflection\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>

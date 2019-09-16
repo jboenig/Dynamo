@@ -31,19 +31,32 @@ namespace Headway.Dynamo.Metadata.Reflection
         /// </returns>
         public T GetDataType<T>(string fullName) where T : DataType
         {
-            DataType resDataType = null;
+            T resDataType = null;
 
             if (!this.reflectionTypes.ContainsKey(fullName))
             {
-                resDataType = ReflectionObjectType.Get(this, fullName);
-                if (resDataType == null)
+                resDataType = ReflectionObjectType.Get(this, fullName) as T;
+                if (resDataType != null)
                 {
-                    throw new DataTypeNotFound(fullName);
+                    this.reflectionTypes.Add(fullName, resDataType);
                 }
-                this.reflectionTypes.Add(fullName, resDataType);
             }
 
-            return resDataType as T;
+            if (resDataType == default(T) && this.NextProvider != null)
+            {
+                resDataType = this.NextProvider.GetDataType<T>(fullName);
+            }
+
+            return resDataType;
+        }
+
+        /// <summary>
+        /// Gets or sets the next <see cref="IMetadataProvider"/> in the chain.
+        /// </summary>
+        public IMetadataProvider NextProvider
+        {
+            get;
+            set;
         }
     }
 }

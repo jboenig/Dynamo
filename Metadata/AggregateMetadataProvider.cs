@@ -16,6 +16,7 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Headway.Dynamo.Metadata
@@ -24,7 +25,7 @@ namespace Headway.Dynamo.Metadata
     /// Implements the <see cref="IMetadataProvider"/> service
     /// by aggregating one or more providers.
     /// </summary>
-    public sealed class AggregateMetadataProvider : IMetadataProvider
+    public class AggregateMetadataProvider : IMetadataProvider
     {
         private readonly List<IMetadataProvider> providers;
 
@@ -46,7 +47,7 @@ namespace Headway.Dynamo.Metadata
         public AggregateMetadataProvider(IMetadataProvider provider)
         {
             this.providers = new List<IMetadataProvider>();
-            this.providers.Add(provider);
+            this.AddProvider(provider);
         }
 
         /// <summary>
@@ -62,8 +63,8 @@ namespace Headway.Dynamo.Metadata
         public AggregateMetadataProvider(IMetadataProvider provider1, IMetadataProvider provider2)
         {
             this.providers = new List<IMetadataProvider>();
-            this.providers.Add(provider1);
-            this.providers.Add(provider2);
+            this.AddProvider(provider1);
+            this.AddProvider(provider2);
         }
 
         /// <summary>
@@ -89,6 +90,15 @@ namespace Headway.Dynamo.Metadata
         }
 
         /// <summary>
+        /// Gets or sets the next <see cref="IMetadataProvider"/> in the chain.
+        /// </summary>
+        public IMetadataProvider NextProvider
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Add an <see cref="IMetadataProvider"/> to the service.
         /// </summary>
         /// <param name="provider">
@@ -97,6 +107,10 @@ namespace Headway.Dynamo.Metadata
         /// </param>
         public void AddProvider(IMetadataProvider provider)
         {
+            if (this.providers.Any())
+            {
+                provider.NextProvider = this.providers.Last();
+            }
             this.providers.Add(provider);
         }
     }

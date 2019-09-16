@@ -31,7 +31,7 @@ namespace Headway.Dynamo.UnitTests
         {
             var metadataProvider = new ReflectionMetadataProvider();
 
-            var person = new Person()
+            var bugsBunny = new Person()
             {
                 FirstName = "Bugs",
                 LastName = "Bunny"
@@ -41,13 +41,44 @@ namespace Headway.Dynamo.UnitTests
 
             var firstNameProp = personMetadata.GetPropertyByName("FirstName");
             Assert.IsNotNull(firstNameProp);
-            var firstNameValue = firstNameProp.GetValue<string>(person);
+            var firstNameValue = firstNameProp.GetValue<string>(bugsBunny);
             Assert.AreEqual(firstNameValue, "Bugs");
 
             var lastNameProp = personMetadata.GetPropertyByName("LastName");
             Assert.IsNotNull(lastNameProp);
-            var lastNameValue = lastNameProp.GetValue<string>(person);
+            var lastNameValue = lastNameProp.GetValue<string>(bugsBunny);
             Assert.AreEqual(lastNameValue, "Bunny");
+        }
+
+        [TestMethod]
+        public void GetBaseClassProperty()
+        {
+            var metadataProvider = new ReflectionMetadataProvider();
+            var employeeMetadata = metadataProvider.GetDataType<ObjectType>(typeof(Employee).FullName);
+
+            var employeeIdProp = employeeMetadata.GetPropertyByName("EmployeeId");
+            Assert.IsNotNull(employeeIdProp);
+            Assert.AreEqual(employeeIdProp.DataType.Name, "String");
+        }
+
+        [TestMethod]
+        public void GetBaseClassPropertyValue()
+        {
+            var metadataProvider = new ReflectionMetadataProvider();
+            var personMetadata = metadataProvider.GetDataType<ObjectType>(typeof(Employee).FullName);
+
+            var daffyDuck = new Employee()
+            {
+                FirstName = "Daffy",
+                LastName = "Duck",
+                EmployeeId = "L112"
+            };
+
+            var employeeIdProp = personMetadata.GetPropertyByName("EmployeeId");
+            Assert.IsNotNull(employeeIdProp);
+
+            var employeeIdValue = employeeIdProp.GetValue<string>(daffyDuck);
+            Assert.AreEqual(employeeIdValue, "L112");
         }
     }
 }

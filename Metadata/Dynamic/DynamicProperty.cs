@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Headway.Dynamo.Runtime;
 
-namespace Headway.Dynamo.Metadata
+namespace Headway.Dynamo.Metadata.Dynamic
 {
 	/// <summary>
 	/// Implements <see cref="Property"/> for properties that can be dynamically

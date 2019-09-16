@@ -23,10 +23,11 @@ using System.Runtime.Serialization;
 using Headway.Dynamo.Collections;
 using Headway.Dynamo.Metadata.Reflection;
 
-namespace Headway.Dynamo.Metadata
+namespace Headway.Dynamo.Metadata.Dynamic
 {
     /// <summary>
-    /// 
+    /// Implements an <see cref="ObjectType"/> that is dynamically
+    /// configurable at run-time.
     /// </summary>
     [Serializable]
     public sealed class DynamicObjectType : ObjectTypeBaseImpl, ISerializable
@@ -45,8 +46,15 @@ namespace Headway.Dynamo.Metadata
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="metadataProvider"></param>
-        public DynamicObjectType(IMetadataProvider metadataProvider) :
+        public DynamicObjectType()
+        {
+            this.clrType = typeof(object);
+            this.fullName = this.clrType.FullName;
+            this.dynamicProperties = new List<DynamicProperty>();
+            this.SetDerivesFrom();
+        }
+
+        private DynamicObjectType(IMetadataProvider metadataProvider) :
             base(metadataProvider)
         {
             this.clrType = typeof(object);
@@ -55,22 +63,81 @@ namespace Headway.Dynamo.Metadata
             this.SetDerivesFrom();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clrType"></param>
-        /// <param name="derivesFrom"></param>
-        public DynamicObjectType(IMetadataProvider metadataProvider, Type clrType, ObjectType derivesFrom = null) :
-            base(metadataProvider)
+        private DynamicObjectType(IMetadataProvider metadataProvider,
+            string fullName,
+            Type clrType,
+            ObjectType derivesFrom)
         {
             if (clrType == null)
             {
                 throw new ArgumentNullException("clrType");
             }
             this.clrType = clrType;
-            this.fullName = this.clrType.FullName;
+
+            if (string.IsNullOrEmpty(fullName))
+            {
+                this.fullName = this.clrType.FullName;
+            }
+            else
+            {
+                this.fullName = fullName;
+            }
+
             this.dynamicProperties = new List<DynamicProperty>();
             this.SetDerivesFrom(derivesFrom);
+        }
+
+        #endregion
+
+        #region Factory Methods
+
+        /// <summary>
+        /// Creates a <see cref="DynamicObjectType"/> given
+        /// a <see cref="IMetadataProvider"/>, a CLR type,
+        /// and optional derives from <see cref="ObjectType"/>.
+        /// </summary>
+        /// <param name="metadataProvider">
+        /// <see cref="IMetadataProvider"/> service used to resolve
+        /// data type information.
+        /// </param>
+        /// <param name="fullName">
+        /// Fully qualified name of new <see cref="DynamicObjectType"/> to create.
+        /// </param>
+        /// <param name="clrType">
+        /// CLR type associated with this dynamic object type.
+        /// </param>
+        /// <param name="derivesFrom">
+        /// <see cref="ObjectType"/> this new <see cref="DynamicObjectType"/>
+        /// derives from.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="DynamicObjectType"/>.
+        /// </returns>
+        public static DynamicObjectType Create(IMetadataProvider metadataProvider,
+            string fullName,
+            Type clrType,
+            ObjectType derivesFrom = null)
+        {
+            if (metadataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(metadataProvider));
+            }
+
+            if (clrType == null)
+            {
+                throw new ArgumentNullException(nameof(clrType));
+            }
+
+            if (derivesFrom == null)
+            {
+                derivesFrom = metadataProvider.GetDataType<ObjectType>(clrType.BaseType.FullName);
+                if (derivesFrom == null)
+                {
+                    derivesFrom = metadataProvider.GetDataType<ObjectType>(typeof(System.Object));
+                }
+            }
+
+            return new DynamicObjectType(metadataProvider, fullName, clrType, derivesFrom);
         }
 
         #endregion
@@ -199,6 +266,11 @@ namespace Headway.Dynamo.Metadata
             return dynamicProp;
         }
 
+        internal void AttachMetadataProvider(IMetadataProvider metadataProvider)
+        {
+            this.MetadataProvider = metadataProvider;
+        }
+
         #endregion
 
         #region Serialization
@@ -247,22 +319,7 @@ namespace Headway.Dynamo.Metadata
 
         private void SetDerivesFrom(ObjectType value = null)
         {
-            if (value != null)
-            {
-                this.derivesFrom = value;
-            }
-            else
-            {
-                throw new NotImplementedException();
-                //if (this.clrType != null)
-                //{
-                //    var baseType = this.clrType.BaseType;
-                //    if (baseType != null)
-                //    {
-                //        this.derivesFrom = ReflectionObjectType.Get(baseType.FullName);
-                //    }
-                //}
-            }
+            this.derivesFrom = value;
         }
 
         #endregion

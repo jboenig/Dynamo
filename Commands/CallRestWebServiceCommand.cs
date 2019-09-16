@@ -17,11 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Headway.Dynamo.Commands
 {
+    /// <summary>
+    /// Implements the <see cref="Command"/> pattern for a
+    /// rest-based web service call.
+    /// </summary>
     public sealed class CallRestWebServiceCommand : Command
     {
         public override CommandResult Execute(IServiceProvider serviceProvider, object context)

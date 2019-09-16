@@ -24,6 +24,7 @@ using System.Runtime.Serialization;
 //using Newtonsoft.Json;
 //using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Metadata;
+using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Exceptions;
 
 namespace Headway.Dynamo.Runtime
@@ -52,7 +53,7 @@ namespace Headway.Dynamo.Runtime
         public DynamicExtObject(IMetadataProvider metadataProvider)
         {
             this.metadataProvider = metadataProvider;
-            this.DataType = new DynamicObjectType(this.MetadataProvider, this.GetType());
+            this.DataType = DynamicObjectType.Create(metadataProvider, this.GetType().FullName, this.GetType());
             this.values = new Dictionary<string, object>();
         }
 
@@ -164,7 +165,7 @@ namespace Headway.Dynamo.Runtime
                 DataType propType = IntegralType.Get(typeof(T));
                 if (propType == null)
                 {
-                    propType = new DynamicObjectType(this.MetadataProvider, typeof(T));
+                    propType = DynamicObjectType.Create(this.MetadataProvider, typeof(T).FullName, typeof(T));
                 }
                 prop = this.DataType.AddProperty(propertyName, propType);
             }
@@ -228,7 +229,7 @@ namespace Headway.Dynamo.Runtime
                 DataType propType = IntegralType.Get(binder.ReturnType);
                 if (propType == null)
                 {
-                    propType = new DynamicObjectType(this.MetadataProvider, binder.ReturnType);
+                    propType = DynamicObjectType.Create(this.MetadataProvider, binder.ReturnType.FullName, binder.ReturnType);
                 }
                 prop = this.DataType.AddProperty(binder.Name, propType);
             }
@@ -356,7 +357,7 @@ namespace Headway.Dynamo.Runtime
             }
             catch
             {
-                this.DataType = new DynamicObjectType(this.MetadataProvider, typeof(DynamicExtObject));
+                this.DataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamicExtObject).FullName, typeof(DynamicExtObject));
             }
             
             this.values = new Dictionary<string, object>();

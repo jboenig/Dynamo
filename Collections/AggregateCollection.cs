@@ -21,10 +21,25 @@ using System.Collections.Generic;
 
 namespace Headway.Dynamo.Collections
 {
+    /// <summary>
+    /// Implements an enumerable collection that is composed of
+    /// two collections.
+    /// </summary
+    /// <typeparam name="T">Data type stored in the collection</typeparam>
 	public class AggregateCollection<T> : IEnumerable<T>
 	{
 		private readonly IEnumerable<T>[] collections = new IEnumerable<T>[2];
 
+        /// <summary>
+        /// Constructs an <see cref="AggregateCollection{T}"/> given
+        /// two collections.
+        /// </summary>
+        /// <param name="collection1">
+        /// First collection to aggregate
+        /// </param>
+        /// <param name="collection2">
+        /// Second collection to aggregate
+        /// </param>
 		public AggregateCollection(IEnumerable<T> collection1, IEnumerable<T> collection2)
 		{
 			if (collection1 == null)
@@ -41,11 +56,19 @@ namespace Headway.Dynamo.Collections
 			this.collections[1] = collection2;
 		}
 
+        /// <summary>
+        /// Gets an enumerator for accessing the collection.
+        /// </summary>
+        /// <returns>Enumerator for accessing collection</returns>
 		public IEnumerator<T> GetEnumerator()
 		{
 			return new AggregateCollection<T>.Enumerator(this);
 		}
 
+        /// <summary>
+        /// Gets an enumerator for accessing the collection.
+        /// </summary>
+        /// <returns>Enumerator for accessing collection</returns>
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
 			return new AggregateCollection<T>.Enumerator(this);

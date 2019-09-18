@@ -176,7 +176,8 @@ namespace Headway.Dynamo.Metadata.Reflection
 
         #region Static Get Methods
 
-        private static readonly ClassRegistry classCache = new ClassRegistry();
+        // Static cache of reflection object types
+        private static readonly Dictionary<string, ObjectType> classCache = new Dictionary<string, ObjectType>();
 
         /// <summary>
         /// Gets an <see cref="ObjectType"/> matching the given fully
@@ -267,6 +268,34 @@ namespace Headway.Dynamo.Metadata.Reflection
 
 			return null;
 		}
+
+        /// <summary>
+        /// Gets an <see cref="ObjectType"/> given a CLR type.
+        /// </summary>
+        /// <param name="clrType">
+        /// CLR type information
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="ObjectType"/> for
+        /// the specified CLR class.
+        /// </returns>
+        internal static ObjectType Get(IMetadataProvider metadataProvider,
+            Type clrType)
+        {
+            if (clrType == null)
+            {
+                throw new ArgumentNullException(nameof(clrType));
+            }
+
+            var fullName = clrType.FullName;
+
+            if (classCache.ContainsKey(fullName))
+            {
+                return classCache[fullName];
+            }
+
+            return new ReflectionObjectType(metadataProvider, clrType);
+        }
 
         #endregion
 

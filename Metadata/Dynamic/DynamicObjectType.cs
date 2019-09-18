@@ -43,10 +43,7 @@ namespace Headway.Dynamo.Metadata.Dynamic
 
         #region Constructors
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public DynamicObjectType()
+        private DynamicObjectType()
         {
             this.clrType = typeof(object);
             this.fullName = this.clrType.FullName;
@@ -66,7 +63,8 @@ namespace Headway.Dynamo.Metadata.Dynamic
         private DynamicObjectType(IMetadataProvider metadataProvider,
             string fullName,
             Type clrType,
-            ObjectType derivesFrom)
+            ObjectType derivesFrom) :
+            base(metadataProvider)
         {
             if (clrType == null)
             {
@@ -194,7 +192,8 @@ namespace Headway.Dynamo.Metadata.Dynamic
         {
             get
             {
-                return new AggregateCollection<Property>(this.GetReflectionProperties(), this.dynamicProperties);
+                return new AggregateCollection<Property>(this.GetReflectionProperties(),
+                    this.dynamicProperties);
             }
         }
 
@@ -264,11 +263,6 @@ namespace Headway.Dynamo.Metadata.Dynamic
             var dynamicProp = DynamicProperty.Create(this, propertyName, dataType);
             this.dynamicProperties.Add(dynamicProp);
             return dynamicProp;
-        }
-
-        internal void AttachMetadataProvider(IMetadataProvider metadataProvider)
-        {
-            this.MetadataProvider = metadataProvider;
         }
 
         #endregion

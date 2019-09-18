@@ -35,7 +35,7 @@ namespace Headway.Dynamo.Runtime
     /// interface and implements serialization.
     /// </summary>
     [Serializable]
-    public class DynamicExtObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
+    public class DynamoObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
     {
         #region Member Variables
 
@@ -50,7 +50,7 @@ namespace Headway.Dynamo.Runtime
         /// 
         /// </summary>
         /// <param name="metadataProvider"></param>
-        public DynamicExtObject(IMetadataProvider metadataProvider)
+        public DynamoObject(IMetadataProvider metadataProvider)
         {
             this.metadataProvider = metadataProvider;
             this.DataType = DynamicObjectType.Create(metadataProvider, this.GetType().FullName, this.GetType());
@@ -63,18 +63,18 @@ namespace Headway.Dynamo.Runtime
         /// <param name="dataType">
         /// Metadata for the dynamic object.
         /// </param>
-        public DynamicExtObject(ObjectType dataType)
+        public DynamoObject(ObjectType dataType)
         {
             this.DataType = dataType;
             this.values = new Dictionary<string, object>();
         }
 
         /// <summary>
-        /// Constructs a copy of the specified <see cref="DynamicExtObject"/>
+        /// Constructs a copy of the specified <see cref="DynamoObject"/>
         /// object.
         /// </summary>
         /// <param name="source">Source object to copy</param>
-        public DynamicExtObject(DynamicExtObject source)
+        public DynamoObject(DynamoObject source)
         {
             this.DataType = source.DataType;
             this.values = new Dictionary<string, object>();
@@ -304,7 +304,7 @@ namespace Headway.Dynamo.Runtime
         #region Serialization
 
         /// <summary>
-        /// Converts this <see cref="DynamicExtObject"/> object to
+        /// Converts this <see cref="DynamoObject"/> object to
         /// a Json string.
         /// </summary>
         /// <returns>
@@ -349,7 +349,7 @@ namespace Headway.Dynamo.Runtime
         //    return isComplete;
         //}
 
-        protected DynamicExtObject(SerializationInfo info, StreamingContext context)
+        protected DynamoObject(SerializationInfo info, StreamingContext context)
         {
             try
             {
@@ -357,7 +357,7 @@ namespace Headway.Dynamo.Runtime
             }
             catch
             {
-                this.DataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamicExtObject).FullName, typeof(DynamicExtObject));
+                this.DataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamoObject).FullName, typeof(DynamoObject));
             }
             
             this.values = new Dictionary<string, object>();

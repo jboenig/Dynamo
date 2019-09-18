@@ -289,7 +289,12 @@ namespace Headway.Dynamo.Metadata
 
         #endregion
 
-        #region Implementation
+        #region Metadata Provider
+
+        internal void AttachMetadataProvider(IMetadataProvider metadataProvider)
+        {
+            this.MetadataProvider = metadataProvider;
+        }
 
         /// <summary>
         /// Gets the <see cref="IMetadataProvider"/> service
@@ -311,6 +316,10 @@ namespace Headway.Dynamo.Metadata
                 this.metadataProvider = value;
             }
         }
+
+        #endregion
+
+        #region Implementation
 
         /// <summary>
         /// Provides a hook to initialize new instances.

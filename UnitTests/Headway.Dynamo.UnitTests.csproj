@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicExtObjectTests.cs" />
     <Compile Include="DynamicMetadataTests.cs" />
     <Compile Include="Mockdata\Employee.cs" />
     <Compile Include="ReflectionMetadataTests.cs" />

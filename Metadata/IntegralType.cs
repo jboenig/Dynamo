@@ -214,19 +214,19 @@ namespace Headway.Dynamo.Metadata
 			get { return -1; }
 		}
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		/// <summary>
-		/// Determines if this class is assignable from the specified <see cref="DataType"/>.
-		/// </summary>
-		/// <param name="otherDataType"><see cref="DataType"/> to test.</param>
-		/// <returns>
-		/// Returns true if the specified <see cref="DataType"/> is compatible with this
-		/// <see cref="ObjectType"/>, otherwise returns false.
-		/// </returns>
-		public override bool IsAssignableFrom(DataType otherDataType)
+        /// <summary>
+        /// Determines if this class is assignable from the specified <see cref="DataType"/>.
+        /// </summary>
+        /// <param name="otherDataType"><see cref="DataType"/> to test.</param>
+        /// <returns>
+        /// Returns true if the specified <see cref="DataType"/> is compatible with this
+        /// <see cref="ObjectType"/>, otherwise returns false.
+        /// </returns>
+        public override bool IsAssignableFrom(DataType otherDataType)
 		{
 			if (otherDataType == null)
 			{

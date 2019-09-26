@@ -90,15 +90,6 @@ namespace Headway.Dynamo.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the next <see cref="IMetadataProvider"/> in the chain.
-        /// </summary>
-        public IMetadataProvider NextProvider
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Add an <see cref="IMetadataProvider"/> to the service.
         /// </summary>
         /// <param name="provider">
@@ -107,10 +98,6 @@ namespace Headway.Dynamo.Metadata
         /// </param>
         public void AddProvider(IMetadataProvider provider)
         {
-            if (this.providers.Any())
-            {
-                provider.NextProvider = this.providers.Last();
-            }
             this.providers.Add(provider);
         }
     }

@@ -39,6 +39,8 @@ namespace Headway.Dynamo.Runtime
     {
         #region Member Variables
 
+        private ObjectType dataType;
+        private string objTypeName;
         private IMetadataProvider metadataProvider;
         private Dictionary<string, object> values;
 
@@ -52,22 +54,31 @@ namespace Headway.Dynamo.Runtime
         /// <param name="metadataProvider"></param>
         public DynamoObject(IMetadataProvider metadataProvider)
         {
+            if (metadataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(metadataProvider));
+            }
             this.metadataProvider = metadataProvider;
-            this.DataType = DynamicObjectType.Create(metadataProvider, this.GetType().FullName, this.GetType());
+            this.objTypeName = this.GetType().FullName;
             this.values = new Dictionary<string, object>();
         }
 
         /// <summary>
-        /// Constructs the object given the metadata object.
+        /// 
         /// </summary>
-        /// <param name="dataType">
-        /// Metadata for the dynamic object.
-        /// </param>
-        public DynamoObject(ObjectType dataType)
+        /// <param name="metadataProvider"></param>
+        /// <param name="objTypeName"></param>
+        public DynamoObject(IMetadataProvider metadataProvider, string objTypeName)
         {
-            this.DataType = dataType;
+            if (metadataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(metadataProvider));
+            }
+            this.metadataProvider = metadataProvider;
+            this.objTypeName = objTypeName;
             this.values = new Dictionary<string, object>();
         }
+
 
         /// <summary>
         /// Constructs a copy of the specified <see cref="DynamoObject"/>
@@ -76,7 +87,7 @@ namespace Headway.Dynamo.Runtime
         /// <param name="source">Source object to copy</param>
         public DynamoObject(DynamoObject source)
         {
-            this.DataType = source.DataType;
+            this.dataType = source.DataType;
             this.values = new Dictionary<string, object>();
             foreach (var curKey in source.values.Keys)
             {
@@ -94,8 +105,14 @@ namespace Headway.Dynamo.Runtime
         /// </summary>
         public ObjectType DataType
         {
-            get;
-            internal set;
+            get
+            {
+                if (this.dataType == null && this.metadataProvider != null)
+                {
+                    this.dataType = this.metadataProvider.GetDataType<ObjectType>(this.objTypeName);
+                }
+                return this.dataType;
+            }
         }
 
         #endregion
@@ -226,7 +243,8 @@ namespace Headway.Dynamo.Runtime
 
             if (prop == null)
             {
-                DataType propType = IntegralType.Get(binder.ReturnType);
+                //DataType propType = IntegralType.Get(binder.ReturnType);
+                DataType propType = IntegralType.Get(value.GetType());
                 if (propType == null)
                 {
                     propType = DynamicObjectType.Create(this.MetadataProvider, binder.ReturnType.FullName, binder.ReturnType);
@@ -353,11 +371,11 @@ namespace Headway.Dynamo.Runtime
         {
             try
             {
-                this.DataType = info.GetValue("dataType", typeof(ObjectType)) as ObjectType;
+                this.dataType = info.GetValue("dataType", typeof(ObjectType)) as ObjectType;
             }
             catch
             {
-                this.DataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamoObject).FullName, typeof(DynamoObject));
+                this.dataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamoObject).FullName, typeof(DynamoObject));
             }
             
             this.values = new Dictionary<string, object>();

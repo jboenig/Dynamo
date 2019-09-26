@@ -8,7 +8,7 @@ using Headway.Dynamo.UnitTests.Mockdata;
 namespace Headway.Dynamo.UnitTests
 {
     [TestClass]
-    public class DynamicExtObjectTests
+    public class DynamoObjectTests
     {
         [TestMethod]
         public void GetSetDynamicProp()
@@ -17,14 +17,18 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
 
             // Register Person as a dynamic object type and verify return value
-            var dynamicPersonObjectType = metadataProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
-            Assert.IsNotNull(dynamicPersonObjectType);
+            var personObjType = metadataProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
+            Assert.IsNotNull(personObjType);
 
-            // Add a new string property
-            dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
+            // Add a dynamic string property call Foo
+            personObjType.AddProperty("Foo", IntegralType.String);
 
-            var obj = new DynamoObject(dynamicPersonObjectType);
-            var fooProp = dynamicPersonObjectType.GetPropertyByName("Foo");
+            // Create a new instance
+            //            var obj = new DynamoObject(personObjType);
+            dynamic obj = new DynamoPerson(metadataProvider);
+            obj.FirstName = "Dude";
+            obj.Foo = "hello world";
+            var fooProp = personObjType.GetPropertyByName("Foo");
             Assert.AreEqual(fooProp.FullName, "Headway.Dynamo.UnitTests.Mockdata.Person.Foo");
             Assert.AreEqual(fooProp.DataType.FullName, "System.String");
         }

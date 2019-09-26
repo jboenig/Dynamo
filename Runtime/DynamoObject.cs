@@ -26,6 +26,7 @@ using System.Runtime.Serialization;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Exceptions;
+using System.Linq.Expressions;
 
 namespace Headway.Dynamo.Runtime
 {
@@ -194,6 +195,11 @@ namespace Headway.Dynamo.Runtime
         #endregion
 
         #region DynamicObject Implementation
+
+        public override DynamicMetaObject GetMetaObject(Expression parameter)
+        {
+            return base.GetMetaObject(parameter);
+        }
 
         /// <summary>
         /// Gets the number of dynamic property values.

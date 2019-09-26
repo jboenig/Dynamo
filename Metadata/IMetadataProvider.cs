@@ -35,11 +35,6 @@ namespace Headway.Dynamo.Metadata
         /// if the data type does not exist.
         /// </returns>
         T GetDataType<T>(string fullName) where T : DataType;
-
-        /// <summary>
-        /// Gets the next <see cref="IMetadataProvider"/> in the chain.
-        /// </summary>
-        IMetadataProvider NextProvider { get; set; }
     }
 
     /// <summary>

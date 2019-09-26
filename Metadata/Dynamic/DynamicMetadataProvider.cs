@@ -55,32 +55,20 @@ namespace Headway.Dynamo.Metadata.Dynamic
                 result = this.objTypes[fullName] as T;
             }
 
-            if (result == default(T) && this.NextProvider != null)
-            {
-                result = this.NextProvider.GetDataType<T>(fullName);
-            }
-
             return result;
-        }
-
-        /// <summary>
-        /// Gets or sets the next <see cref="IMetadataProvider"/> in the chain.
-        /// </summary>
-        public IMetadataProvider NextProvider
-        {
-            get;
-            set;
         }
 
         /// <summary>
         /// Registers a new <see cref="DynamicObjectType"/> with this
         /// <see cref="DynamicMetadataProvider"/>.
         /// </summary>
+        /// <param name="metadataProvider"></param>
+        /// <param name="fullName"></param>
         /// <param name="clrType"></param>
         /// <returns>
         /// Returns a new <see cref="ObjectType"/>
         /// </returns>
-        public ObjectType RegisterObjectType(string fullName,
+        public ObjectType RegisterObjectType(IMetadataProvider metadataProvider, string fullName,
             Type clrType)
         {
             if (this.objTypes.ContainsKey(fullName))
@@ -88,7 +76,13 @@ namespace Headway.Dynamo.Metadata.Dynamic
                 var msg = string.Format("Object type {0} already registered", fullName);
                 throw new InvalidOperationException(msg);
             }
-            var objType = DynamicObjectType.Create(this, fullName, clrType);
+
+            if (metadataProvider == null)
+            {
+                metadataProvider = this;
+            }
+
+            var objType = DynamicObjectType.Create(metadataProvider, fullName, clrType);
             this.objTypes.Add(fullName, objType);
             return objType;
         }
@@ -97,8 +91,9 @@ namespace Headway.Dynamo.Metadata.Dynamic
         /// Registers the given <see cref="DynamicObjectType"/> with this
         /// <see cref="DynamicMetadataProvider"/>.
         /// </summary>
+        /// <param name="metadataProvider"></param>
         /// <param name="objType"></param>
-        public void RegisterObjectType(DynamicObjectType objType)
+        public void RegisterObjectType(IMetadataProvider metadataProvider, DynamicObjectType objType)
         {
             if (objType == null)
             {
@@ -111,8 +106,12 @@ namespace Headway.Dynamo.Metadata.Dynamic
                 throw new InvalidOperationException(msg);
             }
 
-            // Attach this as the metadata provider
-            objType.AttachMetadataProvider(this);
+            // Attach the metadata provider
+            if (metadataProvider == null)
+            {
+                metadataProvider = this;
+            }
+            objType.AttachMetadataProvider(metadataProvider);
 
             this.objTypes.Add(objType.FullName, objType);
         }

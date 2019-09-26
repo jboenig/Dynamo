@@ -29,10 +29,12 @@ namespace Headway.Dynamo.Metadata
 
         public StandardMetadataProvider()
         {
-            this.reflectionProvider = new ReflectionMetadataProvider();
+            // Order is important! Always look for registered
+            // dynamic types first.
             this.dynamicProvider = new DynamicMetadataProvider();
-            this.AddProvider(this.reflectionProvider);
             this.AddProvider(this.dynamicProvider);
+            this.reflectionProvider = new ReflectionMetadataProvider();
+            this.AddProvider(this.reflectionProvider);
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace Headway.Dynamo.Metadata
         public ObjectType RegisterObjectType(string fullName,
             Type clrType)
         {
-            return this.dynamicProvider.RegisterObjectType(fullName, clrType);
+            return this.dynamicProvider.RegisterObjectType(this, fullName, clrType);
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace Headway.Dynamo.Metadata
         /// <param name="objType"></param>
         public void RegisterObjectType(DynamicObjectType objType)
         {
-            this.dynamicProvider.RegisterObjectType(objType);
+            this.dynamicProvider.RegisterObjectType(this, objType);
         }
     }
 }

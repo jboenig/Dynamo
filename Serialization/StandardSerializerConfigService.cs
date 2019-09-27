@@ -23,15 +23,28 @@ using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class StandardSerializerConfigService : ISerializerConfigService
     {
         private IJsonConverterService converterService;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="converterService"></param>
         public StandardSerializerConfigService(IJsonConverterService converterService)
         {
             this.converterService = converterService;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objType"></param>
+        /// <param name="svcProvider"></param>
+        /// <returns></returns>
         public JsonSerializerSettings ConfigureJsonSerializerSettings(
             ObjectType objType,
             IServiceProvider svcProvider)

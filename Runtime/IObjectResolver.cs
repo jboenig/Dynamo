@@ -25,6 +25,11 @@ namespace Headway.Dynamo.Runtime
     /// <typeparam name="TResult"></typeparam>
     public interface IObjectResolver<TKey, TResult> where TResult : class
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         TResult Resolve(TKey key);
     }
 }

@@ -21,26 +21,41 @@ using System.Net.Mail;
 
 namespace Headway.Dynamo.Commands
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class SendEmailCommand : Command
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public string From
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string To
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string Subject
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string Body
         {
             get;

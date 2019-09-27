@@ -24,7 +24,7 @@ namespace Headway.Dynamo.Collections
     /// <summary>
     /// Implements an enumerable collection that is composed of
     /// two collections.
-    /// </summary
+    /// </summary>
     /// <typeparam name="T">Data type stored in the collection</typeparam>
 	public class AggregateCollection<T> : IEnumerable<T>
 	{

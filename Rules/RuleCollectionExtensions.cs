@@ -21,8 +21,17 @@ using System.Collections.Generic;
 
 namespace Headway.Dynamo.Rules
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class RuleCollectionExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rules"></param>
+        /// <param name="serviceProvider"></param>
+        /// <param name="context"></param>
         public static void Apply(this IEnumerable<Rule> rules, IServiceProvider serviceProvider, object context)
         {
             foreach (var curRule in rules)

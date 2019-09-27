@@ -182,12 +182,14 @@ namespace Headway.Dynamo.Metadata
 
         #region Protected Methods
 
+#if false
         /// <summary>
         /// Gets the <see cref="IMetadataService"/> that owns this data type.
         /// </summary>
         /// <returns></returns>
         //protected abstract IMetadataService GetMetadataService();
+#endif
 
-		#endregion
-	}
+        #endregion
+    }
 }

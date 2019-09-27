@@ -22,11 +22,17 @@ using Headway.Dynamo.Metadata.Dynamic;
 
 namespace Headway.Dynamo.Metadata
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class StandardMetadataProvider : AggregateMetadataProvider
     {
         private readonly ReflectionMetadataProvider reflectionProvider;
         private readonly DynamicMetadataProvider dynamicProvider;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public StandardMetadataProvider()
         {
             // Order is important! Always look for registered
@@ -41,6 +47,7 @@ namespace Headway.Dynamo.Metadata
         /// Registers a new <see cref="DynamicObjectType"/> with this
         /// <see cref="DynamicMetadataProvider"/>.
         /// </summary>
+        /// <param name="fullName"></param>
         /// <param name="clrType"></param>
         /// <returns>
         /// Returns a new <see cref="ObjectType"/>

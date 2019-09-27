@@ -20,8 +20,18 @@ using System;
 
 namespace Headway.Dynamo.Runtime
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TObject"></typeparam>
     public interface IObjectFactory<TObject> where TObject : class
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="svcProvider"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         TObject CreateInstance(IServiceProvider svcProvider, object context);
     }
 }

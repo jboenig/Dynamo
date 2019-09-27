@@ -213,6 +213,11 @@ namespace Headway.Dynamo.Runtime
 
         #region DynamicObject Implementation
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public override DynamicMetaObject GetMetaObject(Expression parameter)
         {
             return base.GetMetaObject(parameter);
@@ -229,6 +234,12 @@ namespace Headway.Dynamo.Runtime
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             bool success = false;
@@ -242,6 +253,12 @@ namespace Headway.Dynamo.Runtime
             return success;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             bool success = false;
@@ -325,8 +342,9 @@ namespace Headway.Dynamo.Runtime
 
         #endregion
 
-        #region Serialization
+#region Serialization
 
+#if false
         /// <summary>
         /// Converts this <see cref="DynamoObject"/> object to
         /// a Json string.
@@ -372,7 +390,13 @@ namespace Headway.Dynamo.Runtime
 
         //    return isComplete;
         //}
+#endif
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected DynamoObject(SerializationInfo info, StreamingContext context)
         {
             try
@@ -417,6 +441,11 @@ namespace Headway.Dynamo.Runtime
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("dataType", this.DataType);

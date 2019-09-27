@@ -20,8 +20,15 @@ using System;
 
 namespace Headway.Dynamo.Exceptions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class RuleInitException : Exception
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ex"></param>
         public RuleInitException(Exception ex) :
             base("An exception occurred while initializing a rule", ex)
         {

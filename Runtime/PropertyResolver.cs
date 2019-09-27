@@ -102,7 +102,7 @@ namespace Headway.Dynamo.Runtime
         /// <param name="source">
         /// String containing property name as a variable.
         /// </param>
-        /// <param name="value">Value of the property found</param>
+        /// <param name="propValue">Value of the property found</param>
         /// <returns>
         /// Returns true if the source string consists of a single variable name
         /// and the variable name is resolved.
@@ -224,6 +224,9 @@ namespace Headway.Dynamo.Runtime
         /// Replaces property names in the source string with the actual
         /// values of the properties.
         /// </summary>
+        /// <param name="obj">
+        /// Object that contains the property values.
+        /// </param>
         /// <param name="source">
         /// String containing property references.
         /// </param>
@@ -243,6 +246,12 @@ namespace Headway.Dynamo.Runtime
             return ResolvePropertyValues(DelimiterMode.Any, obj, source);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="propNameWithDelimiter"></param>
+        /// <returns></returns>
         public static string ResolvePropertyName(string source, out string propNameWithDelimiter)
         {
             var name = ResolvePropertyName("$(", ")", source, out propNameWithDelimiter);
@@ -258,6 +267,7 @@ namespace Headway.Dynamo.Runtime
         /// Specifies which delimiter or delimiters to use for parsing
         /// property names.
         /// </param>
+        /// <param name="obj">Object that contains the property values.</param>
         /// <param name="source">
         /// String containing property references in the format
         /// specified by the <see cref="DelimiterMode"/>
@@ -338,6 +348,9 @@ namespace Headway.Dynamo.Runtime
         /// </param>
         /// <param name="endPropDelimiter">
         /// Delimiter used to mark the end of a property name
+        /// </param>
+        /// <param name="obj">
+        /// Object containing the data.
         /// </param>
         /// <param name="source">
         /// String containing property references in the form

@@ -20,6 +20,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using Headway.Dynamo.Metadata.Reflection;
 
 namespace Headway.Dynamo.Metadata
 {

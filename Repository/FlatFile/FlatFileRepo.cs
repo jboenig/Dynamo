@@ -42,6 +42,12 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
 //        private IJsonConverterService converterService;
         private List<TObject> objects;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objType"></param>
+        /// <param name="filePath"></param>
+        /// <param name="svcProvider"></param>
         public FlatFileRepo(ObjectType objType,
             string filePath,
             IServiceProvider svcProvider)
@@ -68,6 +74,9 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
             this.LoadRepo();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name
         {
             get { return null; }
@@ -104,21 +113,36 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
             return this.objects.Cast<T>().AsQueryable();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         public void Add(TObject obj)
         {
             this.objects.Add(obj);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         public void Update(TObject obj)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         public void Remove(TObject obj)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void SaveChanges()
         {
             this.SaveRepo();

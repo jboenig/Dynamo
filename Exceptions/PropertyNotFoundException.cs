@@ -27,6 +27,11 @@ namespace Headway.Dynamo.Exceptions
     /// </summary>
     public sealed class PropertyNotFoundException : Exception
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="propertyName"></param>
         public PropertyNotFoundException(ComplexType dataType, string propertyName) :
             base(string.Format("Property name {0} does not exist on data type {1}", propertyName, dataType.Name))
         {

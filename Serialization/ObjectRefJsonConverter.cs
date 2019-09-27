@@ -23,12 +23,32 @@ using Headway.Dynamo.Exceptions;
 
 namespace Headway.Dynamo.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TObject"></typeparam>
     public class ObjectRefJsonConverter<TKey, TObject> : JsonConverter<TObject> where TObject : class
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public override bool CanRead => true;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override bool CanWrite => true;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="objectType"></param>
+        /// <param name="existingValue"></param>
+        /// <param name="hasExistingValue"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
         public override TObject ReadJson(JsonReader reader,
             Type objectType,
             TObject existingValue,
@@ -68,6 +88,12 @@ namespace Headway.Dynamo.Serialization
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="serializer"></param>
         public override void WriteJson(JsonWriter writer,
             TObject value,
             JsonSerializer serializer)

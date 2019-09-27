@@ -51,14 +51,6 @@ namespace Headway.Dynamo.Repository
 		/// <returns></returns>
 		IQueryable<T> GetQueryable<T>(IConnection connection, ObjectType objType);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="connection"></param>
-		/// <param name="objType"></param>
-		/// <param name="expression"></param>
-		/// <returns></returns>
 //		public abstract IQueryable<T> GetQueryable<T>(IConnection connection, ObjectType objType, Expression expression);
 
 		/// <summary>
@@ -68,9 +60,27 @@ namespace Headway.Dynamo.Repository
 		/// <returns></returns>
 		ITransaction BeginTransaction(IConnection connection);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         void Add(TObject obj);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         void Update(TObject obj);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         void Remove(TObject obj);
+
+        /// <summary>
+        /// 
+        /// </summary>
         void SaveChanges();
     }
 }

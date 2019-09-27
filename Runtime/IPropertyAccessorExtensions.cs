@@ -20,8 +20,18 @@ using Headway.Dynamo.Exceptions;
 
 namespace Headway.Dynamo.Runtime
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class IPropertyAccessorExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propAccessor"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         public static T GetPropertyValueRecursive<T>(this IPropertyAccessor propAccessor,
             string propertyName)
         {

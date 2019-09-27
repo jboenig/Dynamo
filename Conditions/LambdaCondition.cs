@@ -20,14 +20,24 @@ using System;
 
 namespace Headway.Dynamo.Conditions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class LambdaCondition : Condition
     {
         private Func<object, bool> expr;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public LambdaCondition()
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expr"></param>
         public LambdaCondition(Func<object, bool> expr)
         {
             this.expr = expr;
@@ -51,6 +61,10 @@ namespace Headway.Dynamo.Conditions
             return this.expr(context);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         protected void SetExpression(Func<object, bool> value)
         {
             this.expr = value;

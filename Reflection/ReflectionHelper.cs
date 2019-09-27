@@ -22,8 +22,19 @@ using System.Reflection;
 
 namespace Headway.Dynamo.Reflection
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ReflectionHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataTypeName"></param>
+        /// <param name="methodName"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static object GetDatafromGenericMethod<T>(string dataTypeName, string methodName, object obj)
         {
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).FirstOrDefault(x => x.FullName == dataTypeName);

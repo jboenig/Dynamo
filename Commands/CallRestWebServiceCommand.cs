@@ -26,6 +26,16 @@ namespace Headway.Dynamo.Commands
     /// </summary>
     public sealed class CallRestWebServiceCommand : Command
     {
+        /// <summary>
+        /// Executes the call to the configured REST-based
+        /// web service.
+        /// </summary>
+        /// <param name="serviceProvider">Interface to service provider</param>
+        /// <param name="context">User defined context data</param>
+        /// <returns>
+        /// Returns a <see cref="CommandResult"/> object that describes
+        /// the result.
+        /// </returns>
         public override CommandResult Execute(IServiceProvider serviceProvider, object context)
         {
             throw new NotImplementedException();

@@ -24,10 +24,18 @@ using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TResult"></typeparam>
     public sealed class JsonResourceObjectResolver<TResult> : IObjectResolver<string, TResult> where TResult : class
     {
         private Assembly sourceAssembly;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceAssembly"></param>
         public JsonResourceObjectResolver(Assembly sourceAssembly)
         {
             if (sourceAssembly == null)
@@ -37,6 +45,11 @@ namespace Headway.Dynamo.Serialization
             this.sourceAssembly = sourceAssembly;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public TResult Resolve(string key)
         {
             TResult result = default(TResult);

@@ -1,0 +1,2876 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Headway.Dynamo</name>
+    </assembly>
+    <members>
+        <member name="T:Headway.Dynamo.Collections.AggregateCollection`1">
+            <summary>
+            Implements an enumerable collection that is composed of
+            two collections.
+            </summary>
+            <typeparam name="T">Data type stored in the collection</typeparam>
+        </member>
+        <member name="M:Headway.Dynamo.Collections.AggregateCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Constructs an <see cref="T:Headway.Dynamo.Collections.AggregateCollection`1"/> given
+            two collections.
+            </summary>
+            <param name="collection1">
+            First collection to aggregate
+            </param>
+            <param name="collection2">
+            Second collection to aggregate
+            </param>
+        </member>
+        <member name="M:Headway.Dynamo.Collections.AggregateCollection`1.GetEnumerator">
+            <summary>
+            Gets an enumerator for accessing the collection.
+            </summary>
+            <returns>Enumerator for accessing collection</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Collections.AggregateCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets an enumerator for accessing the collection.
+            </summary>
+            <returns>Enumerator for accessing collection</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.CallRestWebServiceCommand">
+            <summary>
+            Implements the <see cref="T:Headway.Dynamo.Commands.Command"/> pattern for a
+            rest-based web service call.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.CallRestWebServiceCommand.Execute(System.IServiceProvider,System.Object)">
+            <summary>
+            Executes the call to the configured REST-based
+            web service.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns a <see cref="T:Headway.Dynamo.Commands.CommandResult"/> object that describes
+            the result.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.Command">
+            <summary>
+            Encapsulates a command that can be executed.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.Command.Execute(System.IServiceProvider,System.Object)">
+            <summary>
+            Executes this command.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns a <see cref="T:Headway.Dynamo.Commands.CommandResult"/> object that describes
+            the result.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.CommandResult">
+            <summary>
+            Encapsulates the result of executing a command.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.CommandResult.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.CommandResult.#ctor(System.Object)">
+            <summary>
+            Constructs a result given the context object
+            using during command execution.
+            </summary>
+            <param name="context">
+            Context used during command execution.
+            </param>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.CommandResult.Description">
+            <summary>
+            Gets the description.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.CommandResult.IsSuccess">
+            <summary>
+            Gets a flag indicating whether result is successful or not.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.CommandResult.Context">
+            <summary>
+            Gets the context object used during command execution.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Commands.CommandResult.Success">
+            <summary>
+            Gets a singleton <see cref="T:Headway.Dynamo.Commands.CommandResult"/> object that indicates
+            successful execution of a command.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.BoolCommandResult">
+            <summary>
+            Implements a simple <see cref="T:Headway.Dynamo.Commands.CommandResult"/> that indicates success
+            or failure and a message.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.BoolCommandResult.#ctor(System.Boolean,System.String,System.Object)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Commands.BoolCommandResult"/> given a boolean
+            flag that indicates success/failure and a description.
+            </summary>
+            <param name="context">
+            Context used during command execution.
+            </param>
+            <param name="isSuccess">
+            Flag indicating whether or not the command was successful
+            </param>
+            <param name="description">Description of the result</param>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.BoolCommandResult.Description">
+            <summary>
+            Gets the description.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.BoolCommandResult.IsSuccess">
+            <summary>
+            Gets a flag indicating whether result is successful or not.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.MacroCommand">
+            <summary>
+            Encapsulates a collection of <see cref="T:Headway.Dynamo.Commands.Command"/> objects
+            that are executed as a single, sequential unit.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.MacroCommand.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.MacroCommand.Commands">
+            <summary>
+            Gets the collection of <see cref="T:Headway.Dynamo.Commands.Command"/> objects
+            contained by this macro.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.MacroCommand.Execute(System.IServiceProvider,System.Object)">
+            <summary>
+            Executes this macro command.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns a <see cref="T:Headway.Dynamo.Commands.CommandResult"/> object that describes
+            the result.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.SendEmailCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.SendEmailCommand.From">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.SendEmailCommand.To">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.SendEmailCommand.Subject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.SendEmailCommand.Body">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.SendEmailCommand.Execute(System.IServiceProvider,System.Object)">
+            <summary>
+            Executes this command.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns a <see cref="T:Headway.Dynamo.Commands.CommandResult"/> object that describes
+            the result.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Commands.SetPropertyValueCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.SetPropertyValueCommand.PropertyName">
+            <summary>
+            Gets or sets the name of the property to set.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Commands.SetPropertyValueCommand.Value">
+            <summary>
+            Gets or sets the value to assign to the property.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Commands.SetPropertyValueCommand.Execute(System.IServiceProvider,System.Object)">
+            <summary>
+            Executes this command.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns a <see cref="T:Headway.Dynamo.Commands.CommandResult"/> object that describes
+            the result.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.CompoundCondition">
+            <summary>
+            Aggregates multiple <see cref="T:Headway.Dynamo.Conditions.Condition"/> objects into
+            a single condition using a <see cref="T:Headway.Dynamo.Conditions.CompoundEvaluationType"/>,
+            which determines whether the multiple conditions are AND'd or
+            OR'd together.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.CompoundCondition.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+            <remarks>
+            Default <see cref="T:Headway.Dynamo.Conditions.CompoundEvaluationType"/> is
+            <see cref="F:Headway.Dynamo.Conditions.CompoundEvaluationType.All"/>.
+            </remarks>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.CompoundCondition.#ctor(Headway.Dynamo.Conditions.CompoundEvaluationType)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Conditions.CompoundCondition"/> given
+            an <see cref="P:Headway.Dynamo.Conditions.CompoundCondition.EvaluationType"/>.
+            </summary>
+            <param name="evalType">
+            Determines whether all inner conditions must be true
+            or any one condition must be true for this condition
+            to be true.
+            </param>
+        </member>
+        <member name="P:Headway.Dynamo.Conditions.CompoundCondition.EvaluationType">
+            <summary>
+            Gets or sets the <see cref="P:Headway.Dynamo.Conditions.CompoundCondition.EvaluationType"/> for
+            this compound condition.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.CompoundCondition.Evaluate(System.IServiceProvider,System.Object)">
+            <summary>
+            Evaluate all of the <see cref="T:Headway.Dynamo.Conditions.Condition"/> objects in the
+            <see cref="P:Headway.Dynamo.Conditions.CompoundCondition.Conditions"/> collection based on
+            the <see cref="P:Headway.Dynamo.Conditions.CompoundCondition.EvaluationType"/> associated with this
+            <see cref="T:Headway.Dynamo.Conditions.CompoundCondition"/>.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Boolean flag indicating whether the
+            condition is true or false.
+            </returns>
+        </member>
+        <member name="P:Headway.Dynamo.Conditions.CompoundCondition.Conditions">
+            <summary>
+            Gets the collection of <see cref="T:Headway.Dynamo.Conditions.Condition"/> objects
+            that this compound condition evaluates.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.CompoundEvaluationType">
+            <summary>
+            Determines whether all <see cref="T:Headway.Dynamo.Conditions.Condition"/> objects
+            associated with a <see cref="T:Headway.Dynamo.Conditions.CompoundCondition"/> must
+            evaluate to true in order for the condition to be true
+            or any conditions can be true.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Conditions.CompoundEvaluationType.Any">
+            <summary>
+            Any one condition evaluating to true makes the
+            <see cref="T:Headway.Dynamo.Conditions.CompoundCondition"/> true.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Conditions.CompoundEvaluationType.All">
+            <summary>
+            All conditions must be true for the
+            <see cref="T:Headway.Dynamo.Conditions.CompoundCondition"/> true.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.Condition">
+            <summary>
+            Encapsulates a condition that can be evaluated
+            as TRUE or FALSE.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.Condition.Evaluate(System.IServiceProvider,System.Object)">
+            <summary>
+            Evaluates the condition.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns TRUE or FALSE based on evaluation
+            of the condition.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.False">
+            <summary>
+            Implements a <see cref="T:Headway.Dynamo.Conditions.Condition"/> that always returns
+            false.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.False.Evaluate(System.IServiceProvider,System.Object)">
+            <summary>
+            Evaluates the condition.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Always returns FALSE.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.LambdaCondition">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.LambdaCondition.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.LambdaCondition.#ctor(System.Func{System.Object,System.Boolean})">
+            <summary>
+            
+            </summary>
+            <param name="expr"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.LambdaCondition.Evaluate(System.IServiceProvider,System.Object)">
+            <summary>
+            Evaluates the condition.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns TRUE or FALSE based on evaluation
+            of the condition.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.LambdaCondition.SetExpression(System.Func{System.Object,System.Boolean})">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.PropertyEqualsCondition">
+            <summary>
+            Implementation of <see cref="T:Headway.Dynamo.Conditions.Condition"/> that retrieves the
+            value of a property by name using the <see cref="T:Headway.Dynamo.Runtime.IPropertyAccessor"/>
+            interface and compares it for equality to a constant value.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.PropertyEqualsCondition.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.PropertyEqualsCondition.#ctor(System.String,System.Object)">
+            <summary>
+            Construct a <see cref="T:Headway.Dynamo.Conditions.PropertyEqualsCondition"/> given a property
+            name and value.
+            </summary>
+            <param name="propertyName">Name of property to compare</param>
+            <param name="propertyValue">Value to compare property to</param>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.PropertyEqualsCondition.Evaluate(System.IServiceProvider,System.Object)">
+            <summary>
+            Evaluates the condition.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Returns TRUE or FALSE based on evaluation
+            of the condition.
+            </returns>
+        </member>
+        <member name="P:Headway.Dynamo.Conditions.PropertyEqualsCondition.PropertyName">
+            <summary>
+            Gets or sets the name of the property to retrieve from the
+            context.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Conditions.PropertyEqualsCondition.PropertyValue">
+            <summary>
+            Gets or sets the value to compare against.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Conditions.True">
+            <summary>
+            Implements a <see cref="T:Headway.Dynamo.Conditions.Condition"/> that always returns
+            true.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Conditions.True.Evaluate(System.IServiceProvider,System.Object)">
+            <summary>
+            Evaluates the condition.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            Always returns TRUE.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.CommandExecuteException">
+            <summary>
+            Exception thrown when a call to <see cref="M:Headway.Dynamo.Commands.Command.Execute(System.IServiceProvider,System.Object)"/>
+            fails due to an exception or a failure indicated by the <see cref="P:Headway.Dynamo.Exceptions.CommandExecuteException.CommandResult"/>.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.CommandExecuteException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Exceptions.CommandExecuteException"/> given
+            a message prefix and the exception that caused the error. The
+            message prefix is prepended to the error message from the exception
+            and is optional.
+            </summary>
+            <param name="messagePrefix">Optional message prefix.</param>
+            <param name="innerException">Exception that caused the error.</param>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.CommandExecuteException.#ctor(System.String,Headway.Dynamo.Commands.CommandResult)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Exceptions.CommandExecuteException"/> given
+            a message prefix and the <see cref="P:Headway.Dynamo.Exceptions.CommandExecuteException.CommandResult"/> that caused the error.
+            The message prefix is prepended to the error message from the exception
+            and is optional.
+            </summary>
+            <param name="messagePrefix">Optional message prefix.</param>
+            <param name="commandRes">Result returned by the command execution.</param>
+        </member>
+        <member name="P:Headway.Dynamo.Exceptions.CommandExecuteException.CommandResult">
+            <summary>
+            Gets the <see cref="P:Headway.Dynamo.Exceptions.CommandExecuteException.CommandResult"/> returned by the command.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Exceptions.CommandExecuteException.Message">
+            <summary>
+            Gets the error message for this exception.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.ConditionEvalException">
+            <summary>
+            Exception thrown when a call to
+            <see cref="M:Headway.Dynamo.Conditions.Condition.Evaluate(System.IServiceProvider,System.Object)"/>
+            fails.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.ConditionEvalException.#ctor(System.Exception)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Exceptions.ConditionEvalException"/> given an
+            inner exception.
+            </summary>
+            <param name="innerException">Exception that caused the failure.</param>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.ConditionEvalException.#ctor(System.String)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Exceptions.ConditionEvalException"/> given a message.
+            </summary>
+            <param name="msg">Message explaining the exception.</param>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.DataTypeNotFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.DataTypeNotFound.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="dataTypeName"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.InvalidDataType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.InvalidDataType.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+            <param name="dataTypeName"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.PropertyNotFoundException">
+            <summary>
+            This exception is thrown when a property is referenced that is not
+            declared on the specified <see cref="T:Headway.Dynamo.Metadata.ComplexType"/>.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.PropertyNotFoundException.#ctor(Headway.Dynamo.Metadata.ComplexType,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="dataType"></param>
+            <param name="propertyName"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.RuleInitException">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.RuleInitException.#ctor(System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="ex"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Exceptions.ServiceNotFoundException">
+            <summary>
+            Thrown when a service cannot be located through injection
+            or through IServiceProvider.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Exceptions.ServiceNotFoundException.#ctor(System.Type)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Exceptions.ServiceNotFoundException"/> given
+            the type of service that was not found.
+            </summary>
+            <param name="serviceType">
+            Type of service that could not be located.
+            </param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.AggregateMetadataProvider">
+            <summary>
+            Implements the <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service
+            by aggregating one or more providers.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.AggregateMetadataProvider.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.AggregateMetadataProvider.#ctor(Headway.Dynamo.Metadata.IMetadataProvider)">
+            <summary>
+            Constructs an <see cref="T:Headway.Dynamo.Metadata.AggregateMetadataProvider"/>
+            given one <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/>.
+            </summary>
+            <param name="provider">
+            Metadata provider to add.
+            </param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.AggregateMetadataProvider.#ctor(Headway.Dynamo.Metadata.IMetadataProvider,Headway.Dynamo.Metadata.IMetadataProvider)">
+            <summary>
+            Constructs an <see cref="T:Headway.Dynamo.Metadata.AggregateMetadataProvider"/>
+            given two <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> services.
+            </summary>
+            <param name="provider1">
+            First metadata provider to add.
+            </param>
+            <param name="provider2">
+            Second metadata provider to add.
+            </param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.AggregateMetadataProvider.GetDataType``1(System.String)">
+            <summary>
+            Gets a <see cref="T:Headway.Dynamo.Metadata.DataType"/> by fully
+            qualified name.
+            </summary>
+            <param name="fullName">Full name of the data type to retrieve</param>
+            <returns>
+            The <see cref="T:Headway.Dynamo.Metadata.DataType"/> matching the specified name or null
+            if the data type does not exist.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.AggregateMetadataProvider.AddProvider(Headway.Dynamo.Metadata.IMetadataProvider)">
+            <summary>
+            Add an <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> to the service.
+            </summary>
+            <param name="provider">
+            Reference to <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> instance
+            to add to the service.
+            </param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Attributes.ClassAttribute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Attributes.ClassAttribute.ClassName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Attributes.ClassAttribute.BaseClassName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Attributes.PropertyAttribute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Attributes.PropertyAttribute.Serialize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.ComplexType">
+            <summary>
+            Encapsulates data types that contain properties.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.ComplexType.Properties">
+            <summary>
+            Gets the collection of properties associated with this class.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ComplexType.GetPropertyByName(System.String)">
+            <summary>
+            Gets the property matching the specified name.
+            </summary>
+            <param name="propertyName">Name of property to get.</param>
+            <returns><see cref="T:Headway.Dynamo.Metadata.Property"/> matching the specified name.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ComplexType.FindAllProperties">
+            <summary>
+            Gets all properties of this class including inherited properties.
+            </summary>
+            <returns>List of <see cref="T:Headway.Dynamo.Metadata.Property"/> objects.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ComplexType.FindProperties(System.Func{Headway.Dynamo.Metadata.Property,System.Boolean})">
+            <summary>
+            Gets all properties matching the specified filter - includes inherited properties.
+            </summary>
+            <param name="filter">Filter criteria.</param>
+            <returns>List of <see cref="T:Headway.Dynamo.Metadata.Property"/> objects.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ComplexType.AddProperty(System.String,Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Adds a property to this type.
+            </summary>
+            <param name="propertyName">Name of property to add</param>
+            <param name="dataType">Data type of property to add</param>
+            <returns>Returns the new property created</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.DataType">
+            <summary>
+            Base class for data types.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.Name">
+            <summary>
+            Gets the name of the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.Namespace">
+            <summary>
+            Gets the namespace of the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.FullName">
+            <summary>
+            Gets the fully qualified name of the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.AssemblyQualifiedTypeName">
+            <summary>
+            Gets the fully qualified CLR type name.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.IsEnumerable">
+            <summary>
+            Gets a flag indicating whether or not this data type is enumerable.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.ItemDataType">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.DataType"/> of items when the <see cref="P:Headway.Dynamo.Metadata.DataType.IsEnumerable"/>
+            flag is true.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.AssemblyName">
+            <summary>
+            Gets the name of the assembly in which the <see cref="P:Headway.Dynamo.Metadata.DataType.CLRType"/> is compiled.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.CLRTypeName">
+            <summary>
+            Gets the name of the CLR type sans the assembly information.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.CLRType">
+            <summary>
+            Gets the CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.DefaultValue">
+            <summary>
+            Gets the default value for the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.DataType.VersionNumber">
+            <summary>
+            Gets the version number of this <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.DataType.IsAssignableFrom(Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Determines if this class is assignable from the specified <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+            <param name="otherDataType"><see cref="T:Headway.Dynamo.Metadata.DataType"/> to test.</param>
+            <returns>
+            Returns true if the specified <see cref="T:Headway.Dynamo.Metadata.DataType"/> is compatible with this
+            <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>, otherwise returns false.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.DataType.GetAttributes``1(System.String)">
+            <summary>
+            Gets the attributes associated with this data type matching the specified name.
+            </summary>
+            <typeparam name="T">Type of attribute.</typeparam>
+            <param name="attributeName">Name of attribute.</param>
+            <returns>Attribute matching the specified name.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.DataType.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.DataType.GetDependencies(System.Collections.Generic.IList{Headway.Dynamo.Metadata.DataType})">
+            <summary>
+            Gets the list of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </summary>
+            <param name="dependencies">
+            Collection of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider">
+            <summary>
+            Implementation of <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service
+            that allows data types to be registered manually.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider.GetDataType``1(System.String)">
+            <summary>
+            Gets a <see cref="T:Headway.Dynamo.Metadata.DataType"/> by fully
+            qualified name.
+            </summary>
+            <param name="fullName">Full name of the data type to retrieve</param>
+            <returns>
+            The <see cref="T:Headway.Dynamo.Metadata.DataType"/> matching the specified name or null
+            if the data type does not exist.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider.RegisterObjectType(Headway.Dynamo.Metadata.IMetadataProvider,System.String,System.Type)">
+            <summary>
+            Registers a new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/> with this
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider"/>.
+            </summary>
+            <param name="metadataProvider"></param>
+            <param name="fullName"></param>
+            <param name="clrType"></param>
+            <returns>
+            Returns a new <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider.RegisterObjectType(Headway.Dynamo.Metadata.IMetadataProvider,Headway.Dynamo.Metadata.Dynamic.DynamicObjectType)">
+            <summary>
+            Registers the given <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/> with this
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider"/>.
+            </summary>
+            <param name="metadataProvider"></param>
+            <param name="objType"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType">
+            <summary>
+            Implements an <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> that is dynamically
+            configurable at run-time.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.Create(Headway.Dynamo.Metadata.IMetadataProvider,System.String,System.Type,Headway.Dynamo.Metadata.ObjectType)">
+            <summary>
+            Creates a <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/> given
+            a <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/>, a CLR type,
+            and optional derives from <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>.
+            </summary>
+            <param name="metadataProvider">
+            <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service used to resolve
+            data type information.
+            </param>
+            <param name="fullName">
+            Fully qualified name of new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/> to create.
+            </param>
+            <param name="clrType">
+            CLR type associated with this dynamic object type.
+            </param>
+            <param name="derivesFrom">
+            <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> this new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/>
+            derives from.
+            </param>
+            <returns>
+            A new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/>.
+            </returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.FullName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.AssemblyQualifiedTypeName">
+            <summary>
+            Gets the fully qualified CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.DerivesFrom">
+            <summary>
+            Gets a reference to the base class for this class.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.DefaultValue">
+            <summary>
+            Gets the default value for the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.VersionNumber">
+            <summary>
+            Gets the version number of this <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.Properties">
+            <summary>
+            Gets the collection of properties associated with this class.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.CLRType">
+            <summary>
+            Gets the CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.GetAttributes``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.GetDependencies(System.Collections.Generic.IList{Headway.Dynamo.Metadata.DataType})">
+            <summary>
+            Gets the list of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </summary>
+            <param name="dependencies">
+            Collection of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType.AddProperty(System.String,Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Adds a property to this type.
+            </summary>
+            <param name="propertyName">Name of property to add</param>
+            <param name="dataType">Data type of property to add</param>
+            <returns>Returns the new property created</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty">
+            <summary>
+            Implements <see cref="T:Headway.Dynamo.Metadata.Property"/> for properties that can be dynamically
+            created at run-time and serialized.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.Create(Headway.Dynamo.Metadata.ComplexType,System.String,Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Creates a new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/> given a name, data type, and serialization
+            flag.
+            </summary>
+            <param name="owner"></param>
+            <param name="name"></param>
+            <param name="dataType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.Create(Headway.Dynamo.Metadata.ComplexType,System.String,Headway.Dynamo.Metadata.DataType,System.Object)">
+            <summary>
+            Creates a new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/> given a name, data type, and serialization
+            flag.
+            </summary>
+            <param name="owner"></param>
+            <param name="name"></param>
+            <param name="dataType"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.Owner">
+            <summary>
+            Gets the owner of this member.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.Name">
+            <summary>
+            Gets the name of the property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.DataType">
+            <summary>
+            Gets the <see cref="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.DataType"/> of the property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.IsNullable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.DefaultValue">
+            <summary>
+            Gets or sets the default value for this property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.Serialize">
+            <summary>
+            Gets a flag indicating whether or not this property should be serialized.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.GetValue``1(System.Object)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.SetValue``1(System.Object,``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="target"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.GetAttributes``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Dynamic.DynamicProperty.SetOwner(Headway.Dynamo.Metadata.ComplexType)">
+            <summary>
+            This method must be called after deserializing
+            a <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/> so that the parent relationship
+            can be re-established.
+            </summary>
+            <param name="owner">
+            Reference to the <see cref="T:Headway.Dynamo.Metadata.ComplexType"/> that owns this
+            property
+            </param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.IAttributeContainer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IAttributeContainer.GetAttributes``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IAttributeContainer.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.AttributeContainerHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.AttributeContainerHelper.GetAttribute``1(Headway.Dynamo.Metadata.IAttributeContainer,System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeContainer"></param>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.IMetadataProvider">
+            <summary>
+            Interface used to retrieve metadata.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IMetadataProvider.GetDataType``1(System.String)">
+            <summary>
+            Gets a <see cref="T:Headway.Dynamo.Metadata.DataType"/> by fully
+            qualified name.
+            </summary>
+            <param name="fullName">Full name of the data type to retrieve</param>
+            <returns>
+            The <see cref="T:Headway.Dynamo.Metadata.DataType"/> matching the specified name or null
+            if the data type does not exist.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.MetadataProviderExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/>
+            interface.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.MetadataProviderExtensions.GetDataType``1(Headway.Dynamo.Metadata.IMetadataProvider,System.Type)">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.DataType"/> for a given CLR type.
+            </summary>
+            <typeparam name="T">
+            Type of <see cref="T:Headway.Dynamo.Metadata.DataType"/> metadata object requested.
+            </typeparam>
+            <param name="metadataProvider">
+            Reference to <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> object.
+            </param>
+            <param name="clrType">
+            CLR type to get <see cref="T:Headway.Dynamo.Metadata.DataType"/> for
+            </param>
+            <returns>
+            An instance of <see cref="T:Headway.Dynamo.Metadata.DataType"/> or a subclass of
+            <see cref="T:Headway.Dynamo.Metadata.DataType"/>
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.MetadataProviderExtensions.GetDataType(Headway.Dynamo.Metadata.IMetadataProvider,System.String)">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.DataType"/> for a given CLR type.
+            </summary>
+            <param name="metadataProvider">
+            Reference to <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> object.
+            </param>
+            <param name="fullName">Full name of the data type to retrieve</param>
+            <returns>
+            An instance of <see cref="T:Headway.Dynamo.Metadata.DataType"/>
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.MetadataProviderExtensions.GetDataType(Headway.Dynamo.Metadata.IMetadataProvider,System.Type)">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.DataType"/> for a given CLR type.
+            </summary>
+            <param name="metadataProvider">
+            Reference to <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> object.
+            </param>
+            <param name="clrType">
+            CLR type to get <see cref="T:Headway.Dynamo.Metadata.DataType"/> for
+            </param>
+            <returns>
+            An instance of <see cref="T:Headway.Dynamo.Metadata.DataType"/>
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.IntegralType">
+            <summary>
+            This class encapsulates integral data types.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.IntegralType.Integer">
+            <summary>
+            Integer.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.IntegralType.String">
+            <summary>
+            String.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.IntegralType.Float">
+            <summary>
+            Float.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.IntegralType.Guid">
+            <summary>
+            Guid.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.IntegralType.Boolean">
+            <summary>
+            Boolean.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.IntegralType.DateTime">
+            <summary>
+            DateTime.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IntegralType.Get(System.Type)">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.IntegralType"/> matching the specified CLR Type.
+            </summary>
+            <param name="clrType">
+            CLR type for which to find the matching <see cref="T:Headway.Dynamo.Metadata.IntegralType"/>.
+            </param>
+            <returns><see cref="T:Headway.Dynamo.Metadata.IntegralType"/> object matching the specified Type</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IntegralType.Get(System.String)">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.IntegralType"/> matching the specified fully-qualified name.
+            </summary>
+            <param name="fullTypeName">
+            Name of type to get.
+            </param>
+            <returns><see cref="T:Headway.Dynamo.Metadata.IntegralType"/> object matching the specified name</returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.FullName">
+            <summary>
+            Gets the fully qualified name of the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.AssemblyQualifiedTypeName">
+            <summary>
+            Gets the fully qualified CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.IsEnumerable">
+            <summary>
+            Gets a flag indicating whether or not this data type is enumerable.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.ItemDataType">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.DataType"/> of items when the <see cref="P:Headway.Dynamo.Metadata.IntegralType.IsEnumerable"/>
+            flag is true.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.CLRType">
+            <summary>
+            Gets the CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.DefaultValue">
+            <summary>
+            Gets the default value for the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.IntegralType.VersionNumber">
+            <summary>
+            Gets the version number of this <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IntegralType.IsAssignableFrom(Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Determines if this class is assignable from the specified <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+            <param name="otherDataType"><see cref="T:Headway.Dynamo.Metadata.DataType"/> to test.</param>
+            <returns>
+            Returns true if the specified <see cref="T:Headway.Dynamo.Metadata.DataType"/> is compatible with this
+            <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>, otherwise returns false.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IntegralType.GetAttributes``1(System.String)">
+            <summary>
+            Gets the attribute associated with this data type matching the specified name.
+            </summary>
+            <typeparam name="T">Type of attribute.</typeparam>
+            <param name="attributeName">Name of attribute.</param>
+            <returns>Attribute matching the specified name.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IntegralType.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.IntegralType.GetDependencies(System.Collections.Generic.IList{Headway.Dynamo.Metadata.DataType})">
+            <summary>
+            Gets the list of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </summary>
+            <param name="dependencies">
+            Collection of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Key">
+            <summary>
+            Encapsulates one or more properties that comprise a key.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Key.Name">
+            <summary>
+            Name of the key.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Key.Properties">
+            <summary>
+            Properties that make up the key.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Key.IsUnique">
+            <summary>
+            Gets a flag that indicates whether or not the
+            key is unique.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Member">
+            <summary>
+            Base class for members of an <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Member.Owner">
+            <summary>
+            Gets the owner of this member.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Member.Name">
+            <summary>
+            Gets the name of the member.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Member.Namespace">
+            <summary>
+            Gets the namespace.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Member.FullName">
+            <summary>
+            Gets the fullname.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Member.GetAttributes``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Member.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Method">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.NavigationProperty">
+            <summary>
+            Encapsulates a property that can be used to navigate
+            a <see cref="P:Headway.Dynamo.Metadata.NavigationProperty.Relationship"/>.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.NavigationProperty.Relationship">
+            <summary>
+            Gets the <see cref="P:Headway.Dynamo.Metadata.NavigationProperty.Relationship"/> bound to this property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.NavigationProperty.IsSource">
+            <summary>
+            Gets a flag indicating whether this <see cref="T:Headway.Dynamo.Metadata.NavigationProperty"/> is
+            the source or target of the <see cref="P:Headway.Dynamo.Metadata.NavigationProperty.Relationship"/>.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.NavigationProperty.DataType">
+            <summary>
+            Gets the <see cref="P:Headway.Dynamo.Metadata.NavigationProperty.DataType"/> of this property.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.ObjectType">
+            <summary>
+            Encapsulates the metadata for a type of object.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.ObjectType.DerivesFrom">
+            <summary>
+            Gets a reference to the base class for this class.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectType.CreateInstance``1(System.Object[])">
+            <summary>
+            Creates an instance of the class.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="paramList"></param>
+            <returns>A new object of type T.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.ObjectTypeBaseImpl">
+            <summary>
+            Provides a base implementation of <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.#ctor(Headway.Dynamo.Metadata.IMetadataProvider)">
+            <summary>
+            Constructs on <see cref="T:Headway.Dynamo.Metadata.ObjectTypeBaseImpl"/> given
+            a <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service reference.
+            </summary>
+            <param name="metadataProvider">
+            Metadata provider service.
+            </param>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.CLRType">
+            <summary>
+            Gets the CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.IsAssignableFrom(Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Determines if this object type is assignable from the specified <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+            <param name="otherDataType"><see cref="T:Headway.Dynamo.Metadata.DataType"/> to test.</param>
+            <returns>
+            Returns true if the specified <see cref="T:Headway.Dynamo.Metadata.DataType"/> is compatible with this
+            <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>, otherwise returns false.
+            </returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.IsEnumerable">
+            <summary>
+            Gets a flag indicating whether or not this data type is enumerable.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.ItemDataType">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.DataType"/> of items when the <see cref="P:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.IsEnumerable"/>
+            flag is true.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.CreateInstance``1(System.Object[])">
+            <summary>
+            Creates an instance of the class.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="paramList"></param>
+            <returns>A new object of type T.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.GetPropertyByName(System.String)">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.Property"/> matching the specified name.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.FindAllProperties">
+            <summary>
+            Returns all properties in the inheritance hierarchy.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.FindProperties(System.Func{Headway.Dynamo.Metadata.Property,System.Boolean})">
+            <summary>
+            Returns all properties in the inheritance hiearchy that match the
+            specified filter.
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.MetadataProvider">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service
+            used to resolve data type information.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.InitInstance``1(``0)">
+            <summary>
+            Provides a hook to initialize new instances.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.ObjectTypeBaseImpl.GetReflectionProperties">
+            <summary>
+            Gets a list of <see cref="T:Headway.Dynamo.Metadata.Reflection.ReflectionProperty"/> objects that encapsulate
+            CLR properties that can be access by this <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>.
+            </summary>
+            <returns>A list of <see cref="T:Headway.Dynamo.Metadata.Reflection.ReflectionProperty"/> objects.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Property">
+            <summary>
+            Encapsulates a property of a <see cref="T:Headway.Dynamo.Metadata.ComplexType"/>
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Property.DataType">
+            <summary>
+            Gets the <see cref="P:Headway.Dynamo.Metadata.Property.DataType"/> of this property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Property.IsNullable">
+            <summary>
+            Gets a flag indicating if the property is nullable.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Property.DefaultValue">
+            <summary>
+            Gets or sets the default value of the property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Property.Serialize">
+            <summary>
+            Gets a flag indicating whether or not this property should be serialized.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Property.GetValue``1(System.Object)">
+            <summary>
+            Gets the value of this property from the specified source object.
+            </summary>
+            <typeparam name="T">Property type</typeparam>
+            <param name="source">
+            Source object that contains the property.
+            </param>
+            <returns>
+            Value of the property
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Property.SetValue``1(System.Object,``0)">
+            <summary>
+            Sets the value of this property on the specified target object.
+            </summary>
+            <typeparam name="T">Property type</typeparam>
+            <param name="target">
+            Target object to receive the property value.
+            </param>
+            <param name="value">Value to assign to the property</param>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Reflection.ReflectionMetadataProvider">
+            <summary>
+            Implements the <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service
+            using reflection.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionMetadataProvider.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionMetadataProvider.GetDataType``1(System.String)">
+            <summary>
+            Gets a <see cref="T:Headway.Dynamo.Metadata.DataType"/> by fully
+            qualified name.
+            </summary>
+            <param name="fullName">Full name of the data type to retrieve</param>
+            <returns>
+            The <see cref="T:Headway.Dynamo.Metadata.DataType"/> matching the specified name or null
+            if the data type does not exist.
+            </returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionMetadataProvider.NextProvider">
+            <summary>
+            Gets or sets the next <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> in the chain.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType">
+            <summary>
+            Implements an <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> based on
+            reflection.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.FullName">
+            <summary>
+            Gets the fully qualified name of the object type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.AssemblyQualifiedTypeName">
+            <summary>
+            Gets the fully qualified CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.DerivesFrom">
+            <summary>
+            Gets a reference to the base class for this class.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.DefaultValue">
+            <summary>
+            Gets the default value for the data type.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.VersionNumber">
+            <summary>
+            Gets the version number of this <see cref="T:Headway.Dynamo.Metadata.DataType"/>.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.Properties">
+            <summary>
+            Gets the collection of properties associated with this class.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.CLRType">
+            <summary>
+            Gets the CLR type that this type maps to.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.GetAttributes``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.GetDependencies(System.Collections.Generic.IList{Headway.Dynamo.Metadata.DataType})">
+            <summary>
+            Gets the list of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </summary>
+            <param name="dependencies">
+            Collection of <see cref="T:Headway.Dynamo.Metadata.DataType"/>s that this data type depends on.
+            </param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.AddProperty(System.String,Headway.Dynamo.Metadata.DataType)">
+            <summary>
+            Adds a property to this type.
+            </summary>
+            <param name="name">Name of property to add</param>
+            <param name="dataType">Data type of property to add</param>
+            <returns>Returns the new property created</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.Get(Headway.Dynamo.Metadata.IMetadataProvider,System.String)">
+            <summary>
+            Gets an <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> matching the given fully
+            qualified CLR class name.
+            </summary>
+            <param name="metadataProvider">
+            Reference to <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service used
+            to resolve data types.
+            </param>
+            <param name="fullName">
+            Fully qualified name of the CLR class.
+            </param>
+            <returns>
+            Returns an instance of <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> for
+            the specified CLR class.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.Get(Headway.Dynamo.Metadata.IMetadataProvider,System.String,Headway.Dynamo.Reflection.IAssemblyLoader)">
+            <summary>
+            Gets an <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> matching the given fully
+            qualified CLR class name and assembly loader.
+            </summary>
+            <param name="metadataProvider">
+            </param>
+            <param name="fullName">
+            Fully qualified name of the CLR class.
+            </param>
+            <param name="assemblyLoader">
+            Assembly loader used to get available assemblies in
+            which to search for the class.
+            </param>
+            <returns>
+            Returns an instance of <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> for
+            the specified CLR class.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionObjectType.Get(Headway.Dynamo.Metadata.IMetadataProvider,System.Type)">
+            <summary>
+            Gets an <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> given a CLR type.
+            </summary>
+            <param name="metadataProvider">
+            </param>
+            <param name="clrType">
+            CLR type information
+            </param>
+            <returns>
+            Returns an instance of <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> for
+            the specified CLR class.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Reflection.ReflectionProperty">
+            <summary>
+            Implements <see cref="T:Headway.Dynamo.Metadata.Property"/> using reflection.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.Create(Headway.Dynamo.Metadata.IMetadataProvider,Headway.Dynamo.Metadata.ComplexType,System.Reflection.PropertyInfo)">
+            <summary>
+            Creates a new <see cref="T:Headway.Dynamo.Metadata.Reflection.ReflectionProperty"/> given a PropertyInfo
+            object retrieved through .NET reflection.
+            </summary>
+            <param name="metadataProvider">
+            Reference to <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service used to
+            resolve type information.
+            </param>
+            <param name="owner">Owner of the property</param>
+            <param name="propInfo">Property info object to associate with this property.</param>
+            <returns>A new <see cref="T:Headway.Dynamo.Metadata.Reflection.ReflectionProperty"/> object</returns>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.Owner">
+            <summary>
+            Gets the owner of this member.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.Name">
+            <summary>
+            Gets the name of the property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.DataType">
+            <summary>
+            Gets the <see cref="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.DataType"/> of the property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.IsNullable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.DefaultValue">
+            <summary>
+            Gets or sets the default value for this property.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.Serialize">
+            <summary>
+            Gets a flag indicating whether or not this property should be serialized.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.GetValue``1(System.Object)">
+            <summary>
+            Gets the value of this property from the specified source object.
+            </summary>
+            <typeparam name="T">Property type</typeparam>
+            <param name="source">
+            Source object that contains the property.
+            </param>
+            <returns>
+            Value of the property
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.SetValue``1(System.Object,``0)">
+            <summary>
+            Sets the value of this property on the specified target object.
+            </summary>
+            <typeparam name="T">Property type</typeparam>
+            <param name="target">
+            Target object to receive the property value.
+            </param>
+            <param name="value">Value to assign to the property</param>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.GetAttributes``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Reflection.ReflectionProperty.GetAttributeNames">
+            <summary>
+            Gets a list of the names of all available attributes.
+            </summary>
+            <returns>Enumerable collection of attribute names.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.Relationship">
+            <summary>
+            Encapsulates an relationship between two <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> objects.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Relationship.Name">
+            <summary>
+            Gets the name of the relationship.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Relationship.Namespace">
+            <summary>
+            Gets the namespace of the relationship.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Relationship.FullName">
+            <summary>
+            Gets the fully qualified name of the relationship.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Relationship.Source">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> that is the source of the relationship.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Relationship.Target">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> that is the target of the relationship.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Metadata.Relationship.Cardinality">
+            <summary>
+            Gets the cardinality of the relationship.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.Relationship.GetAttribute``1(System.String)">
+            <summary>
+            Gets an attribute of the relationship by name.
+            </summary>
+            <typeparam name="T">Type of attribute to return.</typeparam>
+            <param name="attributeName">Name of attribute to return.</param>
+            <returns>Attribute matching the specified name or null if it is not found.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.RelationshipCardinality">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.RelationshipCardinality.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.RelationshipCardinality.OneToOne">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.RelationshipCardinality.OneToMany">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.RelationshipCardinality.ManyToOne">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Metadata.RelationshipCardinality.ManyToMany">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Metadata.StandardMetadataProvider">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.StandardMetadataProvider.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.StandardMetadataProvider.RegisterObjectType(System.String,System.Type)">
+            <summary>
+            Registers a new <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/> with this
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider"/>.
+            </summary>
+            <param name="fullName"></param>
+            <param name="clrType"></param>
+            <returns>
+            Returns a new <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Metadata.StandardMetadataProvider.RegisterObjectType(Headway.Dynamo.Metadata.Dynamic.DynamicObjectType)">
+            <summary>
+            Registers the given <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicObjectType"/> with this
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicMetadataProvider"/>.
+            </summary>
+            <param name="objType"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Reflection.DefaultAssemblyLoader">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.DefaultAssemblyLoader.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.DefaultAssemblyLoader.LoadAssembly(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="assemblyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.DefaultAssemblyLoader.GetAssemblyBytes(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="assemblyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.DefaultAssemblyLoader.GetAllAssemblies">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Reflection.IAssemblyLoader">
+            <summary>
+            Interface to objects that retrieve and load assemblies.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.IAssemblyLoader.LoadAssembly(System.String)">
+            <summary>
+            Loads the specified assembly into the current app domain.
+            </summary>
+            <param name="assemblyName">Fully qualified name of the assembly.</param>
+            <returns>Returns the Assembly that was loaded or null if not found.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.IAssemblyLoader.GetAssemblyBytes(System.String)">
+            <summary>
+            Returns the assembly as a byte array.
+            </summary>
+            <param name="assemblyName">Fully qualified name of the assembly.</param>
+            <returns>Contents of the assembly as a byte array.</returns>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.IAssemblyLoader.GetAllAssemblies">
+            <summary>
+            Returns a list of all available assemblies.
+            </summary>
+            <returns>Enumerable collection of Assembly objects.</returns>
+        </member>
+        <member name="T:Headway.Dynamo.Reflection.ReflectionHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Reflection.ReflectionHelper.GetDatafromGenericMethod``1(System.String,System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dataTypeName"></param>
+            <param name="methodName"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1">
+            <summary>
+            Implements a simple flat file repository.
+            </summary>
+            <typeparam name="TObject">
+            Type of object to store in the repository
+            </typeparam>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.#ctor(Headway.Dynamo.Metadata.ObjectType,System.String,System.IServiceProvider)">
+            <summary>
+            
+            </summary>
+            <param name="objType"></param>
+            <param name="filePath"></param>
+            <param name="svcProvider"></param>
+        </member>
+        <member name="P:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.CreateConnection">
+            <summary>
+            Creates a connection to the data source.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.BeginTransaction(Headway.Dynamo.Repository.IConnection)">
+            <summary>
+            
+            </summary>
+            <param name="connection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.GetQueryable``1(Headway.Dynamo.Repository.IConnection,Headway.Dynamo.Metadata.ObjectType)">
+            <summary>
+            Gets a queryable object from the data source for the specified class and connection.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="connection"></param>
+            <param name="objType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.Add(`0)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.Update(`0)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.Remove(`0)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.FlatFileRepo.FlatFileRepo`1.SaveChanges">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Repository.IConnection">
+            <summary>
+            Interface to a connection.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Repository.IObjectRepository`1">
+            <summary>
+            Interface to an object that stores and retrieves objects on behalf
+            of a session.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Repository.IObjectRepository`1.Name">
+            <summary>
+            Gets the name of the repository.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.CreateConnection">
+            <summary>
+            Creates a connection to the data source.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.GetQueryable``1(Headway.Dynamo.Repository.IConnection,Headway.Dynamo.Metadata.ObjectType)">
+            <summary>
+            Gets a queryable object from the data source for the specified class and connection.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="connection"></param>
+            <param name="objType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.BeginTransaction(Headway.Dynamo.Repository.IConnection)">
+            <summary>
+            
+            </summary>
+            <param name="connection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.Add(`0)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.Update(`0)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.Remove(`0)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.IObjectRepository`1.SaveChanges">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Repository.ITransaction">
+            <summary>
+            Interface to transaction objects.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.ITransaction.Insert``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="objs"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.ITransaction.Update``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="objs"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.ITransaction.Delete``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="objs"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.ITransaction.Commit">
+            <summary>
+            Commit the transaction.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Repository.ITransaction.Rollback">
+            <summary>
+            Rollback the transaction.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Repository.RepositoryResultCode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Rules.Rule">
+            <summary>
+            A Rule consists of a <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/>,
+            a <see cref="T:Headway.Dynamo.Commands.Command"/> to execute when the condition
+            is true and a <see cref="T:Headway.Dynamo.Commands.Command"/> to execute
+            when the condition is false.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.Rule.Condition">
+            <summary>
+            Gets or sets the condition that the rule
+            tests.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.Rule.WhenTrue">
+            <summary>
+            The command that is executed when the condition
+            is true.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.Rule.WhenFalse">
+            <summary>
+            The command that is executed when the condition
+            is false.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Rules.Rule.Apply(System.IServiceProvider,System.Object)">
+            <summary>
+            Applies the rule to the specified context.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">
+            Context containing data used to apply the rule.
+            </param>
+            <returns>
+            Returns the result of evaluating the <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/>
+            associated with this rule.
+            </returns>
+            <remarks>
+            This method evaluates the <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/> and fires
+            either the <see cref="P:Headway.Dynamo.Rules.Rule.WhenTrue"/> or <see cref="P:Headway.Dynamo.Rules.Rule.WhenFalse"/>
+            command based on the result.
+            
+            This method can throw the following exceptions -
+              <see cref="T:Headway.Dynamo.Exceptions.RuleInitException"/>
+              <see cref="T:Headway.Dynamo.Exceptions.ConditionEvalException"/>
+              <see cref="T:Headway.Dynamo.Exceptions.CommandExecuteException"/>
+            </remarks>
+        </member>
+        <member name="M:Headway.Dynamo.Rules.Rule.OnBeforeApply(System.IServiceProvider,System.Object)">
+            <summary>
+            This method is called by the <see cref="M:Headway.Dynamo.Rules.Rule.Apply(System.IServiceProvider,System.Object)"/> method before it
+            does anything. It allows derived classes to perform initialization
+            on the service provider and/or context.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">
+            Context containing data used to apply the rule.
+            </param>
+            <remarks>
+            Base class implementation is a no-op and does not need to be called
+            by derived class implementations.
+            </remarks>
+        </member>
+        <member name="T:Headway.Dynamo.Rules.RuleCollectionExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Rules.RuleCollectionExtensions.Apply(System.Collections.Generic.IEnumerable{Headway.Dynamo.Rules.Rule},System.IServiceProvider,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="rules"></param>
+            <param name="serviceProvider"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Rules.RuleResultCode">
+            <summary>
+            Result codes that can occur when a <see cref="T:Headway.Dynamo.Rules.Rule"/>
+            is applied.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Rules.RuleResultCode.Success">
+            <summary>
+            Rule applied successful.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Rules.RuleResultCode.ConditionEvalFailed">
+            <summary>
+            Indicates that the evaluation of the condition failed.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Rules.RuleResultCode.ActionFailed">
+            <summary>
+            Indicates that the action failed.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Rules.RuleResultCode.Exception">
+            <summary>
+            Indicates that an exception occurred while applying the rule.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Rules.RuleResult">
+            <summary>
+            Encapsulates results that can occur an attempt is made to
+            apply a <see cref="T:Headway.Dynamo.Rules.Rule"/>.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Rules.RuleResult.#ctor(Headway.Dynamo.Rules.RuleResultCode,System.Nullable{System.Boolean},System.String)">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Rules.RuleResult"/> given a result
+            code and a description.
+            </summary>
+            <param name="resultCode">Code describing the result.</param>
+            <param name="conditionRes">Value returned by evaluation of the <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/>.</param>
+            <param name="description">Text description of the result.</param>
+        </member>
+        <member name="M:Headway.Dynamo.Rules.RuleResult.#ctor(System.Exception,System.Nullable{System.Boolean})">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Rules.RuleResult"/> given an
+            exception object.
+            </summary>
+            <param name="ex">Exception that occurred during the transition.</param>
+            <param name="conditionRes">Value returned by evaluation of the <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/>.</param>
+        </member>
+        <member name="M:Headway.Dynamo.Rules.RuleResult.#ctor(Headway.Dynamo.Commands.CommandResult,System.Nullable{System.Boolean})">
+            <summary>
+            Constructs a <see cref="T:Headway.Dynamo.Rules.RuleResult"/> given an
+            exception object.
+            </summary>
+            <param name="actionRes">
+            Result of the command executed.
+            </param>
+            <param name="conditionRes">Value returned by evaluation of the <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/>.</param>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.RuleResult.ConditionResult">
+            <summary>
+            Gets the boolean value returned by the evaluation of the
+            <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/> associated with the <see cref="T:Headway.Dynamo.Rules.Rule"/>.
+            This value is only set if the <see cref="P:Headway.Dynamo.Rules.Rule.Condition"/> was
+            successfully evaluated.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.RuleResult.ResultCode">
+            <summary>
+            Gets the result code.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.RuleResult.Description">
+            <summary>
+            Gets the description.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.RuleResult.Exception">
+            <summary>
+            Gets the Exception that occurred during a transition.
+            </summary>
+            <remarks>
+            Null if no exception occurred.
+            </remarks>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.RuleResult.ActionResult">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Commands.CommandResult"/> from the
+            actions executed.
+            </summary>
+            <remarks>
+            If a failure occurs, this should be the first
+            error encountered, since processing stops when
+            an error occurs.
+            </remarks>
+        </member>
+        <member name="P:Headway.Dynamo.Rules.RuleResult.IsSuccess">
+            <summary>
+            Gets a flag indicating whether or not the rule was successfully applied.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Rules.RuleResult.SuccessConditionTrue">
+            <summary>
+            Singleton object used to indicate that the condition on the rule evaluated
+            to true and the rule was successfully applied.
+            and the 
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Rules.RuleResult.SuccessConditionFalse">
+            <summary>
+            Singleton object used to indicate that the condition on the rule evaluated
+            to false and the rule was successfully applied.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.DynamicGetter`1">
+            <summary>
+            This class provides an abstract interface to objects that
+            can be used to retrieve a piece of data from a dynamic
+            context.
+            </summary>
+            <typeparam name="T">Type of data to retrieve</typeparam>
+            <remarks>
+            The purpose of dynamic getters is to allow the consumer of
+            the getter to retrieve a piece of data from the dynamic
+            context without any knowledge of how or where it is stored
+            in the context.
+            </remarks>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamicGetter`1.Get(System.IServiceProvider,System.Object)">
+            <summary>
+            Returns the value in the dynamic context that the
+            getter is designed to retrieve.
+            </summary>
+            <param name="serviceProvider">Interface to service provider</param>
+            <param name="context">User defined context data</param>
+            <returns>
+            A value from the dynamic context of type T.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.DynamoObject">
+            <summary>
+            This class derives from System.Dynamic.DynamicObject and extends
+            it with metadata provided via the <see cref="T:Headway.Dynamo.Metadata.ObjectType"/>
+            interface and implements serialization.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.#ctor(Headway.Dynamo.Metadata.IMetadataProvider)">
+            <summary>
+            
+            </summary>
+            <param name="metadataProvider"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.#ctor(Headway.Dynamo.Metadata.IMetadataProvider,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="metadataProvider"></param>
+            <param name="objTypeName"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.#ctor(Headway.Dynamo.Runtime.DynamoObject)">
+            <summary>
+            Constructs a copy of the specified <see cref="T:Headway.Dynamo.Runtime.DynamoObject"/>
+            object.
+            </summary>
+            <param name="source">Source object to copy</param>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.DynamoObject.DataType">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.ObjectType"/> metadata that defines the
+            properties in this dynamic object.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.GetPropertyValue``1(System.String)">
+            <summary>
+            Gets the value of the specified property
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.SetPropertyValue``1(System.String,``0)">
+            <summary>
+            Sets the value of the specified property.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.GetPropertyNames">
+            <summary>
+            Returns a collection of all available property names.
+            </summary>
+            <returns>
+            An enumerable of property names.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.GetMetaObject(System.Linq.Expressions.Expression)">
+            <summary>
+            
+            </summary>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.DynamoObject.Count">
+            <summary>
+            Gets the number of dynamic property values.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
+            <summary>
+            
+            </summary>
+            <param name="binder"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="binder"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.Headway#Dynamo#Runtime#IDynamicPropertyAccessor#GetPropertyValue``1(System.String)">
+            <summary>
+            Gets the value of the property matching the specified name.
+            </summary>
+            <typeparam name="T">Data type of property</typeparam>
+            <param name="propertyName">Name of property to retrieve</param>
+            <returns>
+            Value of the property or default(T) if there
+            is no value stored for the specified property
+            </returns>
+            <remarks>
+            This method only operates on dynamic properties with values stored
+            in the values dictionary. This separate interface to access only
+            the dynamic values is necessary in order to prevent a stack overflow,
+            which was occurring when the implementation of
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/> was calling back on the
+            <see cref="T:Headway.Dynamo.Runtime.IPropertyAccessor"/> interface to get its value.
+            </remarks>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.Headway#Dynamo#Runtime#IDynamicPropertyAccessor#SetPropertyValue``1(System.String,``0)">
+            <summary>
+            Sets the value of the specified property.
+            </summary>
+            <typeparam name="T">Data type of property</typeparam>
+            <param name="propertyName">Name of property to set</param>
+            <param name="value">Value to assign to the property</param>
+            <remarks>
+            This method only operates on dynamic properties with values stored
+            in the values dictionary. This separate interface to access only
+            the dynamic values is necessary in order to prevent a stack overflow,
+            which was occurring when the implementation of
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/> was calling back on the
+            <see cref="T:Headway.Dynamo.Runtime.IPropertyAccessor"/> interface to get its value.
+            </remarks>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.DynamoObject.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.DynamoObject.MetadataProvider">
+            <summary>
+            Gets the <see cref="T:Headway.Dynamo.Metadata.IMetadataProvider"/> service
+            used to resolve data type information.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IDynamicPropertyAccessor">
+            <summary>
+            Interface to objects that have dynamic properties. This interface
+            is used exclusively to access dynamic properties only.
+            </summary>
+            <remarks>
+            This interface was introduced in order to prevent a recursive
+            stack overflow. The <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/> cannot implement
+            GetValue and SetValue by calling back on <see cref="T:Headway.Dynamo.Runtime.IPropertyAccessor"/>,
+            because that just calls back to the property and causes a recursive
+            stack overflow. Objects that have dynamic properties need to implement
+            this interface.
+            </remarks>
+            <see cref="T:Headway.Dynamo.Metadata.Dynamic.DynamicProperty"/>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IDynamicPropertyAccessor.GetPropertyValue``1(System.String)">
+            <summary>
+            Gets the value of the specified property
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IDynamicPropertyAccessor.SetPropertyValue``1(System.String,``0)">
+            <summary>
+            Sets the value of the specified property.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.INamedObject">
+            <summary>
+            Interface to objects that have a fully qualified name.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.INamedObject.Name">
+            <summary>
+            Gets the name.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.INamedObject.Namespace">
+            <summary>
+            Gets the namespace.
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.INamedObject.FullName">
+            <summary>
+            Gets the full name.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IObjectFactory`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TObject"></typeparam>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IObjectFactory`1.CreateInstance(System.IServiceProvider,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="svcProvider"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IObjectInit">
+            <summary>
+            Interface to objects that need to be initialized.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IObjectInit.Init(System.IServiceProvider)">
+            <summary>
+            Initializes the object.
+            </summary>
+            <param name="svcProvider">
+            Reference to service provider used to initialize
+            the object.
+            </param>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IObjectResolver`2">
+            <summary>
+            Interface for resolving objects given a key value.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TResult"></typeparam>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IObjectResolver`2.Resolve(`0)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IPrimaryKeyAccessor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Runtime.IPrimaryKeyAccessor.PrimaryKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IPropertyAccessor">
+            <summary>
+            Interface to objects that have dynamic properties.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IPropertyAccessor.GetPropertyValue``1(System.String)">
+            <summary>
+            Gets the value of the specified property
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IPropertyAccessor.SetPropertyValue``1(System.String,``0)">
+            <summary>
+            Sets the value of the specified property.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IPropertyAccessor.GetPropertyNames">
+            <summary>
+            Returns a collection of all available property names.
+            </summary>
+            <returns>
+            An enumerable of property names.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.IPropertyAccessorExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.IPropertyAccessorExtensions.GetPropertyValueRecursive``1(Headway.Dynamo.Runtime.IPropertyAccessor,System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="propAccessor"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.NameHelpers">
+            <summary>
+            This class contains helper methods for parsing and contatenating
+            names that contain delimeters.
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.NameHelpers.GetName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.NameHelpers.GetNamespace(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.NameHelpers.CreateFullName(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="nameSpace"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.NameHelpers.ParseName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fullName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.PropertyResolver">
+            <summary>
+            Contains methods for resolving properties.
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode">
+            <summary>
+            Used to specify the type of delimiter used to
+            represent properties in the input string.
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode.CurlyBraces">
+            <summary>
+            Specifies that curly braces are used - {PropertyName}
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode.DollarParen">
+            <summary>
+            Specifies that dollar sign plus parenthesis are
+            used - $(PropertyName)
+            </summary>
+        </member>
+        <member name="F:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode.Any">
+            <summary>
+            Specifies that the input string may contain any combination
+            of delimiters for property names
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.GetPropertyValue``1(System.Object,System.String)">
+            <summary>
+            Return the value of the specified property on
+            the object.
+            </summary>
+            <typeparam name="T">
+            Data type of the property to get.
+            </typeparam>
+            <param name="obj">
+            Object containing the property.
+            </param>
+            <param name="propertyName">
+            Name of the property to retrieve.
+            </param>
+            <returns>
+            Value of the property
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.TryResolveSinglePropertyValue(System.Object,System.String,System.Object@)">
+            <summary>
+            Attempts to resolve the source string as a single
+            variable name. This only works if the entire source
+            string is a single variable name.
+            </summary>
+            <param name="obj">
+            Object containing the property value.
+            </param>
+            <param name="source">
+            String containing property name as a variable.
+            </param>
+            <param name="propValue">Value of the property found</param>
+            <returns>
+            Returns true if the source string consists of a single variable name
+            and the variable name is resolved.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.TryResolveSinglePropertyValue(Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode,System.Object,System.String,System.Object@)">
+            <summary>
+            Attempts to resolve the source string as a single
+            variable name. This only works if the entire source
+            string is a single variable name.
+            </summary>
+            <param name="delimiterMode">
+            Specifies which delimiter or delimiters to use for parsing
+            property names.
+            </param>
+            <param name="obj">
+            Object containing the property value.
+            </param>
+            <param name="source">
+            String containing property name as a variable.
+            </param>
+            <param name="propValue">Value of the property found</param>
+            <returns>
+            Returns true if the source string consists of a single variable name
+            and the variable name is resolved.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.TryResolveSinglePropertyValue(System.String,System.String,System.Object,System.String,System.Object@)">
+            <summary>
+            Attempts to resolve the source string as a single
+            variable name. This only works if the entire source
+            string is a single variable name.
+            </summary>
+            <param name="startPropDelimiter">Start delimiter, usually $(</param>
+            <param name="endPropDelimiter">End delimiter, usually )</param>
+            <param name="obj">
+            Object containing the property value.
+            </param>
+            <param name="source">
+            String containing property name as a variable.
+            </param>
+            <param name="propValue">Value of the property found</param>
+            <returns>
+            Returns true if the source string consists of a single variable name
+            and the variable name is resolved.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.ResolvePropertyValues(System.Object,System.String)">
+            <summary>
+            Replaces property names in the source string with the actual
+            values of the properties.
+            </summary>
+            <param name="obj">
+            Object that contains the property values.
+            </param>
+            <param name="source">
+            String containing property references.
+            </param>
+            <returns>
+            The source string with all property references replaced with
+            actual property values.
+            </returns>
+            <remarks>
+            This method calls
+            <see cref="M:Headway.Dynamo.Runtime.PropertyResolver.ResolvePropertyValues(Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode,System.Object,System.String)"/>
+            with <see cref="T:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode"/> set to <see cref="F:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode.Any"/>.
+            This means that properties can be specified using either $(PropertyName)
+            or {PropertyName} syntax.
+            </remarks>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.ResolvePropertyName(System.String,System.String@)">
+            <summary>
+            
+            </summary>
+            <param name="source"></param>
+            <param name="propNameWithDelimiter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.ResolvePropertyValues(Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode,System.Object,System.String)">
+            <summary>
+            Replaces property names in the source string with the actual
+            values of the properties.
+            </summary>
+            <param name="delimiterMode">
+            Specifies which delimiter or delimiters to use for parsing
+            property names.
+            </param>
+            <param name="obj">Object that contains the property values.</param>
+            <param name="source">
+            String containing property references in the format
+            specified by the <see cref="T:Headway.Dynamo.Runtime.PropertyResolver.DelimiterMode"/>
+            </param>
+            <returns>
+            The source string with all property references replaced with
+            actual property values.
+            </returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.ResolvePropertyName(System.String,System.String,System.String,System.String@)">
+            <summary>
+            ResolvePropertyName : This method resolves the property name from the input source string.
+            </summary>
+            <param name="startPropDelimiter">Start delimiter, usually $(</param>
+            <param name="endPropDelimiter">End delimiter, usually )</param>
+            <param name="source">The source string to find the property name between the delimiter</param>
+            <param name="propNameWithDelimiter">Output the property name along with the delimiter</param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Runtime.PropertyResolver.ResolvePropertyValues(System.String,System.String,System.Object,System.String)">
+            <summary>
+            Replaces $(PropertyName) in the source string with the actual
+            value of the property.
+            </summary>
+            <param name="startPropDelimiter">
+            Delimiter used to mark the start of a property name
+            </param>
+            <param name="endPropDelimiter">
+            Delimiter used to mark the end of a property name
+            </param>
+            <param name="obj">
+            Object containing the data.
+            </param>
+            <param name="source">
+            String containing property references in the form
+            of $(PropertyName)
+            </param>
+            <returns>
+            The source string with all property references replaced with
+            actual property values.
+            </returns>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.EntityRef">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Serialization.EntityRef.ObjectType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Serialization.EntityRef.PrimaryKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Serialization.EntityRef.KeyType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.EntityRefAttribute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.IJsonConverterService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.IJsonConverterService.GetConverters(Headway.Dynamo.Metadata.ObjectType)">
+            <summary>
+            
+            </summary>
+            <param name="objType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.ISerializerConfigService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.ISerializerConfigService.ConfigureJsonSerializerSettings(Headway.Dynamo.Metadata.ObjectType,System.IServiceProvider)">
+            <summary>
+            
+            </summary>
+            <param name="objType"></param>
+            <param name="svcProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.JsonResourceObjectResolver`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TResult"></typeparam>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.JsonResourceObjectResolver`1.#ctor(System.Reflection.Assembly)">
+            <summary>
+            
+            </summary>
+            <param name="sourceAssembly"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.JsonResourceObjectResolver`1.Resolve(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.ObjectRefJsonConverter`2">
+            <summary>
+            
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TObject"></typeparam>
+        </member>
+        <member name="P:Headway.Dynamo.Serialization.ObjectRefJsonConverter`2.CanRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Headway.Dynamo.Serialization.ObjectRefJsonConverter`2.CanWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.ObjectRefJsonConverter`2.ReadJson(Newtonsoft.Json.JsonReader,System.Type,`1,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <param name="objectType"></param>
+            <param name="existingValue"></param>
+            <param name="hasExistingValue"></param>
+            <param name="serializer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.ObjectRefJsonConverter`2.WriteJson(Newtonsoft.Json.JsonWriter,`1,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="serializer"></param>
+        </member>
+        <member name="T:Headway.Dynamo.Serialization.StandardSerializerConfigService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.StandardSerializerConfigService.#ctor(Headway.Dynamo.Serialization.IJsonConverterService)">
+            <summary>
+            
+            </summary>
+            <param name="converterService"></param>
+        </member>
+        <member name="M:Headway.Dynamo.Serialization.StandardSerializerConfigService.ConfigureJsonSerializerSettings(Headway.Dynamo.Metadata.ObjectType,System.IServiceProvider)">
+            <summary>
+            
+            </summary>
+            <param name="objType"></param>
+            <param name="svcProvider"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

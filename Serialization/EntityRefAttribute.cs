@@ -20,6 +20,9 @@ using System;
 
 namespace Headway.Dynamo.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class EntityRefAttribute : Attribute
     {
     }

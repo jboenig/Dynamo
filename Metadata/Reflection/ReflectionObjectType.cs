@@ -205,6 +205,8 @@ namespace Headway.Dynamo.Metadata.Reflection
         /// Gets an <see cref="ObjectType"/> matching the given fully
         /// qualified CLR class name and assembly loader.
         /// </summary>
+        /// <param name="metadataProvider">
+        /// </param>
         /// <param name="fullName">
         /// Fully qualified name of the CLR class.
         /// </param>
@@ -272,6 +274,8 @@ namespace Headway.Dynamo.Metadata.Reflection
         /// <summary>
         /// Gets an <see cref="ObjectType"/> given a CLR type.
         /// </summary>
+        /// <param name="metadataProvider">
+        /// </param>
         /// <param name="clrType">
         /// CLR type information
         /// </param>

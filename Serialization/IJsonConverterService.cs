@@ -21,8 +21,16 @@ using Newtonsoft.Json;
 
 namespace Headway.Dynamo.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IJsonConverterService
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objType"></param>
+        /// <returns></returns>
         JsonConverter[] GetConverters(ObjectType objType);
     }
 }

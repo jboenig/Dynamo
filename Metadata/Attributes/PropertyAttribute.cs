@@ -20,10 +20,16 @@ using System;
 
 namespace Headway.Dynamo.Metadata.Attributes
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public sealed class PropertyAttribute : Attribute
 	{
 		private bool serialize = true;
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public bool Serialize
 		{
 			get { return this.serialize; }

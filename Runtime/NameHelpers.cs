@@ -26,6 +26,11 @@ namespace Headway.Dynamo.Runtime
 	/// </summary>
 	public static class NameHelpers
 	{
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <returns></returns>
 		public static string GetName(string fullName)
 		{
 			var delimiter = fullName.LastIndexOf('.');
@@ -36,6 +41,11 @@ namespace Headway.Dynamo.Runtime
 			return null;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <returns></returns>
 		public static string GetNamespace(string fullName)
 		{
 			var delimiter = fullName.LastIndexOf('.');
@@ -46,6 +56,12 @@ namespace Headway.Dynamo.Runtime
 			return null;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nameSpace"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
 		public static string CreateFullName(string nameSpace, string name)
 		{
 			var sb = new StringBuilder();
@@ -58,6 +74,11 @@ namespace Headway.Dynamo.Runtime
 			return sb.ToString();
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <returns></returns>
         public static string[] ParseName(string fullName)
         {
             return fullName.Split(new char[] { '.' });

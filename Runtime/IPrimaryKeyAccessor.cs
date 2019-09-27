@@ -18,8 +18,14 @@
 
 namespace Headway.Dynamo.Runtime
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IPrimaryKeyAccessor
     {
+        /// <summary>
+        /// 
+        /// </summary>
         object PrimaryKey { get; }
     }
 }

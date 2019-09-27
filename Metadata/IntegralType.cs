@@ -270,15 +270,17 @@ namespace Headway.Dynamo.Metadata
 
         #region Implementation
 
+#if false
         /// <summary>
         /// Gets the <see cref="IMetadataService"/> that owns this data type.
         /// </summary>
         /// <returns></returns>
         //protected override IMetadataService GetMetadataService()
-		//{
-		//	return null;
-		//}
+        //{
+        //	return null;
+        //}
+#endif
 
-		#endregion
-	}
+        #endregion
+    }
 }

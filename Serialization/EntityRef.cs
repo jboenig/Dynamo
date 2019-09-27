@@ -20,20 +20,32 @@ using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class EntityRef
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public string ObjectType
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public object PrimaryKey
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string KeyType
         {
             get;

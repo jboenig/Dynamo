@@ -40,8 +40,8 @@ namespace Headway.Dynamo.Conditions
         /// Default constructor.
         /// </summary>
         /// <remarks>
-        /// Default <see cref="EvaluationType"/> is
-        /// <see cref="EvaluationType.All"/>.
+        /// Default <see cref="CompoundEvaluationType"/> is
+        /// <see cref="CompoundEvaluationType.All"/>.
         /// </remarks>
         public CompoundCondition()
         {

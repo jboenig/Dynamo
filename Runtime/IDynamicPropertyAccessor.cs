@@ -16,6 +16,7 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
+using Headway.Dynamo.Metadata.Dynamic;
 using System;
 using System.Collections.Generic;
 

@@ -20,11 +20,17 @@ using System;
 
 namespace Headway.Dynamo.Metadata.Attributes
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class ClassAttribute : Attribute
 	{
 		private string className;
 		private string baseClassName;
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public string ClassName
 		{
 			get
@@ -37,6 +43,9 @@ namespace Headway.Dynamo.Metadata.Attributes
 			}
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public string BaseClassName
 		{
 			get

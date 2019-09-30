@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.UnitTests.Mockdata;
+using Headway.Dynamo.Serialization;
+using Headway.Dynamo.Repository.FlatFileRepo;
+using System.ComponentModel.Design;
 
 namespace Headway.Dynamo.UnitTests
 {
@@ -45,6 +48,26 @@ namespace Headway.Dynamo.UnitTests
             var fooProp = dynamicPersonObjectType.GetPropertyByName("Foo");
             Assert.AreEqual(fooProp.FullName, "Headway.Dynamo.UnitTests.Mockdata.Person.Foo");
             Assert.AreEqual(fooProp.DataType.FullName, "System.String");
+        }
+
+        [TestMethod]
+        public void LoadMetadataFromJson()
+        {
+            var svcProvider = new ServiceContainer();
+
+            // Use StandardMetadataProvider
+            var metadataProvider = new StandardMetadataProvider();
+            svcProvider.AddService(typeof(IMetadataProvider), metadataProvider);
+            svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
+
+            var metadataRepo = new FlatFileRepo<DynamicObjectType>(
+                metadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
+                @"MockData/TestMetadata1.json",
+                svcProvider
+                );
+
+            var dynamicMetadataProvider = new DynamicMetadataProvider();
+            dynamicMetadataProvider.Load(metadataRepo);
         }
     }
 }

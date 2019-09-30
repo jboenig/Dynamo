@@ -23,16 +23,23 @@ using System.Collections.Generic;
 namespace Headway.Dynamo.Metadata
 {
 	/// <summary>
-	/// 
+	/// Interface to object that contains named
+    /// Attributes.
 	/// </summary>
 	public interface IAttributeContainer
 	{
 		/// <summary>
-		/// 
+		/// Gets all attributes matching the specified name.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="attributeName"></param>
-		/// <returns></returns>
+		/// <typeparam name="T">
+        /// Type of attributes to return.
+        /// </typeparam>
+		/// <param name="attributeName">
+        /// Name of attributes to get
+        /// </param>
+		/// <returns>
+        /// Collection of attributes matching the specified name.
+        /// </returns>
 		IEnumerable<T> GetAttributes<T>(string attributeName) where T : Attribute;
 
 		/// <summary>

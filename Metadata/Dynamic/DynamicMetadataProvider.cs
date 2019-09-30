@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using Headway.Dynamo.Repository;
 
 namespace Headway.Dynamo.Metadata.Dynamic
 {
@@ -59,6 +60,61 @@ namespace Headway.Dynamo.Metadata.Dynamic
         }
 
         /// <summary>
+        /// Loads all <see cref="DynamicObjectType"/> objects from
+        /// the specified repository.
+        /// </summary>
+        /// <param name="repo">
+        /// Repository from which to load <see cref="DynamicObjectType"/>
+        /// entities.
+        /// </param>
+        public void Load(IObjectRepository<DynamicObjectType> repo)
+        {
+            if (repo == null)
+            {
+                throw new ArgumentNullException(nameof(repo));
+            }
+            this.Load(repo.GetQueryable());
+        }
+
+        /// <summary>
+        /// Loads <see cref="DynamicObjectType"/> objects from
+        /// the specified collection.
+        /// </summary>
+        /// <param name="dynamicObjTypes">
+        /// Collection from which to load <see cref="DynamicObjectType"/>
+        /// entities.
+        /// </param>
+        public void Load(IEnumerable<DynamicObjectType> dynamicObjTypes)
+        {
+            if (dynamicObjTypes == null)
+            {
+                throw new ArgumentNullException(nameof(dynamicObjTypes));
+            }
+
+            foreach (var curObjType in dynamicObjTypes)
+            {
+                this.objTypes.Add(curObjType.FullName, curObjType);
+            }
+        }
+
+        /// <summary>
+        /// Registers a new <see cref="DynamicObjectType"/> with this
+        /// <see cref="DynamicMetadataProvider"/>.
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <param name="clrType"></param>
+        /// <returns>
+        /// Returns a new <see cref="ObjectType"/>
+        /// </returns>
+        public ObjectType RegisterObjectType(string fullName,
+            Type clrType)
+        {
+            var objType = DynamicObjectType.Create(this, fullName, clrType);
+            this.RegisterObjectType(this, objType);
+            return objType;
+        }
+
+        /// <summary>
         /// Registers a new <see cref="DynamicObjectType"/> with this
         /// <see cref="DynamicMetadataProvider"/>.
         /// </summary>
@@ -68,23 +124,23 @@ namespace Headway.Dynamo.Metadata.Dynamic
         /// <returns>
         /// Returns a new <see cref="ObjectType"/>
         /// </returns>
-        public ObjectType RegisterObjectType(IMetadataProvider metadataProvider, string fullName,
+        public ObjectType RegisterObjectType(IMetadataProvider metadataProvider,
+            string fullName,
             Type clrType)
         {
-            if (this.objTypes.ContainsKey(fullName))
-            {
-                var msg = string.Format("Object type {0} already registered", fullName);
-                throw new InvalidOperationException(msg);
-            }
-
-            if (metadataProvider == null)
-            {
-                metadataProvider = this;
-            }
-
             var objType = DynamicObjectType.Create(metadataProvider, fullName, clrType);
-            this.objTypes.Add(fullName, objType);
+            this.RegisterObjectType(metadataProvider, objType);
             return objType;
+        }
+
+        /// <summary>
+        /// Registers the given <see cref="DynamicObjectType"/> with this
+        /// <see cref="DynamicMetadataProvider"/>.
+        /// </summary>
+        /// <param name="objType"></param>
+        public void RegisterObjectType(DynamicObjectType objType)
+        {
+            this.RegisterObjectType(this, objType);
         }
 
         /// <summary>

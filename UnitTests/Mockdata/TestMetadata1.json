@@ -1,0 +1,15 @@
+﻿[
+  {
+    "$type": "Headway.Dynamo.Metadata.Dynamic.DynamicObjectType, Headway.Dynamo",
+    "fullName": "Headway.Dynamo.UnitTests.Mockdata.Metahuman",
+    "clrType": "Headway.Dynamo.UnitTests.Mockdata.DynamoPerson, Headway.Dynamo.UnitTests",
+    "dynamicProperties": [
+      {
+        "$type": "Headway.Dynamo.Metadata.Dynamic.DynamicProperty, Headway.Dynamo",
+        "name": "SuperpowerLevel",
+        "clrType": "System.Int32",
+        "defaultValue":  "0"
+      }
+    ]
+  }
+]

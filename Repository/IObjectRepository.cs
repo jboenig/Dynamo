@@ -18,7 +18,6 @@
 
 using System;
 using System.Linq;
-using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.Repository
 {
@@ -28,37 +27,28 @@ namespace Headway.Dynamo.Repository
 	/// </summary>
     public interface IObjectRepository<TObject> where TObject : class
     {
+#if false
         /// <summary>
-        /// Gets the name of the repository.
+        /// Creates a connection to the data source.
         /// </summary>
-        string Name
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Creates a connection to the data source.
-		/// </summary>
-		/// <returns></returns>
-		IConnection CreateConnection();
+        /// <returns></returns>
+        IConnection CreateConnection();
+#endif
 
 		/// <summary>
 		/// Gets a queryable object from the data source for the specified class and connection.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="connection"></param>
-		/// <param name="objType"></param>
 		/// <returns></returns>
-		IQueryable<T> GetQueryable<T>(IConnection connection, ObjectType objType);
+		IQueryable<TObject> GetQueryable();
 
-//		public abstract IQueryable<T> GetQueryable<T>(IConnection connection, ObjectType objType, Expression expression);
-
+#if false
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="connection"></param>
 		/// <returns></returns>
 		ITransaction BeginTransaction(IConnection connection);
+#endif
 
         /// <summary>
         /// 

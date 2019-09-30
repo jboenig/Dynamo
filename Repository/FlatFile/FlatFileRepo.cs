@@ -64,7 +64,7 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
 
             if (!typeof(TObject).IsAssignableFrom(objType.CLRType))
             {
-                var msg = string.Format("cLR type {0} not compatible with {1}", typeof(TObject).Name, objType.CLRType.Name);
+                var msg = string.Format("CLR type {0} not compatible with {1}", typeof(TObject).Name, objType.CLRType.Name);
                 throw new ArgumentException(msg, nameof(objType));
             }
 
@@ -75,42 +75,12 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public string Name
-        {
-            get { return null; }
-        }
-
-        /// <summary>
-        /// Creates a connection to the data source.
-        /// </summary>
-        /// <returns></returns>
-        public IConnection CreateConnection()
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <returns></returns>
-        public ITransaction BeginTransaction(IConnection connection)
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Gets a queryable object from the data source for the specified class and connection.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="connection"></param>
-        /// <param name="objType"></param>
         /// <returns></returns>
-        public IQueryable<T> GetQueryable<T>(IConnection connection, ObjectType objType)
+        public IQueryable<TObject> GetQueryable()
         {
-            return this.objects.Cast<T>().AsQueryable();
+            return this.objects.AsQueryable();
         }
 
         /// <summary>

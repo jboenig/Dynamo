@@ -54,7 +54,7 @@ namespace Headway.Dynamo.Metadata
         /// </param>
 		public ObjectTypeBaseImpl(IMetadataProvider metadataProvider)
 		{
-            this.MetadataProvider = metadataProvider;
+            this.AttachMetadataProvider(metadataProvider);
 		}
 
 		#endregion
@@ -292,9 +292,14 @@ namespace Headway.Dynamo.Metadata
 
         #region Metadata Provider
 
+        /// <summary>
+        /// Called by implementations in this assembly to attach
+        /// the <see cref="IMetadataProvider"/> object.
+        /// </summary>
+        /// <param name="metadataProvider"></param>
         internal void AttachMetadataProvider(IMetadataProvider metadataProvider)
         {
-            this.MetadataProvider = metadataProvider;
+            this.metadataProvider = metadataProvider;
         }
 
         /// <summary>
@@ -311,10 +316,6 @@ namespace Headway.Dynamo.Metadata
                     throw new InvalidOperationException(msg);
                 }
                 return this.metadataProvider;
-            }
-            set
-            {
-                this.metadataProvider = value;
             }
         }
 

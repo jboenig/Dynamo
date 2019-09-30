@@ -6,9 +6,15 @@
     "dynamicProperties": [
       {
         "$type": "Headway.Dynamo.Metadata.Dynamic.DynamicProperty, Headway.Dynamo",
-        "name": "SuperpowerLevel",
-        "clrType": "System.Int32",
-        "defaultValue":  "0"
+        "name": "Superpower1",
+        "clrType": "System.String",
+        "defaultValue": ""
+      },
+      {
+        "$type": "Headway.Dynamo.Metadata.Dynamic.DynamicProperty, Headway.Dynamo",
+        "name": "Superpower2",
+        "clrType": "System.String",
+        "defaultValue": ""
       }
     ]
   }

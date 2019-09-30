@@ -21,23 +21,27 @@ using System;
 namespace Headway.Dynamo.Conditions
 {
     /// <summary>
-    /// 
+    /// Implements a <see cref="Condition"/> using a
+    /// lambda expression.
     /// </summary>
     public class LambdaCondition : Condition
     {
         private Func<object, bool> expr;
 
         /// <summary>
-        /// 
+        /// Default constructor.
         /// </summary>
         public LambdaCondition()
         {
         }
 
         /// <summary>
-        /// 
+        /// Constructs a <see cref="LambdaCondition"/> given
+        /// an expression.
         /// </summary>
-        /// <param name="expr"></param>
+        /// <param name="expr">
+        /// Expression used to implement <see cref="Evaluate(IServiceProvider, object)"/>
+        /// </param>
         public LambdaCondition(Func<object, bool> expr)
         {
             this.expr = expr;

@@ -62,12 +62,15 @@ namespace Headway.Dynamo.UnitTests
 
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
                 metadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
-                @"MockData/TestMetadata1.json",
+                @"MockData/SuperheroMetadata.json",
                 svcProvider
                 );
 
             var dynamicMetadataProvider = new DynamicMetadataProvider();
             dynamicMetadataProvider.Load(metadataRepo);
+
+            var metahumanObjType = dynamicMetadataProvider.GetDataType<ObjectType>("Headway.Dynamo.UnitTests.Mockdata.Metahuman");
+            Assert.IsNotNull(metahumanObjType);
         }
     }
 }

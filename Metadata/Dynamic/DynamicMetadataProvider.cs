@@ -26,7 +26,7 @@ namespace Headway.Dynamo.Metadata.Dynamic
     /// Implementation of <see cref="IMetadataProvider"/> service
     /// that allows data types to be registered manually.
     /// </summary>
-    public class DynamicMetadataProvider : IMetadataProvider
+    public class DynamicMetadataProvider : ChainedMetadataProvider
     {
         private readonly Dictionary<string, DynamicObjectType> objTypes;
         private readonly IMetadataProvider nextProvider;
@@ -39,7 +39,8 @@ namespace Headway.Dynamo.Metadata.Dynamic
         /// <param name="nextProvider">
         /// Next metadata provider in the chain
         /// </param>
-        public DynamicMetadataProvider(IMetadataProvider nextProvider = null)
+        public DynamicMetadataProvider(IMetadataProvider nextProvider = null) :
+            base(nextProvider)
         {
             this.nextProvider = nextProvider;
             this.objTypes = new Dictionary<string, DynamicObjectType>();
@@ -54,17 +55,13 @@ namespace Headway.Dynamo.Metadata.Dynamic
         /// The <see cref="DataType"/> matching the specified name or null
         /// if the data type does not exist.
         /// </returns>
-        public virtual T GetDataType<T>(string fullName) where T : DataType
+        protected override T GetDataTypeInternal<T>(string fullName)
         {
             T result = default(T);
 
             if (this.objTypes.ContainsKey(fullName))
             {
                 result = this.objTypes[fullName] as T;
-            }
-            else if (this.nextProvider != null)
-            {
-                result = this.nextProvider.GetDataType<T>(fullName);
             }
 
             return result;

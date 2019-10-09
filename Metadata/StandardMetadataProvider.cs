@@ -23,9 +23,11 @@ using Headway.Dynamo.Metadata.Dynamic;
 namespace Headway.Dynamo.Metadata
 {
     /// <summary>
-    /// 
+    /// Implements an <see cref="IMetadataProvider"/> that combines
+    /// a <see cref="DynamicMetadataProvider"/> and a
+    /// <see cref="ReflectionMetadataProvider"/>.
     /// </summary>
-    public sealed class StandardMetadataProvider : AggregateMetadataProvider
+    public sealed class StandardMetadataProvider : IMetadataProvider
     {
         private readonly ReflectionMetadataProvider reflectionProvider;
         private readonly DynamicMetadataProvider dynamicProvider;
@@ -35,37 +37,43 @@ namespace Headway.Dynamo.Metadata
         /// </summary>
         public StandardMetadataProvider()
         {
-            // Order is important! Always look for registered
-            // dynamic types first.
             this.dynamicProvider = new DynamicMetadataProvider();
-            this.AddProvider(this.dynamicProvider);
             this.reflectionProvider = new ReflectionMetadataProvider();
-            this.AddProvider(this.reflectionProvider);
         }
 
         /// <summary>
-        /// Registers a new <see cref="DynamicObjectType"/> with this
-        /// <see cref="DynamicMetadataProvider"/>.
+        /// Gets a <see cref="DataType"/> by fully
+        /// qualified name.
         /// </summary>
-        /// <param name="fullName"></param>
-        /// <param name="clrType"></param>
+        /// <param name="fullName">Full name of the data type to retrieve</param>
         /// <returns>
-        /// Returns a new <see cref="ObjectType"/>
+        /// The <see cref="DataType"/> matching the specified name or null
+        /// if the data type does not exist.
         /// </returns>
-        public ObjectType RegisterObjectType(string fullName,
-            Type clrType)
+        public T GetDataType<T>(string fullName) where T : DataType
         {
-            return this.dynamicProvider.RegisterObjectType(this, fullName, clrType);
+            T dt = this.dynamicProvider.GetDataType<T>(fullName);
+            if (dt == null)
+            {
+                dt = this.reflectionProvider.GetDataType<T>(fullName);
+            }
+            return dt;
         }
 
         /// <summary>
-        /// Registers the given <see cref="DynamicObjectType"/> with this
-        /// <see cref="DynamicMetadataProvider"/>.
+        /// Gets the <see cref="DynamicMetadataProvider"/>
         /// </summary>
-        /// <param name="objType"></param>
-        public void RegisterObjectType(DynamicObjectType objType)
+        public DynamicMetadataProvider DynamicProvider
         {
-            this.dynamicProvider.RegisterObjectType(this, objType);
+            get { return this.dynamicProvider; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ReflectionMetadataProvider"/>
+        /// </summary>
+        public ReflectionMetadataProvider ReflectionProvider
+        {
+            get { return this.reflectionProvider; }
         }
     }
 }

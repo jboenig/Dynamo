@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Runtime;
+using Headway.Dynamo.Serialization;
+using Headway.Dynamo.Repository.FlatFileRepo;
 using Headway.Dynamo.UnitTests.Mockdata;
 
 namespace Headway.Dynamo.UnitTests
@@ -18,7 +21,7 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
 
             // Register Person as a dynamic object type and verify return value
-            var dynamicPersonObjectType = metadataProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
+            var dynamicPersonObjectType = metadataProvider.DynamicProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
             Assert.IsNotNull(dynamicPersonObjectType);
             // Add a new string property
             dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
@@ -37,7 +40,7 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
 
             // Register Person as a dynamic object type and verify return value
-            var dynamicPersonObjectType = metadataProvider.RegisterObjectType(typeof(DynamoPerson).FullName, typeof(DynamoPerson));
+            var dynamicPersonObjectType = metadataProvider.DynamicProvider.RegisterObjectType(typeof(DynamoPerson).FullName, typeof(DynamoPerson));
             Assert.IsNotNull(dynamicPersonObjectType);
             // Add a new string property
             dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
@@ -58,7 +61,7 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
 
             // Register Person as a dynamic object type and verify return value
-            var dynamicPersonObjectType = metadataProvider.RegisterObjectType(typeof(DynamoPerson).FullName, typeof(DynamoPerson));
+            var dynamicPersonObjectType = metadataProvider.DynamicProvider.RegisterObjectType(typeof(DynamoPerson).FullName, typeof(DynamoPerson));
             Assert.IsNotNull(dynamicPersonObjectType);
             // Add a new string property
             //dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
@@ -73,6 +76,27 @@ namespace Headway.Dynamo.UnitTests
 
             var fooProp = dynamicPersonObjectType.GetPropertyByName("Foo");
             Assert.IsNotNull(fooProp);
+        }
+
+        [TestMethod]
+        public void CreateDynamicObject()
+        {
+            // Use StandardMetadataProvider
+            var svcProvider = new ServiceContainer();
+            var metadataProvider = new StandardMetadataProvider();
+            svcProvider.AddService(typeof(IMetadataProvider), metadataProvider);
+            svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
+
+            var metadataRepo = new FlatFileRepo<DynamicObjectType>(
+                metadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
+                @"MockData/SuperheroMetadata.json",
+                svcProvider
+                );
+            metadataProvider.DynamicProvider.Load(metadataRepo);
+
+            dynamic metaHuman = metadataProvider.CreateInstance<DynamoPerson>("Headway.Dynamo.UnitTests.Mockdata.Metahuman", new object[] { metadataProvider });
+            Assert.IsNotNull(metaHuman);
+            metaHuman.Superpower1 = "Invisibility";
         }
     }
 }

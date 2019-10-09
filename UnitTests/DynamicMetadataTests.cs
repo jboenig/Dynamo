@@ -19,7 +19,7 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
 
             // Register Person as a dynamic object type and verify return value
-            var dynamicPersonObjectType = metadataProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
+            var dynamicPersonObjectType = metadataProvider.DynamicProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
             Assert.IsNotNull(dynamicPersonObjectType);
 
             // Verify that DerivesFrom is System.Object
@@ -39,7 +39,7 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
 
             // Register Person as a dynamic object type and verify return value
-            var dynamicPersonObjectType = metadataProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
+            var dynamicPersonObjectType = metadataProvider.DynamicProvider.RegisterObjectType(typeof(Person).FullName, typeof(Person));
             Assert.IsNotNull(dynamicPersonObjectType);
 
             // Add a new string property
@@ -71,6 +71,8 @@ namespace Headway.Dynamo.UnitTests
 
             var metahumanObjType = dynamicMetadataProvider.GetDataType<ObjectType>("Headway.Dynamo.UnitTests.Mockdata.Metahuman");
             Assert.IsNotNull(metahumanObjType);
+            var propSuperpower1 = metahumanObjType.GetPropertyByName("Superpower1");
+            Assert.IsNotNull(propSuperpower1);
         }
     }
 }

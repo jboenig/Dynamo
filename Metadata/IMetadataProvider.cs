@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using Headway.Dynamo.Exceptions;
 
 namespace Headway.Dynamo.Metadata
 {
@@ -95,6 +96,30 @@ namespace Headway.Dynamo.Metadata
         public static DataType GetDataType(this IMetadataProvider metadataProvider, Type clrType)
         {
             return metadataProvider.GetDataType<DataType>(clrType.FullName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="metadataProvider"></param>
+        /// <param name="objTypeFullName"></param>
+        /// <param name="paramList"></param>
+        /// <returns></returns>
+        public static T CreateInstance<T>(this IMetadataProvider metadataProvider, string objTypeFullName, params object[] paramList) where T : class
+        {
+            if (string.IsNullOrEmpty(objTypeFullName))
+            {
+                throw new ArgumentNullException(nameof(objTypeFullName));
+            }
+
+            var objType = metadataProvider.GetDataType<ObjectType>(objTypeFullName);
+            if (objType == null)
+            {
+                throw new DataTypeNotFound(objTypeFullName);
+            }
+
+            return objType.CreateInstance<T>(paramList);
         }
     }
 }

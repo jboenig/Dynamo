@@ -37,7 +37,7 @@ namespace Headway.Dynamo.Runtime
     /// interface and implements serialization.
     /// </summary>
     [Serializable]
-    public class DynamoObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
+    public class Dynamo : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
     {
         #region Member Variables
 
@@ -52,18 +52,18 @@ namespace Headway.Dynamo.Runtime
         /// 
         /// </summary>
         /// <param name="objType"></param>
-        public DynamoObject(ObjectType objType)
+        public Dynamo(ObjectType objType)
         {
             this.dataType = objType;
             this.values = new Dictionary<string, object>();
         }
 
         /// <summary>
-        /// Constructs a copy of the specified <see cref="DynamoObject"/>
+        /// Constructs a copy of the specified <see cref="Dynamo"/>
         /// object.
         /// </summary>
         /// <param name="source">Source object to copy</param>
-        public DynamoObject(DynamoObject source)
+        public Dynamo(Dynamo source)
         {
             this.dataType = source.DataType;
             this.values = new Dictionary<string, object>();
@@ -372,7 +372,7 @@ namespace Headway.Dynamo.Runtime
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        protected DynamoObject(SerializationInfo info, StreamingContext context)
+        protected Dynamo(SerializationInfo info, StreamingContext context)
         {
             try
             {

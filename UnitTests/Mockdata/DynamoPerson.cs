@@ -9,7 +9,7 @@ using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.UnitTests.Mockdata
 {
-    public class DynamoPerson : DynamoObject
+    public class DynamoPerson : Runtime.Dynamo
     {
         public DynamoPerson(ObjectType objType) :
             base(objType)

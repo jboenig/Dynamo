@@ -34,6 +34,7 @@ namespace Headway.Dynamo.Metadata
 
         private IMetadataProvider metadataProvider;
 		private List<Property> reflectionProperties;
+        private bool hasObjTypeConstructor = true;
 
         #endregion
 
@@ -164,20 +165,38 @@ namespace Headway.Dynamo.Metadata
         /// <returns>A new object of type T.</returns>
         public override T CreateInstance<T>(IServiceProvider svcProvider, params object[] paramList)
 		{
-			var clrType = this.CLRType;
+            T instance = default(T);
+
+            var clrType = this.CLRType;
 			if (clrType == null)
 			{
 				throw new InvalidOperationException(this.ErrorMessageCLRTypeNotFound);
 			}
 
-            List<object> actualParams = new List<object>();
-            if (paramList != null && paramList.Length > 0)
+            if (this.hasObjTypeConstructor)
             {
-                actualParams.AddRange(paramList);
-            }
-            actualParams.Insert(0, this);
+                List<object> paramsWithObjectType = new List<object>();
+                if (paramList != null && paramList.Length > 0)
+                {
+                    paramsWithObjectType.AddRange(paramList);
+                }
+                paramsWithObjectType.Insert(0, this);
 
-			var instance = Activator.CreateInstance(clrType, actualParams.ToArray()) as T;
+                try
+                {
+                    instance = Activator.CreateInstance(clrType, paramsWithObjectType.ToArray()) as T;
+                }
+                catch (MissingMethodException)
+                {
+                    this.hasObjTypeConstructor = false;
+                    instance = Activator.CreateInstance(clrType, paramList) as T;
+                }
+            }
+            else
+            {
+                instance = Activator.CreateInstance(clrType, paramList) as T;
+            }
+
             if (instance != null)
             {
                 this.InitInstance<T>(instance, svcProvider);

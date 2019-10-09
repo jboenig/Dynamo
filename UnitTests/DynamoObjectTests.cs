@@ -31,6 +31,7 @@ namespace Headway.Dynamo.UnitTests
 
             // Attempt to access added property Foo
             person.Foo = "Hello";
+
         }
 
         [TestMethod]
@@ -46,7 +47,7 @@ namespace Headway.Dynamo.UnitTests
             dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
 
             // Create instance of registered dynamic type
-            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(null, new object[] { metadataProvider });
+            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(null, null);
 
             // Attempt to access added property Foo - should fail since Person
             // is not a dynamic type
@@ -67,7 +68,7 @@ namespace Headway.Dynamo.UnitTests
             //dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
 
             // Create instance of registered dynamic type
-            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(null, new object[] { metadataProvider });
+            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(null, null);
 
             // Attempt to access added property Foo - should fail since Person
             // is not a dynamic type

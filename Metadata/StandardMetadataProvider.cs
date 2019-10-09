@@ -37,8 +37,8 @@ namespace Headway.Dynamo.Metadata
         /// </summary>
         public StandardMetadataProvider()
         {
-            this.dynamicProvider = new DynamicMetadataProvider();
             this.reflectionProvider = new ReflectionMetadataProvider();
+            this.dynamicProvider = new DynamicMetadataProvider(this.reflectionProvider);
         }
 
         /// <summary>
@@ -52,12 +52,7 @@ namespace Headway.Dynamo.Metadata
         /// </returns>
         public T GetDataType<T>(string fullName) where T : DataType
         {
-            T dt = this.dynamicProvider.GetDataType<T>(fullName);
-            if (dt == null)
-            {
-                dt = this.reflectionProvider.GetDataType<T>(fullName);
-            }
-            return dt;
+            return this.dynamicProvider.GetDataType<T>(fullName);
         }
 
         /// <summary>

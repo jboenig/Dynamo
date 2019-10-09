@@ -29,12 +29,19 @@ namespace Headway.Dynamo.Metadata.Dynamic
     public class DynamicMetadataProvider : IMetadataProvider
     {
         private readonly Dictionary<string, DynamicObjectType> objTypes;
+        private readonly IMetadataProvider nextProvider;
 
         /// <summary>
-        /// Default constructor.
+        /// Constructs a <see cref="DynamicMetadataProvider"/> given a
+        /// reference to the next <see cref="IMetadataProvider"/> in
+        /// a chain.
         /// </summary>
-        public DynamicMetadataProvider()
+        /// <param name="nextProvider">
+        /// Next metadata provider in the chain
+        /// </param>
+        public DynamicMetadataProvider(IMetadataProvider nextProvider = null)
         {
+            this.nextProvider = nextProvider;
             this.objTypes = new Dictionary<string, DynamicObjectType>();
         }
 
@@ -54,6 +61,10 @@ namespace Headway.Dynamo.Metadata.Dynamic
             if (this.objTypes.ContainsKey(fullName))
             {
                 result = this.objTypes[fullName] as T;
+            }
+            else if (this.nextProvider != null)
+            {
+                result = this.nextProvider.GetDataType<T>(fullName);
             }
 
             return result;

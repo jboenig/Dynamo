@@ -26,6 +26,7 @@ using System.Runtime.Serialization;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Exceptions;
+using Headway.Dynamo.Runtime;
 using System.Linq.Expressions;
 
 namespace Headway.Dynamo.Runtime
@@ -36,12 +37,11 @@ namespace Headway.Dynamo.Runtime
     /// interface and implements serialization.
     /// </summary>
     [Serializable]
-    public class DynamoObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
+    public class DynamoObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, IObjectInit, ISerializable
     {
         #region Member Variables
 
         private ObjectType dataType;
-        private string objTypeName;
         private IMetadataProvider metadataProvider;
         private Dictionary<string, object> values;
 
@@ -52,34 +52,12 @@ namespace Headway.Dynamo.Runtime
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="metadataProvider"></param>
-        public DynamoObject(IMetadataProvider metadataProvider)
+        /// <param name="objType"></param>
+        public DynamoObject(ObjectType objType)
         {
-            if (metadataProvider == null)
-            {
-                throw new ArgumentNullException(nameof(metadataProvider));
-            }
-            this.metadataProvider = metadataProvider;
-            this.objTypeName = this.GetType().FullName;
+            this.dataType = objType;
             this.values = new Dictionary<string, object>();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="metadataProvider"></param>
-        /// <param name="objTypeName"></param>
-        public DynamoObject(IMetadataProvider metadataProvider, string objTypeName)
-        {
-            if (metadataProvider == null)
-            {
-                throw new ArgumentNullException(nameof(metadataProvider));
-            }
-            this.metadataProvider = metadataProvider;
-            this.objTypeName = objTypeName;
-            this.values = new Dictionary<string, object>();
-        }
-
 
         /// <summary>
         /// Constructs a copy of the specified <see cref="DynamoObject"/>
@@ -98,6 +76,25 @@ namespace Headway.Dynamo.Runtime
 
         #endregion
 
+        #region IObjectInit Implementation
+
+        /// <summary>
+        /// Initializes the object.
+        /// </summary>
+        /// <param name="svcProvider">
+        /// Reference to service provider used to initialize
+        /// the object.
+        /// </param>
+        public virtual void Init(IServiceProvider svcProvider)
+        {
+            if (svcProvider != null)
+            {
+                this.metadataProvider = svcProvider.GetService(typeof(IMetadataProvider)) as IMetadataProvider;
+            }
+        }
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -108,10 +105,6 @@ namespace Headway.Dynamo.Runtime
         {
             get
             {
-                if (this.dataType == null && this.metadataProvider != null)
-                {
-                    this.dataType = this.metadataProvider.GetDataType<ObjectType>(this.objTypeName);
-                }
                 return this.dataType;
             }
         }
@@ -342,7 +335,7 @@ namespace Headway.Dynamo.Runtime
 
         #endregion
 
-#region Serialization
+        #region Serialization
 
 #if false
         /// <summary>

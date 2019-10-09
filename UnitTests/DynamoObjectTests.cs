@@ -46,7 +46,7 @@ namespace Headway.Dynamo.UnitTests
             dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
 
             // Create instance of registered dynamic type
-            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(new object[] { metadataProvider });
+            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(null, new object[] { metadataProvider });
 
             // Attempt to access added property Foo - should fail since Person
             // is not a dynamic type
@@ -67,7 +67,7 @@ namespace Headway.Dynamo.UnitTests
             //dynamicPersonObjectType.AddProperty("Foo", IntegralType.String);
 
             // Create instance of registered dynamic type
-            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(new object[] { metadataProvider });
+            dynamic person = dynamicPersonObjectType.CreateInstance<DynamoPerson>(null, new object[] { metadataProvider });
 
             // Attempt to access added property Foo - should fail since Person
             // is not a dynamic type
@@ -94,7 +94,9 @@ namespace Headway.Dynamo.UnitTests
                 );
             metadataProvider.DynamicProvider.Load(metadataRepo);
 
-            dynamic metaHuman = metadataProvider.CreateInstance<DynamoPerson>("Headway.Dynamo.UnitTests.Mockdata.Metahuman", new object[] { metadataProvider });
+            dynamic metaHuman = metadataProvider.CreateInstance<DynamoPerson>(null,
+                "Headway.Dynamo.UnitTests.Mockdata.Metahuman",
+                null);
             Assert.IsNotNull(metaHuman);
             metaHuman.Superpower1 = "Invisibility";
         }

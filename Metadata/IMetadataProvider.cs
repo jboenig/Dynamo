@@ -103,10 +103,11 @@ namespace Headway.Dynamo.Metadata
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="metadataProvider"></param>
+        /// <param name="svcProvider"></param>
         /// <param name="objTypeFullName"></param>
         /// <param name="paramList"></param>
         /// <returns></returns>
-        public static T CreateInstance<T>(this IMetadataProvider metadataProvider, string objTypeFullName, params object[] paramList) where T : class
+        public static T CreateInstance<T>(this IMetadataProvider metadataProvider, IServiceProvider svcProvider, string objTypeFullName, params object[] paramList) where T : class
         {
             if (string.IsNullOrEmpty(objTypeFullName))
             {
@@ -119,7 +120,7 @@ namespace Headway.Dynamo.Metadata
                 throw new DataTypeNotFound(objTypeFullName);
             }
 
-            return objType.CreateInstance<T>(paramList);
+            return objType.CreateInstance<T>(svcProvider, paramList);
         }
     }
 }

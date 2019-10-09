@@ -16,6 +16,8 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
+using System;
+
 namespace Headway.Dynamo.Metadata
 {
 	/// <summary>
@@ -40,10 +42,15 @@ namespace Headway.Dynamo.Metadata
         /// <summary>
         /// Creates an instance of the class.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="paramList"></param>
+        /// <typeparam name="T">CLR type to return</typeparam>
+        /// <param name="svcProvider">
+        /// Service provider.
+        /// </param>
+        /// <param name="paramList">
+        /// Array of parameters for constructor.
+        /// </param>
         /// <returns>A new object of type T.</returns>
-        public abstract T CreateInstance<T>(params object[] paramList) where T : class;
+        public abstract T CreateInstance<T>(IServiceProvider svcProvider, params object[] paramList) where T : class;
 
         #endregion
     }

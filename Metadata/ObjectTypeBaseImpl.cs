@@ -21,6 +21,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using Headway.Dynamo.Metadata.Reflection;
+using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.Metadata
 {
@@ -153,10 +154,15 @@ namespace Headway.Dynamo.Metadata
         /// <summary>
         /// Creates an instance of the class.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="paramList"></param>
+        /// <typeparam name="T">CLR type to return</typeparam>
+        /// <param name="svcProvider">
+        /// Service provider.
+        /// </param>
+        /// <param name="paramList">
+        /// Array of parameters for constructor.
+        /// </param>
         /// <returns>A new object of type T.</returns>
-        public override T CreateInstance<T>(params object[] paramList)
+        public override T CreateInstance<T>(IServiceProvider svcProvider, params object[] paramList)
 		{
 			var clrType = this.CLRType;
 			if (clrType == null)
@@ -164,10 +170,17 @@ namespace Headway.Dynamo.Metadata
 				throw new InvalidOperationException(this.ErrorMessageCLRTypeNotFound);
 			}
 
-			var instance = Activator.CreateInstance(clrType, paramList) as T;
+            List<object> actualParams = new List<object>();
+            if (paramList != null && paramList.Length > 0)
+            {
+                actualParams.AddRange(paramList);
+            }
+            actualParams.Insert(0, this);
+
+			var instance = Activator.CreateInstance(clrType, actualParams.ToArray()) as T;
             if (instance != null)
             {
-                this.InitInstance<T>(instance);
+                this.InitInstance<T>(instance, svcProvider);
             }
 
             return instance;
@@ -328,8 +341,14 @@ namespace Headway.Dynamo.Metadata
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
-        protected virtual void InitInstance<T>(T instance)
+        /// <param name="svcProvider"></param>
+        protected virtual void InitInstance<T>(T instance, IServiceProvider svcProvider)
         {
+            var initObj = instance as IObjectInit;
+            if (initObj != null)
+            {
+                initObj.Init(svcProvider);
+            }
         }
 
         /// <summary>

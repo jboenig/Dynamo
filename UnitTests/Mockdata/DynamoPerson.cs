@@ -11,8 +11,8 @@ namespace Headway.Dynamo.UnitTests.Mockdata
 {
     public class DynamoPerson : DynamoObject
     {
-        public DynamoPerson(IMetadataProvider metadataProvider) :
-            base(metadataProvider)
+        public DynamoPerson(ObjectType objType) :
+            base(objType)
         {
 
         }

@@ -41,20 +41,13 @@ namespace Headway.Dynamo.Metadata
         #region Constructors
 
         /// <summary>
-        /// Default constructor
-        /// </summary>
-        public ObjectTypeBaseImpl()
-        {
-        }
-
-        /// <summary>
         /// Constructs on <see cref="ObjectTypeBaseImpl"/> given
         /// a <see cref="IMetadataProvider"/> service reference.
         /// </summary>
         /// <param name="metadataProvider">
         /// Metadata provider service.
         /// </param>
-		public ObjectTypeBaseImpl(IMetadataProvider metadataProvider)
+		public ObjectTypeBaseImpl(IMetadataProvider metadataProvider = null)
 		{
             this.AttachMetadataProvider(metadataProvider);
 		}

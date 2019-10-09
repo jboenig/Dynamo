@@ -44,7 +44,7 @@ namespace Headway.Dynamo.Metadata
         /// </summary>
         /// <typeparam name="T">CLR type to return</typeparam>
         /// <param name="svcProvider">
-        /// Service provider.
+        /// Service provider used for initialization of the object.
         /// </param>
         /// <param name="paramList">
         /// Array of parameters for constructor.

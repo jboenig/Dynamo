@@ -37,12 +37,11 @@ namespace Headway.Dynamo.Runtime
     /// interface and implements serialization.
     /// </summary>
     [Serializable]
-    public class DynamoObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, IObjectInit, ISerializable
+    public class DynamoObject : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
     {
         #region Member Variables
 
         private ObjectType dataType;
-        private IMetadataProvider metadataProvider;
         private Dictionary<string, object> values;
 
         #endregion
@@ -71,25 +70,6 @@ namespace Headway.Dynamo.Runtime
             foreach (var curKey in source.values.Keys)
             {
                 this.values.Add(curKey, source.values[curKey]);
-            }
-        }
-
-        #endregion
-
-        #region IObjectInit Implementation
-
-        /// <summary>
-        /// Initializes the object.
-        /// </summary>
-        /// <param name="svcProvider">
-        /// Reference to service provider used to initialize
-        /// the object.
-        /// </param>
-        public virtual void Init(IServiceProvider svcProvider)
-        {
-            if (svcProvider != null)
-            {
-                this.metadataProvider = svcProvider.GetService(typeof(IMetadataProvider)) as IMetadataProvider;
             }
         }
 
@@ -176,7 +156,8 @@ namespace Headway.Dynamo.Runtime
                 DataType propType = IntegralType.Get(typeof(T));
                 if (propType == null)
                 {
-                    propType = DynamicObjectType.Create(this.MetadataProvider, typeof(T).FullName, typeof(T));
+                    var msg = string.Format("Error setting value on property {0}. Property not found and value is not an integral type. You must explicitly add the data type to the metadata provider.", propertyName);
+                    throw new InvalidOperationException(msg);
                 }
                 prop = this.DataType.AddProperty(propertyName, propType);
             }
@@ -263,7 +244,8 @@ namespace Headway.Dynamo.Runtime
                 DataType propType = IntegralType.Get(value.GetType());
                 if (propType == null)
                 {
-                    propType = DynamicObjectType.Create(this.MetadataProvider, binder.ReturnType.FullName, binder.ReturnType);
+                    var msg = string.Format("Error setting value on property {0}. Property not found and value is not an integral type. You must explicitly add the data type to the metadata provider.", binder.Name);
+                    throw new InvalidOperationException(msg);
                 }
                 prop = this.DataType.AddProperty(binder.Name, propType);
             }
@@ -398,7 +380,7 @@ namespace Headway.Dynamo.Runtime
             }
             catch
             {
-                this.dataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamoObject).FullName, typeof(DynamoObject));
+//                this.dataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamoObject).FullName, typeof(DynamoObject));
             }
             
             this.values = new Dictionary<string, object>();
@@ -459,23 +441,6 @@ namespace Headway.Dynamo.Runtime
         #endregion
 
         #region Implementation
-
-        /// <summary>
-        /// Gets the <see cref="IMetadataProvider"/> service
-        /// used to resolve data type information.
-        /// </summary>
-        protected IMetadataProvider MetadataProvider
-        {
-            get
-            {
-                if (this.metadataProvider == null)
-                {
-                    var msg = "DynamicExtObject has no metadata provider. Make sure that an IMetadataProvider service is attached to the ObjectType before invoking this operation.";
-                    throw new InvalidOperationException(msg);
-                }
-                return this.metadataProvider;
-            }
-        }
 
         private static bool TryGetVariableName(object intermediateValue, out string variableName)
         {

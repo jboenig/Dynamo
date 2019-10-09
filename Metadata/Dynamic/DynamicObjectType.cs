@@ -43,7 +43,8 @@ namespace Headway.Dynamo.Metadata.Dynamic
 
         #region Constructors
 
-        private DynamicObjectType()
+        private DynamicObjectType() :
+            base(null)
         {
             this.clrType = typeof(object);
             this.fullName = this.clrType.FullName;
@@ -51,7 +52,7 @@ namespace Headway.Dynamo.Metadata.Dynamic
             this.SetDerivesFrom();
         }
 
-        private DynamicObjectType(IMetadataProvider metadataProvider) :
+        private DynamicObjectType(IMetadataProvider metadataProvider = null) :
             base(metadataProvider)
         {
             this.clrType = typeof(object);

@@ -25,6 +25,9 @@ namespace Headway.Dynamo.Runtime
 {
     internal class DynamoMetaObject : DynamicMetaObject
     {
+        private const string BindSetMemberMethodName = "SetPropertyValue";
+        private const string BindGetMemberMethodName = "GetPropertyValue";
+
         public DynamoMetaObject(Expression parameter,
                 Dynamo dynamo) :
             base(parameter, BindingRestrictions.Empty, dynamo)
@@ -34,25 +37,22 @@ namespace Headway.Dynamo.Runtime
         public override DynamicMetaObject BindSetMember(SetMemberBinder binder,
              DynamicMetaObject value)
         {
-            // Method to call in the containing class:
-            string methodName = "SetPropertyValue";
-
             // setup the binding restrictions.
             BindingRestrictions restrictions =
                 BindingRestrictions.GetTypeRestriction(Expression, LimitType);
 
-            // setup the parameters:
-            Expression[] args = new Expression[2];
-            // First parameter is the name of the property to Set
-            args[0] = Expression.Constant(binder.Name);
-            // Second parameter is the value
-            args[1] = Expression.Convert(value.Expression, value.RuntimeType);
+            // Setup arguments
+            Expression[] args = new Expression[2]
+            {
+                Expression.Constant(binder.Name),
+                Expression.Convert(value.Expression, value.RuntimeType)
+            };
 
             // Setup the 'this' reference
             Expression self = Expression.Convert(Expression, LimitType);
 
             // Setup the method call expression
-            var setPropertyValueMethod = typeof(Dynamo).GetMethod(methodName);
+            var setPropertyValueMethod = typeof(Dynamo).GetMethod(BindSetMemberMethodName);
             var setPropertyValueGenericMethod = setPropertyValueMethod.MakeGenericMethod(new Type[] { value.RuntimeType });
 
             Expression setPropertyValueExpr = Expression.Call(self,
@@ -70,22 +70,21 @@ namespace Headway.Dynamo.Runtime
 
         public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
         {
-            // Method call in the containing class:
-            string methodName = "GetPropertyValue";
-
             // setup the binding restrictions.
             BindingRestrictions restrictions =
                 BindingRestrictions.GetTypeRestriction(Expression, LimitType);
 
-            // setup the parameters:
-            Expression[] args = new Expression[1];
-            // First parameter is the name of the property to Set
-            args[0] = Expression.Constant(binder.Name);
+            // Setup arguments
+            Expression[] args = new Expression[1]
+            {
+                Expression.Constant(binder.Name)
+            };
 
             // Setup the 'this' reference
             Expression self = Expression.Convert(Expression, LimitType);
 
-            var getPropertyValueMethod = typeof(Dynamo).GetMethod(methodName);
+            // Use reflection to get generic getter method
+            var getPropertyValueMethod = typeof(Dynamo).GetMethod(BindGetMemberMethodName);
             var getPropertyValueGenericMethod = getPropertyValueMethod.MakeGenericMethod(new Type[] { typeof(object) });
 
             Expression getPropertyValueExpr = Expression.Call(self,

@@ -102,6 +102,7 @@ namespace Headway.Dynamo.UnitTests
             metaHuman.Superpower1 = "Invisibility";
             var sp1 = metaHuman.Superpower1;
             Assert.AreEqual(sp1, "Invisibility");
+            metaHuman.FirstName = "Fred";
         }
     }
 }

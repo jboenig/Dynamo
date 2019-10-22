@@ -37,7 +37,7 @@ namespace Headway.Dynamo.Runtime
     /// interface and implements serialization.
     /// </summary>
     [Serializable]
-    public class Dynamo : DynamicObject, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
+    public class Dynamo : IDynamicMetaObjectProvider, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
     {
         #region Member Variables
 
@@ -147,7 +147,7 @@ namespace Headway.Dynamo.Runtime
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
-        public void SetPropertyValue<T>(string propertyName, T value)
+        public IPropertyAccessor SetPropertyValue<T>(string propertyName, T value)
         {
             var prop = this.DataType.GetPropertyByName(propertyName);
             if (prop == null)
@@ -163,6 +163,8 @@ namespace Headway.Dynamo.Runtime
             }
 
             prop.SetValue<T>(this, value);
+
+            return this;
         }
 
         /// <summary>
@@ -185,6 +187,17 @@ namespace Headway.Dynamo.Runtime
 
         #endregion
 
+        #region IDynamicMetaObjectProvider
+
+        DynamicMetaObject IDynamicMetaObjectProvider.GetMetaObject(
+             System.Linq.Expressions.Expression parameter)
+        {
+            return new DynamoMetaObject(parameter, this);
+        }
+
+        #endregion
+
+#if false
         #region DynamicObject Implementation
 
         /// <summary>
@@ -260,6 +273,7 @@ namespace Headway.Dynamo.Runtime
         }
 
         #endregion
+#endif
 
         #region IDynamicPropertyAccessor Implementation
 

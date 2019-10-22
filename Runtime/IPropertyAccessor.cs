@@ -40,7 +40,8 @@ namespace Headway.Dynamo.Runtime
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
-        void SetPropertyValue<T>(string propertyName, T value);
+        /// <returns>Reference to this</returns>
+        IPropertyAccessor SetPropertyValue<T>(string propertyName, T value);
 
         /// <summary>
         /// Returns a collection of all available property names.

@@ -300,6 +300,18 @@ namespace Headway.Dynamo.Metadata.Dynamic
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            // IServiceProvider is attached to the StreamingContext
+            var svcProvider = context.Context as IServiceProvider;
+            if (svcProvider != null)
+            {
+                // Get the IMetadataProvider service
+                var metadataProvider = svcProvider.GetService(typeof(IMetadataProvider)) as IMetadataProvider;
+                if (metadataProvider != null)
+                {
+                    this.AttachMetadataProvider(metadataProvider);
+                }
+            }
+
             // Ensure that properties have back-pointer to this
             // object type
             foreach (var curprop in this.dynamicProperties)

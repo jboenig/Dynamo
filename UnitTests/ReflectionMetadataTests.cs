@@ -6,14 +6,24 @@ using Headway.Dynamo.UnitTests.Mockdata;
 
 namespace Headway.Dynamo.UnitTests
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestClass]
     public class ReflectionMetadataTests
     {
+        private ReflectionMetadataProvider metadataProvider;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.metadataProvider = new ReflectionMetadataProvider();
+        }
+
         [TestMethod]
         public void VerifyBasicClassInfo()
         {
-            var metadataProvider = new ReflectionMetadataProvider();
-            var personMetadata = metadataProvider.GetDataType<ObjectType>(typeof(Person).FullName);
+            var personMetadata = this.metadataProvider.GetDataType<ObjectType>(typeof(Person).FullName);
             Assert.AreEqual(personMetadata.FullName, "Headway.Dynamo.UnitTests.Mockdata.Person");
             Assert.AreEqual(personMetadata.Name, "Person");
             Assert.AreEqual(personMetadata.Namespace, "Headway.Dynamo.UnitTests.Mockdata");
@@ -29,15 +39,13 @@ namespace Headway.Dynamo.UnitTests
         [TestMethod]
         public void GetStringPropertyValues()
         {
-            var metadataProvider = new ReflectionMetadataProvider();
-
             var bugsBunny = new Person()
             {
                 FirstName = "Bugs",
                 LastName = "Bunny"
             };
 
-            var personMetadata = metadataProvider.GetDataType<ObjectType>(typeof(Person).FullName);
+            var personMetadata = this.metadataProvider.GetDataType<ObjectType>(typeof(Person).FullName);
 
             var firstNameProp = personMetadata.GetPropertyByName("FirstName");
             Assert.IsNotNull(firstNameProp);
@@ -53,8 +61,7 @@ namespace Headway.Dynamo.UnitTests
         [TestMethod]
         public void GetBaseClassProperty()
         {
-            var metadataProvider = new ReflectionMetadataProvider();
-            var employeeMetadata = metadataProvider.GetDataType<ObjectType>(typeof(Employee).FullName);
+            var employeeMetadata = this.metadataProvider.GetDataType<ObjectType>(typeof(Employee).FullName);
 
             var employeeIdProp = employeeMetadata.GetPropertyByName("EmployeeId");
             Assert.IsNotNull(employeeIdProp);
@@ -64,8 +71,7 @@ namespace Headway.Dynamo.UnitTests
         [TestMethod]
         public void GetBaseClassPropertyValue()
         {
-            var metadataProvider = new ReflectionMetadataProvider();
-            var personMetadata = metadataProvider.GetDataType<ObjectType>(typeof(Employee).FullName);
+            var personMetadata = this.metadataProvider.GetDataType<ObjectType>(typeof(Employee).FullName);
 
             var daffyDuck = new Employee()
             {

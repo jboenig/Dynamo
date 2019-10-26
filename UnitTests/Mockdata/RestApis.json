@@ -1,0 +1,22 @@
+﻿[
+  {
+    "$type": "Headway.Dynamo.RestServices.RestApi, Headway.Dynamo",
+    "Name": "Test1",
+    "RootEndpointUri": "https://jsonplaceholder.typicode.com/",
+    "Services": [
+      {
+        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "Name": "todos",
+        "RelativePath": "todos",
+        "Version":  "1",
+        "Parameters": [
+          {
+            "$type": "Headway.Dynamo.Metadata.Parameter, Headway.Dynamo",
+            "Name": "id",
+            "DataTypeName": "Integer"
+          }
+        ]
+      }
+    ]
+  }
+]

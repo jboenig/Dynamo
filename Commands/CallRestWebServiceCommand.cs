@@ -17,6 +17,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Headway.Dynamo.RestServices;
+using Headway.Dynamo.Exceptions;
 
 namespace Headway.Dynamo.Commands
 {
@@ -26,6 +31,26 @@ namespace Headway.Dynamo.Commands
     /// </summary>
     public sealed class CallRestWebServiceCommand : Command
     {
+        private Task<HttpResponseMessage> taskWebServiceCall;
+
+        /// <summary>
+        /// Gets or sets the name of the rest-based API.
+        /// </summary>
+        public string ApiName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the rest-based service.
+        /// </summary>
+        public string ServiceName
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Executes the call to the configured REST-based
         /// web service.
@@ -36,9 +61,20 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
-            throw new NotImplementedException();
+            var restApiService = serviceProvider.GetService(typeof(IRestApiService)) as IRestApiService;
+            if (restApiService == null)
+            {
+                throw new ServiceNotFoundException(typeof(IRestApiService));
+            }
+
+            return new Task<CommandResult>(() =>
+            {
+                this.taskWebServiceCall = restApiService.Invoke(this.ApiName, this.ServiceName, context);
+                this.taskWebServiceCall.Wait();
+                return new HttpCommandResult(this.taskWebServiceCall.Result);
+            });
         }
     }
 }

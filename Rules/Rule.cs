@@ -118,7 +118,9 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        cmdRes = this.WhenTrue.Execute(serviceProvider, context);
+                        var cmdTask = this.WhenTrue.Execute(serviceProvider, context);
+                        cmdTask.RunSynchronously();
+                        cmdRes = cmdTask.Result;
                     }
                     catch (Exception ex)
                     {
@@ -139,7 +141,9 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        cmdRes = this.WhenFalse.Execute(serviceProvider, context);
+                        var cmdTask = this.WhenFalse.Execute(serviceProvider, context);
+                        cmdTask.RunSynchronously();
+                        cmdRes = cmdTask.Result;
                     }
                     catch (Exception ex)
                     {

@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
 using System.Net.Mail;
 
 namespace Headway.Dynamo.Commands
@@ -71,7 +72,7 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             if (context == null)
             {

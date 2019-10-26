@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Transactions;
 
@@ -42,6 +43,7 @@ namespace Headway.Dynamo.Commands
         public MacroCommand()
         {
             this.commands = new List<Command>();
+            this.ExecuteAsync = true;
         }
 
         #endregion
@@ -57,6 +59,17 @@ namespace Headway.Dynamo.Commands
             get { return this.commands; }
         }
 
+        /// <summary>
+        /// Gets or sets a flag indicating whether or not the
+        /// commands in this macro should be executed asynchrounously
+        /// or synchronously.
+        /// </summary>
+        public bool ExecuteAsync
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Methods
@@ -70,29 +83,51 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required))
+            return new Task<CommandResult>(() =>
             {
-                try
-                {
-                    foreach (var command in this.Commands)
-                    {
-                        var result = command.Execute(serviceProvider, context);
-                        if (!result.IsSuccess)
-                        {
-                            return result;
-                        }
-                    }
+                var commandRes = new MacroCommandResult();
 
-                    scope.Complete();
-                }
-                catch(Exception ex)
+                var commandTasks = new List<Task<CommandResult>>();
+
+                using (var scope = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    throw ex;
+                    try
+                    {
+                        foreach (var command in this.Commands)
+                        {
+                            var curCommandTask = command.Execute(serviceProvider, context);
+
+                            if (this.ExecuteAsync)
+                            {
+                                commandTasks.Add(curCommandTask);
+                                curCommandTask.Start();
+                            }
+                            else
+                            {
+                                curCommandTask.RunSynchronously();
+                                commandRes.CommandResults.Add(curCommandTask.Result);
+                            }
+                        }
+
+                        Task.WaitAll(commandTasks.ToArray());
+
+                        foreach(var curCommandTask in commandTasks)
+                        {
+                            commandRes.CommandResults.Add(curCommandTask.Result);
+                        }
+
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
-            }
-            return CommandResult.Success;
+
+                return commandRes;
+            });
         }        
 
         #endregion

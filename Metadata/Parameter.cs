@@ -16,25 +16,30 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
-
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Metadata
 {
     /// <summary>
-    /// Encapsulates a command that can be executed.
+    /// Encapsulates a named parameter to a function
+    /// or web service call.
     /// </summary>
-    public abstract class Command
+    public sealed class Parameter
     {
         /// <summary>
-        /// Executes this command.
+        /// Gets or sets the name of the parameter.
         /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        public abstract Task<CommandResult> Execute(IServiceProvider serviceProvider, object context);
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the data type of this parameter.
+        /// </summary>
+        public string DataTypeName
+        {
+            get;
+            set;
+        }
     }
 }

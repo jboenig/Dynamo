@@ -74,7 +74,9 @@ namespace Headway.Dynamo.Collections
 			return new AggregateCollection<T>.Enumerator(this);
 		}
 
-		private sealed class Enumerator : IEnumerator<T>
+        #region Enumerator Class
+
+        private sealed class Enumerator : IEnumerator<T>
 		{
 			private readonly AggregateCollection<T> masterColl;
 			private IEnumerator<T> currentEnumerator;
@@ -142,5 +144,7 @@ namespace Headway.Dynamo.Collections
 				}
 			}
 		}
-	}
+
+        #endregion
+    }
 }

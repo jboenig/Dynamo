@@ -17,9 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
+using System.Threading.Tasks;
 using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.Commands
@@ -56,31 +54,34 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var propertyAccessor = context as IPropertyAccessor;
-            if (propertyAccessor != null)
+            return new Task<CommandResult>(() =>
             {
-                propertyAccessor.SetPropertyValue<object>(this.PropertyName, this.Value);
-            }
-            else
-            {
-                // Use reflection
-                var propInfo = context.GetType().GetProperty(this.PropertyName);
-                if (propInfo == null)
+                var propertyAccessor = context as IPropertyAccessor;
+                if (propertyAccessor != null)
                 {
-                    var msg = string.Format("Property {0} does not exist", this.PropertyName);
-                    throw new InvalidOperationException(msg);
+                    propertyAccessor.SetPropertyValue<object>(this.PropertyName, this.Value);
                 }
-                propInfo.SetValue(context, this.Value);
-            }
+                else
+                {
+                    // Use reflection
+                    var propInfo = context.GetType().GetProperty(this.PropertyName);
+                    if (propInfo == null)
+                    {
+                        var msg = string.Format("Property {0} does not exist", this.PropertyName);
+                        throw new InvalidOperationException(msg);
+                    }
+                    propInfo.SetValue(context, this.Value);
+                }
 
-            return CommandResult.Success;
+                return CommandResult.Success;
+            });
         }
     }
 }

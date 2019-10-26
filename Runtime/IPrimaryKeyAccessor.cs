@@ -19,12 +19,12 @@
 namespace Headway.Dynamo.Runtime
 {
     /// <summary>
-    /// 
+    /// Interface to objects that contain a primary key.
     /// </summary>
     public interface IPrimaryKeyAccessor
     {
         /// <summary>
-        /// 
+        /// Gets the primary key value for the object.
         /// </summary>
         object PrimaryKey { get; }
     }

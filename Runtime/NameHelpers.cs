@@ -27,10 +27,14 @@ namespace Headway.Dynamo.Runtime
 	public static class NameHelpers
 	{
         /// <summary>
-        /// 
+        /// Gets the name portion of a fully qualified name.
         /// </summary>
-        /// <param name="fullName"></param>
-        /// <returns></returns>
+        /// <param name="fullName">
+        /// Fully qualified name.
+        /// </param>
+        /// <returns>
+        /// Name portion (sans namespace) of the fully qualified name.
+        /// </returns>
 		public static string GetName(string fullName)
 		{
 			var delimiter = fullName.LastIndexOf('.');
@@ -42,10 +46,14 @@ namespace Headway.Dynamo.Runtime
 		}
 
         /// <summary>
-        /// 
+        /// Gets the namespace portion of a fully qualified name.
         /// </summary>
-        /// <param name="fullName"></param>
-        /// <returns></returns>
+        /// <param name="fullName">
+        /// Fully qualified name.
+        /// </param>
+        /// <returns>
+        /// Namespace portion (sans name) of the fully qualified name.
+        /// </returns>
 		public static string GetNamespace(string fullName)
 		{
 			var delimiter = fullName.LastIndexOf('.');
@@ -57,11 +65,19 @@ namespace Headway.Dynamo.Runtime
 		}
 
         /// <summary>
-        /// 
+        /// Creates a fully qualified name given a namespace and
+        /// name.
         /// </summary>
-        /// <param name="nameSpace"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="nameSpace">
+        /// Namespace for the fully qualified name.
+        /// </param>
+        /// <param name="name">
+        /// Name for the fully qualified name.
+        /// </param>
+        /// <returns>
+        /// Fully qualified name that concatenates the namespace
+        /// and name using the correct delimiter.
+        /// </returns>
 		public static string CreateFullName(string nameSpace, string name)
 		{
 			var sb = new StringBuilder();
@@ -75,10 +91,15 @@ namespace Headway.Dynamo.Runtime
 		}
 
         /// <summary>
-        /// 
+        /// Parses a fully qualified name into tokens.
         /// </summary>
-        /// <param name="fullName"></param>
-        /// <returns></returns>
+        /// <param name="fullName">
+        /// Fully qualified name to parse.
+        /// </param>
+        /// <returns>
+        /// Array of strings containing each part of the
+        /// fully qualified name.
+        /// </returns>
         public static string[] ParseName(string fullName)
         {
             return fullName.Split(new char[] { '.' });

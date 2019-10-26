@@ -119,5 +119,6 @@ namespace Headway.Dynamo.Runtime
             parameters),
             BindingRestrictions.GetTypeRestriction(Expression, LimitType));
             return methodInfo;
-        }    }
+        }
+    }
 }

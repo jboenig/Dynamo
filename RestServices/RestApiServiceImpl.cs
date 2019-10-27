@@ -71,7 +71,7 @@ namespace Headway.Dynamo.RestServices
         /// <param name="serviceName">
         /// Name of the service to invoke.
         /// </param>
-        /// <param name="parameters">
+        /// <param name="paramObj">
         /// Parameter object containing properties that match the
         /// parameter names declared in the service definition.
         /// </param>
@@ -79,7 +79,7 @@ namespace Headway.Dynamo.RestServices
         /// Returns a Task that executes the call to the web service
         /// and returns an HttpResponseMessage.
         /// </returns>
-        public Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object parameters)
+        public Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj)
         {
             var restApi = this.GetApiByName(apiName);
             if (restApi == null)
@@ -95,7 +95,7 @@ namespace Headway.Dynamo.RestServices
                 throw new ArgumentException(msg, nameof(serviceName));
             }
 
-            return restSvc.Invoke(parameters);
+            return restSvc.Invoke(paramObj);
         }
 
         /// <summary>

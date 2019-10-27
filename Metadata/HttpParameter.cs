@@ -19,27 +19,30 @@
 namespace Headway.Dynamo.Metadata
 {
     /// <summary>
-    /// Encapsulates a named parameter to a function
-    /// or web service call.
+    /// Implements an Http parameter.
     /// </summary>
-    public class Parameter
+    public class HttpParameter : Parameter
     {
-        /// <summary>
-        /// Gets or sets the name of the parameter.
-        /// </summary>
-        public string Name
-        {
-            get;
-            set;
-        }
+    }
 
-        /// <summary>
-        /// Gets or sets the name of the data type of this parameter.
-        /// </summary>
-        public string DataTypeName
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Implements a query string parameter.
+    /// </summary>
+    public sealed class UrlQueryStringParameter : HttpParameter
+    {
+    }
+
+    /// <summary>
+    /// Implements a URL path parameter.
+    /// </summary>
+    public sealed class UrlPathParameter : HttpParameter
+    {
+    }
+
+    /// <summary>
+    /// Implements an HTTP header parameter.
+    /// </summary>
+    public sealed class HttpHeaderParameter : HttpParameter
+    {
     }
 }

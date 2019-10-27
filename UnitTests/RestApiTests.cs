@@ -17,16 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Repository.FlatFileRepo;
 using Headway.Dynamo.RestServices;
+using Newtonsoft.Json.Linq;
 
 namespace Headway.Dynamo.UnitTests
 {
@@ -58,11 +55,36 @@ namespace Headway.Dynamo.UnitTests
         }
 
         [TestMethod]
-        public void GetTodos()
+        public void GetApiByName()
         {
             var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
             var test1Api = restApiService.GetApiByName("Test1");
             Assert.IsNotNull(test1Api);
+        }
+
+        [TestMethod]
+        public void GetServiceByName()
+        {
+            var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
+            var test1Api = restApiService.GetApiByName("Test1");
+            Assert.IsNotNull(test1Api);
+            var todoService = test1Api.GetServiceByName("todos");
+            Assert.IsNotNull(todoService);
+        }
+
+        [TestMethod]
+        public void InvokeGetSinglePathParam()
+        {
+            var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
+            Assert.IsNotNull(restApiService);
+            var taskTodos = restApiService.Invoke("Test1", "todos", new { id = 1 });
+            taskTodos.Wait();
+            Assert.IsTrue(taskTodos.Result.IsSuccessStatusCode);
+
+            string resJson = taskTodos.Result.Content.GetAsString();
+            var resObj = JObject.Parse(resJson);
+            var idVal = resObj.Value<int>("id");
+            Assert.AreEqual(idVal, 1);
         }
     }
 }

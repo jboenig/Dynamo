@@ -95,12 +95,12 @@ namespace Headway.Dynamo.RestServices
         /// <summary>
         /// Gets the URI for this service.
         /// </summary>
-        /// <param name="parameters">
+        /// <param name="paramObj">
         /// Parameter object containing property names
         /// that match the declared parameters for this
         /// service.
         /// </param>
-        public Uri GetUri(object parameters)
+        public Uri GetUri(object paramObj)
         {
             if (this.owner == null)
             {
@@ -113,26 +113,47 @@ namespace Headway.Dynamo.RestServices
             {
                 uriStringBuilder.Append("/");
             }
-            uriStringBuilder.Append(this.RelativePath);
 
-            /////////////////////////////////////////////////////////////////////////////
-            // HACK: Find generic way to do this
-            if (this.Parameters.Count() == 1)
+            var pathWithPathParamValues = PropertyResolver.ResolvePropertyValues(paramObj, this.RelativePath);
+            uriStringBuilder.Append(pathWithPathParamValues);
+
+            // Append URL query string parameters
+            int numQueryStringParams = 0;
+            foreach (var curParam in this.Parameters)
             {
-                var param0Value = PropertyResolver.GetPropertyValue<object>(parameters, this.Parameters.First().Name);
-                uriStringBuilder.Append("/");
-                uriStringBuilder.Append(param0Value);
+                if (curParam is UrlQueryStringParameter)
+                {
+                    var curParamVal = PropertyResolver.GetPropertyValue<object>(paramObj, curParam.Name);
+                    if (numQueryStringParams == 0)
+                    {
+                        uriStringBuilder.Append("?");
+                    }
+                    else
+                    {
+                        uriStringBuilder.Append("&");
+                    }
+                    uriStringBuilder.Append(curParam.Name);
+                    uriStringBuilder.Append("=");
+                    uriStringBuilder.Append(curParamVal.ToString());
+                    numQueryStringParams++;
+                }
             }
 
             return new Uri(uriStringBuilder.ToString());
         }
 
         /// <summary>
-        /// 
+        /// Invokes this restful web service given a parameters object.
         /// </summary>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        public Task<HttpResponseMessage> Invoke(object parameters)
+        /// <param name="paramObj">
+        /// Parameter object containing properties that match the
+        /// parameter names declared in the service definition.
+        /// </param>
+        /// <returns>
+        /// Returns a Task that executes the call to the web service
+        /// and returns an HttpResponseMessage.
+        /// </returns>
+        public Task<HttpResponseMessage> Invoke(object paramObj)
         {
             if (this.owner == null)
             {
@@ -140,7 +161,7 @@ namespace Headway.Dynamo.RestServices
             }
 
             HttpClient httpClient = this.owner.GetHttpClient();
-            var uri = this.GetUri(parameters);
+            var uri = this.GetUri(paramObj);
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

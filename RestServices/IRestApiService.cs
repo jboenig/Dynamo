@@ -49,7 +49,7 @@ namespace Headway.Dynamo.RestServices
         /// <param name="serviceName">
         /// Name of the service to invoke.
         /// </param>
-        /// <param name="parameters">
+        /// <param name="paramObj">
         /// Parameter object containing properties that match the
         /// parameter names declared in the service definition.
         /// </param>
@@ -57,6 +57,6 @@ namespace Headway.Dynamo.RestServices
         /// Returns a Task that executes the call to the web service
         /// and returns an HttpResponseMessage.
         /// </returns>
-        Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object parameters);
+        Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj);
     }
 }

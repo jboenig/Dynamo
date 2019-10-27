@@ -25,6 +25,7 @@ using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Repository.FlatFileRepo;
+using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.UnitTests
 {
@@ -54,22 +55,29 @@ namespace Headway.Dynamo.UnitTests
             this.svcProvider.AddService(typeof(IRestApiService), restApiService);
         }
 
+        private class MyContext
+        {
+            public int Id { get; set; }
+            public JObject ResponseContent { get; set; }
+        }
+
         [TestMethod]
         public void CallRestServiceGetNoParams()
         {
             var cmd = new CallRestWebServiceCommand()
             {
                 ApiName = "Test1",
-                ServiceName = "todos"
+                ServiceName = "todos",
+                ResponseContentPropertyName = "ResponseContent"
             };
-            var context = new { id = 1 };
+            var context = new MyContext { Id = 1 };
             var restCallTask = cmd.Execute(this.svcProvider, context);
             restCallTask.RunSynchronously();
             Assert.AreEqual(restCallTask.Result.IsSuccess, true);
-            var restResult = restCallTask.Result as HttpCommandResult;
-            var resObj = restResult.ContentAsJObject;
-            var idVal = resObj.Value<int>("id");
+            var idVal = context.ResponseContent.Value<int>("id");
             Assert.AreEqual(idVal, 1);
+            var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
+            Assert.IsTrue(title.StartsWith("delectus"));
         }
     }
 }

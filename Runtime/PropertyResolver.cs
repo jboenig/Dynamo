@@ -80,11 +80,19 @@ namespace Headway.Dynamo.Runtime
                 }
                 else
                 {
-                    // Attempt to use reflection
-                    var prop = obj.GetType().GetProperty(propertyName);
-                    if (prop != null)
+                    var jObj = obj as Newtonsoft.Json.Linq.JObject;
+                    if (jObj != null)
                     {
-                        res = (T)prop.GetValue(obj);
+                        res = jObj.Value<T>(propertyName);
+                    }
+                    else
+                    {
+                        // Attempt to use reflection
+                        var prop = obj.GetType().GetProperty(propertyName);
+                        if (prop != null)
+                        {
+                            res = (T)prop.GetValue(obj);
+                        }
                     }
                 }
             }

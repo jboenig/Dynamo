@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Exceptions;
+using Headway.Dynamo.Commands;
 
 namespace Headway.Dynamo.Commands
 {
@@ -51,6 +52,28 @@ namespace Headway.Dynamo.Commands
         }
 
         /// <summary>
+        /// Gets or sets the name of the property on the
+        /// context object that contains the content (if post)
+        /// to be sent to with the web service request.
+        /// </summary>
+        public string RequestContentPropertyName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the property on the
+        /// context object to receive the content of the
+        /// web service response.
+        /// </summary>
+        public string ResponseContentPropertyName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Executes the call to the configured REST-based
         /// web service.
         /// </summary>
@@ -72,6 +95,19 @@ namespace Headway.Dynamo.Commands
             {
                 this.taskWebServiceCall = restApiService.Invoke(this.ApiName, this.ServiceName, context);
                 this.taskWebServiceCall.Wait();
+                if (this.taskWebServiceCall.Result.IsSuccessStatusCode)
+                {
+                    if (!string.IsNullOrEmpty(this.ResponseContentPropertyName))
+                    {
+                        var resultJsonObj = this.taskWebServiceCall.Result.Content.GetAsJObject();
+                        var setPropValCmd = new SetPropertyValueCommand()
+                        {
+                            PropertyName = this.ResponseContentPropertyName,
+                            Value = resultJsonObj
+                        };
+                        setPropValCmd.Execute(serviceProvider, context).RunSynchronously();
+                    }
+                }
                 return new HttpCommandResult(this.taskWebServiceCall.Result);
             });
         }

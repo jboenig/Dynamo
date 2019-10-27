@@ -77,13 +77,23 @@ namespace Headway.Dynamo.UnitTests
         {
             var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
             Assert.IsNotNull(restApiService);
-            var taskTodos = restApiService.Invoke("Test1", "todos", new { id = 1 });
+            var taskTodos = restApiService.Invoke("Test1", "todos", new { Id = 1 });
             taskTodos.Wait();
             Assert.IsTrue(taskTodos.Result.IsSuccessStatusCode);
 
             var resObj = taskTodos.Result.Content.GetAsJObject();
             var idVal = resObj.Value<int>("id");
             Assert.AreEqual(idVal, 1);
+        }
+
+        [TestMethod]
+        public void InvokePost()
+        {
+            var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
+            Assert.IsNotNull(restApiService);
+            var taskPosts = restApiService.Invoke("Test1", "posts", new { id = 1 });
+            taskPosts.Wait();
+            Assert.IsTrue(taskPosts.Result.IsSuccessStatusCode);
         }
     }
 }

@@ -7,15 +7,22 @@
       {
         "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
         "Name": "todos",
-        "RelativePath": "todos/{id}",
-        "Version":  "1",
+        "RelativePath": "todos/{Id}",
+        "Version": "1",
         "Parameters": [
           {
             "$type": "Headway.Dynamo.Metadata.UrlPathParameter, Headway.Dynamo",
-            "Name": "id",
+            "Name": "Id",
             "DataTypeName": "Integer"
           }
         ]
+      },
+      {
+        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "Name": "posts",
+        "RelativePath": "posts",
+        "Version": "1",
+        "Post":  "true"
       }
     ]
   }

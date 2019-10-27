@@ -40,8 +40,10 @@ namespace Headway.Dynamo.RestServices
         /// </summary>
         public RestService()
         {
+            this.owner = null;
             this.Parameters = new List<Parameter>();
             this.Version = 1;
+            this.Post = false;
         }
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace Headway.Dynamo.RestServices
             this.owner = owner;
             this.Parameters = new List<Parameter>();
             this.Version = 1;
+            this.Post = false;
         }
 
         /// <summary>
@@ -90,6 +93,16 @@ namespace Headway.Dynamo.RestServices
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Gets or sets a flag indicating whether or not
+        /// to post or get.
+        /// </summary>
+        public bool Post
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -163,7 +176,7 @@ namespace Headway.Dynamo.RestServices
             HttpClient httpClient = this.owner.GetHttpClient();
             var uri = this.GetUri(paramObj);
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
+            HttpRequestMessage request = new HttpRequestMessage(this.GetHttpMethod(), uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
             request.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
@@ -171,6 +184,15 @@ namespace Headway.Dynamo.RestServices
             request.Headers.AcceptLanguage.Add(new StringWithQualityHeaderValue("english"));
 
             return httpClient.SendAsync(request);
+        }
+
+        private HttpMethod GetHttpMethod()
+        {
+            if (this.Post)
+            {
+                return HttpMethod.Post;
+            }
+            return HttpMethod.Get;
         }
 
         internal void SetOwner(RestApi restApi)

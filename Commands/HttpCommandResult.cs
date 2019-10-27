@@ -18,7 +18,8 @@
 
 using System;
 using System.Net.Http;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Headway.Dynamo.RestServices;
 
 namespace Headway.Dynamo.Commands
 {
@@ -76,17 +77,30 @@ namespace Headway.Dynamo.Commands
         }
 
         /// <summary>
-        /// 
+        /// Returns the result content as a string.
         /// </summary>
-        public string ContentAsJson
+        public string ContentAsString
         {
             get
             {
                 if (this.response.Content != null && this.response.IsSuccessStatusCode)
                 {
-                    var taskReadContent = this.response.Content.ReadAsStringAsync();
-                    taskReadContent.Wait();
-                    return taskReadContent.Result;
+                    return this.response.Content.GetAsString();
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns the result content as a JSON object.
+        /// </summary>
+        public JObject ContentAsJObject
+        {
+            get
+            {
+                if (this.response.Content != null && this.response.IsSuccessStatusCode)
+                {
+                    return this.response.Content.GetAsJObject();
                 }
                 return null;
             }

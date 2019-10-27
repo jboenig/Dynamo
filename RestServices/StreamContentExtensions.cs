@@ -19,6 +19,7 @@
 using System.Net.Http;
 using System.IO.Compression;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Headway.Dynamo.RestServices
 {
@@ -61,6 +62,21 @@ namespace Headway.Dynamo.RestServices
             }
 
             return resString;
+        }
+
+        /// <summary>
+        /// Retrieve content as a Json object.
+        /// </summary>
+        /// <param name="httpContent">
+        /// HttpContent object to retrieve content from.
+        /// </param>
+        /// <returns>
+        /// Content as a JObject
+        /// </returns>
+        public static JObject GetAsJObject(this HttpContent httpContent)
+        {
+            var jsonString = httpContent.GetAsString();
+            return JObject.Parse(jsonString);
         }
     }
 }

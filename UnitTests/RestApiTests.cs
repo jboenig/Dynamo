@@ -81,8 +81,7 @@ namespace Headway.Dynamo.UnitTests
             taskTodos.Wait();
             Assert.IsTrue(taskTodos.Result.IsSuccessStatusCode);
 
-            string resJson = taskTodos.Result.Content.GetAsString();
-            var resObj = JObject.Parse(resJson);
+            var resObj = taskTodos.Result.Content.GetAsJObject();
             var idVal = resObj.Value<int>("id");
             Assert.AreEqual(idVal, 1);
         }

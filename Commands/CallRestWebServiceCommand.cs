@@ -19,7 +19,6 @@
 using System;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Exceptions;
 

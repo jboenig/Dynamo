@@ -17,17 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.RestServices;
-using Headway.Dynamo.Repository;
 using Headway.Dynamo.Repository.FlatFileRepo;
 
 namespace Headway.Dynamo.UnitTests
@@ -71,7 +67,9 @@ namespace Headway.Dynamo.UnitTests
             restCallTask.RunSynchronously();
             Assert.AreEqual(restCallTask.Result.IsSuccess, true);
             var restResult = restCallTask.Result as HttpCommandResult;
-            var jsonRes = restResult.ContentAsJson;
+            var resObj = restResult.ContentAsJObject;
+            var idVal = resObj.Value<int>("id");
+            Assert.AreEqual(idVal, 1);
         }
     }
 }

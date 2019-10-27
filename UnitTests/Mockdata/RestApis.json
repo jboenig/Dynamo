@@ -25,5 +25,38 @@
         "Post":  "true"
       }
     ]
+  },
+  {
+    "$type": "Headway.Dynamo.RestServices.RestApi, Headway.Dynamo",
+    "Name": "Dummy Rest Example",
+    "RootEndpointUri": "http://dummy.restapiexample.com/api/v1/",
+    "Services": [
+      {
+        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "Name": "Employees",
+        "RelativePath": "employees",
+        "Version": "1"
+      },
+      {
+        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "Name": "GetEmployee",
+        "RelativePath": "employee/{id}",
+        "Version": "1",
+        "Parameters": [
+          {
+            "$type": "Headway.Dynamo.Metadata.UrlPathParameter, Headway.Dynamo",
+            "Name": "Id",
+            "DataTypeName": "Integer"
+          }
+        ]
+      },
+      {
+        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "Name": "CreateEmployee",
+        "RelativePath": "create",
+        "Version": "1",
+        "Post": "true"
+      }
+    ]
   }
 ]

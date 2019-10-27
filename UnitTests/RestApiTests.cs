@@ -87,6 +87,20 @@ namespace Headway.Dynamo.UnitTests
         }
 
         [TestMethod]
+        public void InvokeGetEmployee()
+        {
+            var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
+            Assert.IsNotNull(restApiService);
+            var taskGetEmployee = restApiService.Invoke("Dummy Rest Example", "GetEmployee", new { Id = 1 });
+            taskGetEmployee.Wait();
+            Assert.IsTrue(taskGetEmployee.Result.IsSuccessStatusCode);
+
+            var resObj = taskGetEmployee.Result.Content.GetAsJObject();
+            //var idVal = resObj.Value<int>("id");
+            //Assert.AreEqual(idVal, 1);
+        }
+
+        [TestMethod]
         public void InvokePost()
         {
             var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;

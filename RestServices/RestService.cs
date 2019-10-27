@@ -18,7 +18,6 @@
 
 using System;
 using System.Text;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -177,11 +176,25 @@ namespace Headway.Dynamo.RestServices
             var uri = this.GetUri(paramObj);
 
             HttpRequestMessage request = new HttpRequestMessage(this.GetHttpMethod(), uri);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
+            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
             request.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            request.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
             request.Headers.AcceptCharset.Add(new StringWithQualityHeaderValue("UTF-8"));
             request.Headers.AcceptLanguage.Add(new StringWithQualityHeaderValue("english"));
+            request.Headers.CacheControl = new CacheControlHeaderValue()
+            {
+                NoCache = true
+            };
+            request.Headers.Connection.Add("keep-alive");
+            request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Dynamo", "1.0.0"));
+//            request.Headers.Range = new RangeHeaderValue(null, 10000);
+
+            if (this.Post)
+            {
+                // TODO: Load content
+            }
 
             return httpClient.SendAsync(request);
         }

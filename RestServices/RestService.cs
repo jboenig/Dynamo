@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Runtime;
 
@@ -161,11 +162,14 @@ namespace Headway.Dynamo.RestServices
         /// Parameter object containing properties that match the
         /// parameter names declared in the service definition.
         /// </param>
+        /// <param name="contentObj">
+        /// Object containing content to send with web service request.
+        /// </param>
         /// <returns>
         /// Returns a Task that executes the call to the web service
         /// and returns an HttpResponseMessage.
         /// </returns>
-        public Task<HttpResponseMessage> Invoke(object paramObj)
+        public Task<HttpResponseMessage> Invoke(object paramObj, object contentObj = null)
         {
             if (this.owner == null)
             {
@@ -191,9 +195,11 @@ namespace Headway.Dynamo.RestServices
             request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Dynamo", "1.0.0"));
 //            request.Headers.Range = new RangeHeaderValue(null, 10000);
 
-            if (this.Post)
+            if (this.Post && contentObj != null)
             {
-                // TODO: Load content
+                request.Content = new StringContent(
+                                JsonConvert.SerializeObject(contentObj),
+                                Encoding.UTF8, "application/json");
             }
 
             return httpClient.SendAsync(request);

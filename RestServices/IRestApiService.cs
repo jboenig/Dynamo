@@ -53,10 +53,13 @@ namespace Headway.Dynamo.RestServices
         /// Parameter object containing properties that match the
         /// parameter names declared in the service definition.
         /// </param>
+        /// <param name="contentObj">
+        /// Object containing content to send with web service request.
+        /// </param>
         /// <returns>
         /// Returns a Task that executes the call to the web service
         /// and returns an HttpResponseMessage.
         /// </returns>
-        Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj);
+        Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null);
     }
 }

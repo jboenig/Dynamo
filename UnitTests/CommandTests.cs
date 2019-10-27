@@ -26,6 +26,7 @@ using Headway.Dynamo.Serialization;
 using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Repository.FlatFileRepo;
 using Headway.Dynamo.Runtime;
+using Headway.Dynamo.UnitTests.Mockdata;
 
 namespace Headway.Dynamo.UnitTests
 {
@@ -55,12 +56,6 @@ namespace Headway.Dynamo.UnitTests
             this.svcProvider.AddService(typeof(IRestApiService), restApiService);
         }
 
-        private class MyContext
-        {
-            public int Id { get; set; }
-            public JObject ResponseContent { get; set; }
-        }
-
         [TestMethod]
         public void CallRestServiceGetNoParams()
         {
@@ -70,7 +65,7 @@ namespace Headway.Dynamo.UnitTests
                 ServiceName = "todos",
                 ResponseContentPropertyName = "ResponseContent"
             };
-            var context = new MyContext { Id = 1 };
+            var context = new JsonPlaceholderContext { Id = 1 };
             var restCallTask = cmd.Execute(this.svcProvider, context);
             restCallTask.RunSynchronously();
             Assert.AreEqual(restCallTask.Result.IsSuccess, true);
@@ -78,6 +73,38 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(idVal, 1);
             var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
             Assert.IsTrue(title.StartsWith("delectus"));
+        }
+
+        [TestMethod]
+        public void CallRestServicePostTodo()
+        {
+            var cmd = new CallRestWebServiceCommand()
+            {
+                ApiName = "Test1",
+                ServiceName = "posts",
+                ResponseContentPropertyName = "ResponseContent",
+                RequestContentPropertyName = "RequestContent"
+            };
+
+            var context = new JsonPlaceholderContext
+            {
+                RequestContent = new
+                {
+                    title = "hello world",
+                    body = "dude",
+                    userId = 10101
+                }
+            };
+
+            var restCallTask = cmd.Execute(this.svcProvider, context);
+            restCallTask.RunSynchronously();
+            Assert.AreEqual(restCallTask.Result.IsSuccess, true);
+
+            var userIdVal = context.ResponseContent.Value<int>("userId");
+            Assert.AreEqual(userIdVal, 10101);
+
+            var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
+            Assert.IsTrue(title.StartsWith("hello world"));
         }
     }
 }

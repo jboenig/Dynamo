@@ -16,14 +16,14 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
+using Newtonsoft.Json.Linq;
+
 namespace Headway.Dynamo.UnitTests.Mockdata
 {
-    public class Employee : Person
+    internal sealed class JsonPlaceholderContext
     {
-        public string EmployeeId
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
+        public JObject ResponseContent { get; set; }
+        public object RequestContent { get; set; }
     }
 }

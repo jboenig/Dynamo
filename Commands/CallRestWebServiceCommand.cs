@@ -22,6 +22,7 @@ using System.Net.Http;
 using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Commands;
+using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.Commands
 {
@@ -93,12 +94,21 @@ namespace Headway.Dynamo.Commands
 
             return new Task<CommandResult>(() =>
             {
-                this.taskWebServiceCall = restApiService.Invoke(this.ApiName, this.ServiceName, context);
+                object contentObj = null;
+
+                if (!string.IsNullOrEmpty(this.RequestContentPropertyName))
+                {
+                    // Get content to pass to web service
+                    contentObj = PropertyResolver.GetPropertyValue<object>(context, this.RequestContentPropertyName);
+                }
+
+                this.taskWebServiceCall = restApiService.Invoke(this.ApiName, this.ServiceName, context, contentObj);
                 this.taskWebServiceCall.Wait();
                 if (this.taskWebServiceCall.Result.IsSuccessStatusCode)
                 {
                     if (!string.IsNullOrEmpty(this.ResponseContentPropertyName))
                     {
+                        // Push response to context object
                         var resultJsonObj = this.taskWebServiceCall.Result.Content.GetAsJObject();
                         var setPropValCmd = new SetPropertyValueCommand()
                         {

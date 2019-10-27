@@ -95,20 +95,33 @@ namespace Headway.Dynamo.UnitTests
             taskGetEmployee.Wait();
             Assert.IsTrue(taskGetEmployee.Result.IsSuccessStatusCode);
 
+            /////////////////////////////////////////////////////////////////////
+            /// This request returns a 406 (not acceptable). Not sure why,
+            /// but it works fine in Postman. Need to fix!!!
+            /// 
+
             var resObj = taskGetEmployee.Result.Content.GetAsJObject();
             //var idVal = resObj.Value<int>("id");
             //Assert.AreEqual(idVal, 1);
         }
 
         [TestMethod]
-        public void InvokePost()
+        public void InvokePostTodos()
         {
             var restApiService = this.svcProvider.GetService(typeof(IRestApiService)) as IRestApiService;
             Assert.IsNotNull(restApiService);
-            var contentObj = new { title = "hello world", body = "dude", userId = 10101 };
+
+            var contentObj = new
+            {
+                title = "hello world",
+                body = "dude",
+                userId = 10101
+            };
+
             var taskPosts = restApiService.Invoke("Test1", "posts", null, contentObj);
             taskPosts.Wait();
             Assert.IsTrue(taskPosts.Result.IsSuccessStatusCode);
+
             var resObj = taskPosts.Result.Content.GetAsJObject();
             var userIdRes = resObj.Value<int>("userId");
             Assert.AreEqual(userIdRes, 10101);

@@ -100,6 +100,42 @@ namespace Headway.Dynamo.Runtime
         }
 
         /// <summary>
+        /// Sets the value of the specified property on
+        /// the object.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Data type of the property to set.
+        /// </typeparam>
+        /// <param name="obj">
+        /// Object containing the property.
+        /// </param>
+        /// <param name="propertyName">
+        /// Name of the property to assign.
+        /// </param>
+        /// <param name="propValue">
+        /// Value to assign to the property.
+        /// </param>
+        public static void SetPropertyValue<T>(object obj, string propertyName, T propValue)
+        {
+            var propertyAccessor = obj as IPropertyAccessor;
+            if (propertyAccessor != null)
+            {
+                propertyAccessor.SetPropertyValue<object>(propertyName, propValue);
+            }
+            else
+            {
+                // Use reflection
+                var propInfo = obj.GetType().GetProperty(propertyName);
+                if (propInfo == null)
+                {
+                    var msg = string.Format("Property {0} does not exist", propertyName);
+                    throw new InvalidOperationException(msg);
+                }
+                propInfo.SetValue(obj, propValue);
+            }
+        }
+
+        /// <summary>
         /// Attempts to resolve the source string as a single
         /// variable name. This only works if the entire source
         /// string is a single variable name.

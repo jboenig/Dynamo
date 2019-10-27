@@ -23,7 +23,7 @@ using Headway.Dynamo.Runtime;
 namespace Headway.Dynamo.Commands
 {
     /// <summary>
-    /// 
+    /// Implements a <see cref="Command"/> that sets a 
     /// </summary>
     public sealed class SetPropertyValueCommand : Command
     {
@@ -63,23 +63,15 @@ namespace Headway.Dynamo.Commands
 
             return new Task<CommandResult>(() =>
             {
-                var propertyAccessor = context as IPropertyAccessor;
-                if (propertyAccessor != null)
+                var actualValue = this.Value;
+                var strValue = this.Value as string;
+                if (strValue != null)
                 {
-                    propertyAccessor.SetPropertyValue<object>(this.PropertyName, this.Value);
+                    // Value is a string. Attempt to resolve any variables
+                    // it may contain.
+                    actualValue = PropertyResolver.ResolvePropertyValues(context, strValue);
                 }
-                else
-                {
-                    // Use reflection
-                    var propInfo = context.GetType().GetProperty(this.PropertyName);
-                    if (propInfo == null)
-                    {
-                        var msg = string.Format("Property {0} does not exist", this.PropertyName);
-                        throw new InvalidOperationException(msg);
-                    }
-                    propInfo.SetValue(context, this.Value);
-                }
-
+                PropertyResolver.SetPropertyValue<object>(context, this.PropertyName, actualValue);
                 return CommandResult.Success;
             });
         }

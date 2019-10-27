@@ -94,6 +94,7 @@
     <Compile Include="DynamicMetadataTests.cs" />
     <Compile Include="Mockdata\DynamoPerson.cs" />
     <Compile Include="Mockdata\Employee.cs" />
+    <Compile Include="Mockdata\JsonPlaceholderContext.cs" />
     <Compile Include="ReflectionMetadataTests.cs" />
     <Compile Include="Mockdata\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

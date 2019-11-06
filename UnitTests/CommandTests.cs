@@ -19,7 +19,6 @@
 using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
@@ -73,6 +72,70 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(idVal, 1);
             var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
             Assert.IsTrue(title.StartsWith("delectus"));
+        }
+
+        [TestMethod]
+        public void SyncronousMacroCommand()
+        {
+            var cmdNoop = new DelegateCommand(() => true);
+            var cmdAddNumbers = new DelegateCommand((s,c) =>
+            {
+                var v1 = PropertyResolver.GetPropertyValue<int>(c, "Val1");
+                var v2 = PropertyResolver.GetPropertyValue<int>(c, "Val2");
+                var sum = v1 + v2;
+                return new BoolCommandResult(true, string.Format("Sum of {0} + {1} = {2}", v1, v2, sum));
+            });
+            var cmdMacro = new MacroCommand();
+            cmdMacro.Commands.Add(cmdNoop);
+            cmdMacro.Commands.Add(cmdAddNumbers);
+            cmdMacro.Commands.Add(cmdNoop);
+            cmdMacro.Commands.Add(cmdAddNumbers);
+            cmdMacro.ExecuteAsync = false;
+            var contextObj = new
+            {
+                Val1 = 2,
+                Val2 = 5,
+                Result = -1
+            };
+            var cmdMacroTask = cmdMacro.Execute(this.svcProvider, contextObj);
+            cmdMacroTask.RunSynchronously();
+            var cmdRes = cmdMacroTask.Result;
+            Assert.IsTrue(cmdRes.IsSuccess);
+            Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
+        }
+
+        [TestMethod]
+        public void AsyncronousMacroCommand()
+        {
+            var cmdNoop = new DelegateCommand(() =>
+            {
+                System.Threading.Thread.Sleep(20);
+                return true;
+            });
+            var cmdAddNumbers = new DelegateCommand((s, c) =>
+            {
+                var v1 = PropertyResolver.GetPropertyValue<int>(c, "Val1");
+                var v2 = PropertyResolver.GetPropertyValue<int>(c, "Val2");
+                var sum = v1 + v2;
+                return new BoolCommandResult(true, string.Format("Sum of {0} + {1} = {2}", v1, v2, sum));
+            });
+            var cmdMacro = new MacroCommand();
+            cmdMacro.Commands.Add(cmdNoop);
+            cmdMacro.Commands.Add(cmdAddNumbers);
+            cmdMacro.Commands.Add(cmdNoop);
+            cmdMacro.Commands.Add(cmdAddNumbers);
+            cmdMacro.ExecuteAsync = true;
+            var contextObj = new
+            {
+                Val1 = 2,
+                Val2 = 5,
+                Result = -1
+            };
+            var cmdMacroTask = cmdMacro.Execute(this.svcProvider, contextObj);
+            cmdMacroTask.RunSynchronously();
+            var cmdRes = cmdMacroTask.Result;
+            Assert.IsTrue(cmdRes.IsSuccess);
+            Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
 
         [TestMethod]

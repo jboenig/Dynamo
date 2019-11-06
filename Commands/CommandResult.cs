@@ -72,6 +72,12 @@ namespace Headway.Dynamo.Commands
         /// successful execution of a command.
         /// </summary>
         public static CommandResult Success = new BoolCommandResult(true, string.Empty);
+
+        /// <summary>
+        /// Gets a singleton <see cref="CommandResult"/> object that indicates
+        /// failed execution of a command.
+        /// </summary>
+        public static CommandResult Fail = new BoolCommandResult(false, string.Empty);
     }
 
     /// <summary>

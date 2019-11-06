@@ -33,6 +33,13 @@ namespace Headway.Dynamo.Serialization
         /// <summary>
         /// 
         /// </summary>
+        public StandardSerializerConfigService()
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="converterService"></param>
         public StandardSerializerConfigService(IJsonConverterService converterService)
         {

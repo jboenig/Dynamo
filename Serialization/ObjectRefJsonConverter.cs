@@ -31,6 +31,13 @@ namespace Headway.Dynamo.Serialization
     public class ObjectRefJsonConverter<TKey, TObject> : JsonConverter<TObject> where TObject : class
     {
         /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public ObjectRefJsonConverter()
+        {
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public override bool CanRead => true;

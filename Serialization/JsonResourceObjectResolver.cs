@@ -21,6 +21,8 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Headway.Dynamo.Runtime;
+using Headway.Dynamo.Metadata;
+using Headway.Dynamo.Exceptions;
 
 namespace Headway.Dynamo.Serialization
 {
@@ -31,13 +33,22 @@ namespace Headway.Dynamo.Serialization
     public sealed class JsonResourceObjectResolver<TResult> : IObjectResolver<string, TResult> where TResult : class
     {
         private Assembly sourceAssembly;
+        private IServiceProvider svcProvider;
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="svcProvider"></param>
         /// <param name="sourceAssembly"></param>
-        public JsonResourceObjectResolver(Assembly sourceAssembly)
+        public JsonResourceObjectResolver(IServiceProvider svcProvider,
+            Assembly sourceAssembly)
         {
+            if (svcProvider == null)
+            {
+                throw new ArgumentNullException(nameof(svcProvider));
+            }
+            this.svcProvider = svcProvider;
+
             if (sourceAssembly == null)
             {
                 throw new ArgumentNullException(nameof(sourceAssembly));
@@ -67,14 +78,33 @@ namespace Headway.Dynamo.Serialization
                 resourceName = string.Format("{0}.{1}.json", prefix, key);
             }
 
-            var serializer = new JsonSerializer();
-            serializer.TypeNameHandling = TypeNameHandling.Auto;
+            var serializerConfigSvc = this.svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;
+            if (serializerConfigSvc == null)
+            {
+                throw new ServiceNotFoundException(typeof(ISerializerConfigService));
+            }
+
+            var metadataProvider = this.svcProvider.GetService(typeof(IMetadataProvider)) as IMetadataProvider;
+            if (metadataProvider == null)
+            {
+                throw new ServiceNotFoundException(typeof(IMetadataProvider));
+            }
+
+            var objType = metadataProvider.GetDataType<ObjectType>(typeof(TResult));
+            if (objType == null)
+            {
+                var msg = string.Format("Unable to resolve data type {0}", typeof(TResult).FullName);
+                throw new InvalidOperationException(msg);
+            }
+
+            var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
+                objType,
+                this.svcProvider);
 
             using (var stream = this.sourceAssembly.GetManifestResourceStream(resourceName))
             using (StreamReader sr = new StreamReader(stream))
-            using (JsonTextReader reader = new JsonTextReader(sr))
             {
-                result = (TResult)serializer.Deserialize<TResult>(reader);
+                result = (TResult)JsonConvert.DeserializeObject<TResult>(sr.ReadToEnd(), jsonSettings);
             }
 
             return result;

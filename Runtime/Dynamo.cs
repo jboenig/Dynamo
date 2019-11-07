@@ -348,12 +348,18 @@ namespace Headway.Dynamo.Runtime
 
             foreach (var prop in this.DataType.FindAllProperties())
             {
+                var curPropName = prop.Name;
+                if (curPropName == PropNameDataTypeName)
+                {
+                    continue;
+                }
+
                 if (prop.Serialize)
                 {
                     var propVal = prop.GetValue<object>(this);
                     if (propVal != null || !prop.DataType.CLRType.IsValueType)
                     {
-                        info.AddValue(prop.Name, propVal);
+                        info.AddValue(curPropName, propVal);
                     }
                 }
             }

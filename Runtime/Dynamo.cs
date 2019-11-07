@@ -21,13 +21,9 @@ using System.Linq;
 using System.Dynamic;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-//using Newtonsoft.Json;
-//using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Exceptions;
-using Headway.Dynamo.Runtime;
-using System.Linq.Expressions;
 
 namespace Headway.Dynamo.Runtime
 {
@@ -41,20 +37,31 @@ namespace Headway.Dynamo.Runtime
     {
         #region Member Variables
 
-        private ObjectType dataType;
-        private Dictionary<string, object> values;
+        private readonly Dictionary<string, object> values;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Default constructor.
         /// </summary>
-        /// <param name="objType"></param>
+        public Dynamo()
+        {
+            this.values = new Dictionary<string, object>();
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="Dynamo"/> given an
+        /// <see cref="ObjectType"/> metadata object.
+        /// </summary>
+        /// <param name="objType">
+        /// Object containing the metadata for this
+        /// <see cref="Dynamo"/> object.
+        /// </param>
         public Dynamo(ObjectType objType)
         {
-            this.dataType = objType;
+            this.DataType = objType;
             this.values = new Dictionary<string, object>();
         }
 
@@ -65,7 +72,7 @@ namespace Headway.Dynamo.Runtime
         /// <param name="source">Source object to copy</param>
         public Dynamo(Dynamo source)
         {
-            this.dataType = source.DataType;
+            this.DataType = source.DataType;
             this.values = new Dictionary<string, object>();
             foreach (var curKey in source.values.Keys)
             {
@@ -78,15 +85,13 @@ namespace Headway.Dynamo.Runtime
         #region Public Properties
 
         /// <summary>
-        /// Gets the <see cref="ObjectType"/> metadata that defines the
-        /// properties in this dynamic object.
+        /// Gets or sets the <see cref="ObjectType"/> metadata that defines
+        /// the properties and metadata for this dynamic object.
         /// </summary>
         public ObjectType DataType
         {
-            get
-            {
-                return this.dataType;
-            }
+            get;
+            set;
         }
 
         #endregion
@@ -197,84 +202,6 @@ namespace Headway.Dynamo.Runtime
 
         #endregion
 
-#if false
-        #region DynamicObject Implementation
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        public override DynamicMetaObject GetMetaObject(Expression parameter)
-        {
-            return base.GetMetaObject(parameter);
-        }
-
-        /// <summary>
-        /// Gets the number of dynamic property values.
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this.values.Count;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="binder"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
-        {
-            bool success = false;
-            result = null;
-            var prop = this.DataType.GetPropertyByName(binder.Name);
-            if (prop != null)
-            {
-                result = prop.GetValue<object>(this);
-                success = true;
-            }
-            return success;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="binder"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public override bool TrySetMember(SetMemberBinder binder, object value)
-        {
-            bool success = false;
-            var prop = this.DataType.GetPropertyByName(binder.Name);
-
-            if (prop == null)
-            {
-                //DataType propType = IntegralType.Get(binder.ReturnType);
-                DataType propType = IntegralType.Get(value.GetType());
-                if (propType == null)
-                {
-                    var msg = string.Format("Error setting value on property {0}. Property not found and value is not an integral type. You must explicitly add the data type to the metadata provider.", binder.Name);
-                    throw new InvalidOperationException(msg);
-                }
-                prop = this.DataType.AddProperty(binder.Name, propType);
-            }
-
-            if (prop != null)
-            {
-                prop.SetValue<object>(this, value);
-                success = true;
-            }
-
-            return success;
-        }
-
-        #endregion
-#endif
-
         #region IDynamicPropertyAccessor Implementation
 
         /// <summary>
@@ -333,64 +260,20 @@ namespace Headway.Dynamo.Runtime
 
         #region Serialization
 
-#if false
         /// <summary>
-        /// Converts this <see cref="DynamoObject"/> object to
-        /// a Json string.
+        /// Serialization constructor.
         /// </summary>
-        /// <returns>
-        /// Serialized Json string
-        /// </returns>
-        //public string ToJson()
-        //{
-        //    var serializerSettings = new JsonSerializerSettings()
-        //    {
-        //        TypeNameHandling = TypeNameHandling.Objects
-        //    };
-
-        //    return JsonConvert.SerializeObject(this, Formatting.None, serializerSettings);
-        //}
-
-        /// <summary>
-        /// Determines if the given Json object contains all of the properties
-        /// required for deserialization into a parameter model.
-        /// </summary>
-        /// <param name="jObj">
-        /// Json object to test for completeness
-        /// </param>
-        /// <returns>
-        /// Returns true if the specified Json object contains all required
-        /// properties for deserialization. Returns false if it is incomplete.
-        /// </returns>
+        /// <param name="info">Serialiation info</param>
+        /// <param name="context">Streaming context</param>
         /// <remarks>
-        /// This method is used to determine if the Json object should be
-        /// directly used for deserialization or if it should be merged into
-        /// a clean Json object that contains all properties with default
-        /// values.
+        /// Deserializes the given SerializationInfo into a new
+        /// instance of this class.
         /// </remarks>
-        //public static bool IsJsonComplete(JObject jObj)
-        //{
-        //    bool isComplete = true;
-
-        //    if (jObj["dataType"] == null)
-        //    {
-        //        isComplete = false;
-        //    }
-
-        //    return isComplete;
-        //}
-#endif
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
         protected Dynamo(SerializationInfo info, StreamingContext context)
         {
             try
             {
-                this.dataType = info.GetValue("dataType", typeof(ObjectType)) as ObjectType;
+                this.DataType = info.GetValue("dataType", typeof(ObjectType)) as ObjectType;
             }
             catch
             {
@@ -431,10 +314,10 @@ namespace Headway.Dynamo.Runtime
         }
 
         /// <summary>
-        /// 
+        /// Serializes this object to the given SerializationInfo object
         /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
+        /// <param name="info">Serialiation info</param>
+        /// <param name="context">Streaming context</param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("dataType", this.DataType);

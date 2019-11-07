@@ -17,14 +17,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Runtime.Serialization;
 using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.UnitTests.Mockdata
 {
+    [Serializable]
     public class DynamoPerson : Runtime.Dynamo
     {
         public DynamoPerson(ObjectType objType) :
             base(objType)
+        {
+        }
+
+        protected DynamoPerson(SerializationInfo info, StreamingContext context) :
+            base(info, context)
         {
         }
 

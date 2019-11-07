@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Serialization;
+using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Repository.FlatFileRepo;
 using Headway.Dynamo.UnitTests.Mockdata;
 
@@ -105,6 +108,68 @@ namespace Headway.Dynamo.UnitTests
             var sp1 = metaHuman.Superpower1;
             Assert.AreEqual(sp1, "Invisibility");
             metaHuman.FirstName = "Fred";
+        }
+
+        [TestMethod]
+        public void SerializeDynamicObject()
+        {
+            // Use StandardMetadataProvider
+            var svcProvider = new ServiceContainer();
+            svcProvider.AddService(typeof(IMetadataProvider), this.MetadataProvider);
+            svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
+
+            var metadataRepo = new FlatFileRepo<DynamicObjectType>(
+                this.MetadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
+                @"MockData/SuperheroMetadata.json",
+                svcProvider
+                );
+            this.MetadataProvider.DynamicProvider.Load(metadataRepo);
+
+            dynamic metaHuman = this.MetadataProvider.CreateInstance<DynamoPerson>(null,
+                "Headway.Dynamo.UnitTests.Mockdata.Metahuman",
+                null);
+            Assert.IsNotNull(metaHuman);
+            metaHuman.Superpower1 = "Invisibility";
+            var sp1 = metaHuman.Superpower1;
+            Assert.AreEqual(sp1, "Invisibility");
+            metaHuman.FirstName = "Fred";
+
+            // Serialize object
+            var serializerConfigSvc = svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;
+            if (serializerConfigSvc == null)
+            {
+                throw new ServiceNotFoundException(typeof(ISerializerConfigService));
+            }
+
+            var objType = this.MetadataProvider.GetDataType<ObjectType>("Headway.Dynamo.UnitTests.Mockdata.Metahuman");
+
+            var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
+                objType,
+                svcProvider);
+
+            var jsonMetaHuman = JsonConvert.SerializeObject(metaHuman, jsonSettings);
+
+            byte[] buffer;
+
+            using (var stream = new MemoryStream())
+            {
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine(jsonMetaHuman);
+                }
+                buffer = stream.GetBuffer();
+            }
+
+            using (var stream = new MemoryStream(buffer))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    dynamic metaHuman_2 = JsonConvert.DeserializeObject<DynamoPerson>(sr.ReadToEnd(), jsonSettings);
+                    Assert.IsNotNull(metaHuman_2);
+                    var sp1_2 = metaHuman_2.Superpower1;
+                    Assert.AreEqual(sp1_2, "Invisibility");
+                }
+            }
         }
     }
 }

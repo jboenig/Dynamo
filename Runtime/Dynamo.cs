@@ -33,7 +33,10 @@ namespace Headway.Dynamo.Runtime
     /// interface and implements serialization.
     /// </summary>
     [Serializable]
-    public class Dynamo : IDynamicMetaObjectProvider, IPropertyAccessor, IDynamicPropertyAccessor, ISerializable
+    public class Dynamo : IDynamicMetaObjectProvider,
+                          IPropertyAccessor,
+                          IDynamicPropertyAccessor,
+                          ISerializable
     {
         #region Member Variables
 
@@ -261,6 +264,8 @@ namespace Headway.Dynamo.Runtime
 
         #region Serialization
 
+        private const string PropNameDataTypeName = "DataTypeName";
+
         /// <summary>
         /// Serialization constructor.
         /// </summary>
@@ -272,32 +277,50 @@ namespace Headway.Dynamo.Runtime
         /// </remarks>
         protected Dynamo(SerializationInfo info, StreamingContext context)
         {
-            try
-            {
-                this.DataType = info.GetValue("dataType", typeof(ObjectType)) as ObjectType;
-            }
-            catch
-            {
-//                this.dataType = DynamicObjectType.Create(this.MetadataProvider, typeof(DynamoObject).FullName, typeof(DynamoObject));
-            }
-            
+            ///////////////////////////////////////////////////////////////
+            // Create dictionary to store dynamic property values
             this.values = new Dictionary<string, object>();
+
+            ///////////////////////////////////////////////////////////////
+            // Get IServiceProvider instance from streaming context
+            var svcProvider = context.Context as IServiceProvider;
+            if (svcProvider == null)
+            {
+                throw new InvalidOperationException("An instance of IServiceProvider must be attached to the StreamingContext in order to deserialize this object");
+            }
+
+            ///////////////////////////////////////////////////////////////
+            // Load data type information
+            var dataTypeName = info.GetString(PropNameDataTypeName);
+
+            if (!string.IsNullOrEmpty(dataTypeName))
+            {
+                var metadataProvider = svcProvider.GetService(typeof(IMetadataProvider)) as IMetadataProvider;
+                if (metadataProvider == null)
+                {
+                    throw new ServiceNotFoundException(typeof(IMetadataProvider));
+                }
+                this.DataType = metadataProvider.GetDataType<ObjectType>(dataTypeName);
+            }
+
+            ///////////////////////////////////////////////////////////////
+            // Iterate through all serialized properties and
+            // use metadata to assign values to object
 
             var valEnumerator = info.GetEnumerator();
             while (valEnumerator.MoveNext())
             {
                 var curPropName = valEnumerator.Current.Name;
+                if (curPropName == PropNameDataTypeName)
+                {
+                    continue;
+                }
 
                 var curProp = this.DataType.GetPropertyByName(curPropName);
                 if (curProp == null)
                 {
                     // Property not found - create one
                     var propVal = info.GetValue(curPropName, typeof(object));
-                    //var jval = propVal as Newtonsoft.Json.Linq.JValue;
-                    //if (jval != null)
-                    //{
-                    //    propVal = jval.Value;
-                    //}
                     DataType propType = IntegralType.Get(propVal.GetType());
                     if (propType == null)
                     {
@@ -321,7 +344,7 @@ namespace Headway.Dynamo.Runtime
         /// <param name="context">Streaming context</param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("dataType", this.DataType);
+            info.AddValue(PropNameDataTypeName, this.DataType.FullName);
 
             foreach (var prop in this.DataType.FindAllProperties())
             {

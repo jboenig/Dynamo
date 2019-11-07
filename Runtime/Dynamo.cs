@@ -48,6 +48,7 @@ namespace Headway.Dynamo.Runtime
         /// </summary>
         public Dynamo()
         {
+            this.DataType = Metadata.Reflection.ReflectionObjectType.Get(this.GetType());
             this.values = new Dictionary<string, object>();
         }
 

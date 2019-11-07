@@ -40,6 +40,15 @@ namespace Headway.Dynamo.Metadata.Reflection
 
         #region Constructors
 
+        private ReflectionObjectType(Type clrType)
+        {
+            if (clrType == null)
+            {
+                throw new ArgumentNullException("clrType");
+            }
+            this.clrType = clrType;
+        }
+
         private ReflectionObjectType(IMetadataProvider metadataProvider, Type clrType) :
             base(metadataProvider)
 		{
@@ -183,6 +192,23 @@ namespace Headway.Dynamo.Metadata.Reflection
         /// Gets an <see cref="ObjectType"/> matching the given fully
         /// qualified CLR class name.
         /// </summary>
+        /// <param name="fullName">
+        /// Fully qualified name of the CLR class.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="ObjectType"/> for
+        /// the specified CLR class.
+        /// </returns>
+        internal static ObjectType Get(string fullName)
+        {
+            return ReflectionObjectType.Get(fullName,
+                new DefaultAssemblyLoader());
+        }
+
+        /// <summary>
+        /// Gets an <see cref="ObjectType"/> matching the given fully
+        /// qualified CLR class name.
+        /// </summary>
         /// <param name="metadataProvider">
         /// Reference to <see cref="IMetadataProvider"/> service used
         /// to resolve data types.
@@ -200,6 +226,27 @@ namespace Headway.Dynamo.Metadata.Reflection
 			return ReflectionObjectType.Get(metadataProvider, fullName,
                 new DefaultAssemblyLoader());
 		}
+
+        /// <summary>
+        /// Gets an <see cref="ObjectType"/> matching the given fully
+        /// qualified CLR class name and assembly loader.
+        /// </summary>
+        /// <param name="fullName">
+        /// Fully qualified name of the CLR class.
+        /// </param>
+        /// <param name="assemblyLoader">
+        /// Assembly loader used to get available assemblies in
+        /// which to search for the class.
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="ObjectType"/> for
+        /// the specified CLR class.
+        /// </returns>
+        internal static ObjectType Get(string fullName,
+            IAssemblyLoader assemblyLoader)
+        {
+            return ReflectionObjectType.Get(null, fullName, assemblyLoader);
+        }
 
         /// <summary>
         /// Gets an <see cref="ObjectType"/> matching the given fully
@@ -299,6 +346,33 @@ namespace Headway.Dynamo.Metadata.Reflection
             }
 
             return new ReflectionObjectType(metadataProvider, clrType);
+        }
+
+        /// <summary>
+        /// Gets an <see cref="ObjectType"/> given a CLR type.
+        /// </summary>
+        /// <param name="clrType">
+        /// CLR type information
+        /// </param>
+        /// <returns>
+        /// Returns an instance of <see cref="ObjectType"/> for
+        /// the specified CLR class.
+        /// </returns>
+        internal static ObjectType Get(Type clrType)
+        {
+            if (clrType == null)
+            {
+                throw new ArgumentNullException(nameof(clrType));
+            }
+
+            var fullName = clrType.FullName;
+
+            if (classCache.ContainsKey(fullName))
+            {
+                return classCache[fullName];
+            }
+
+            return new ReflectionObjectType(clrType);
         }
 
         #endregion

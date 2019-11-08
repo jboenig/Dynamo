@@ -19,6 +19,8 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Headway.Dynamo.Metadata.Reflection
 {
@@ -34,6 +36,7 @@ namespace Headway.Dynamo.Metadata.Reflection
 		private PropertyInfo propInfo;
         private DataType dataType;
         private object defaultValue;
+        private bool? isSerializable;
 
 		#endregion
 
@@ -157,24 +160,32 @@ namespace Headway.Dynamo.Metadata.Reflection
 		{
 			get
 			{
-                if (this.propInfo.CanWrite && this.propInfo.CanRead)
+                if (this.isSerializable.HasValue)
                 {
-                    return true;
+                    return this.isSerializable.Value;
                 }
 
-                return false;
+                this.isSerializable = true;
 
-				//var serializationAttrs = this.propInfo.GetCustomAttributes(typeof(SerializationAttribute), true);
-				//if (serializationAttrs == null || serializationAttrs.Length <= 0)
-				//{
-				//	return true;
-				//}
-				//var serializationAttr = serializationAttrs[0] as SerializationAttribute;
-				//if (serializationAttr == null)
-				//{
-				//	throw new InvalidOperationException();
-				//}
-				//return serializationAttr.Visible;
+                // Property must have read and write access
+                if (!this.propInfo.CanWrite || !this.propInfo.CanRead)
+                {
+                    this.isSerializable = false;
+                }
+
+                var jsonIgnoreAttrs = this.propInfo.GetCustomAttributes(typeof(JsonIgnoreAttribute), true);
+                if (jsonIgnoreAttrs != null && jsonIgnoreAttrs.Length > 0)
+                {
+                    this.isSerializable = false;
+                }
+
+                var xmlIgnoreAttrs = this.propInfo.GetCustomAttributes(typeof(XmlIgnoreAttribute), true);
+                if (xmlIgnoreAttrs != null && xmlIgnoreAttrs.Length > 0)
+                {
+                    this.isSerializable = false;
+                }
+
+                return this.isSerializable.Value;
 			}
 		}
 

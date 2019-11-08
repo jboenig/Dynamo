@@ -21,6 +21,7 @@ using System.Linq;
 using System.Dynamic;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Exceptions;
@@ -92,6 +93,7 @@ namespace Headway.Dynamo.Runtime
         /// Gets or sets the <see cref="ObjectType"/> metadata that defines
         /// the properties and metadata for this dynamic object.
         /// </summary>
+        [JsonIgnore]
         public ObjectType DataType
         {
             get;
@@ -348,18 +350,12 @@ namespace Headway.Dynamo.Runtime
 
             foreach (var prop in this.DataType.FindAllProperties())
             {
-                var curPropName = prop.Name;
-                if (curPropName == PropNameDataTypeName)
-                {
-                    continue;
-                }
-
                 if (prop.Serialize)
                 {
                     var propVal = prop.GetValue<object>(this);
                     if (propVal != null || !prop.DataType.CLRType.IsValueType)
                     {
-                        info.AddValue(curPropName, propVal);
+                        info.AddValue(prop.Name, propVal);
                     }
                 }
             }

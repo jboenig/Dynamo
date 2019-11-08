@@ -98,16 +98,18 @@ namespace Headway.Dynamo.Commands
                         foreach (var command in this.Commands)
                         {
                             var curCommandTask = command.Execute(serviceProvider, context);
-
-                            if (this.ExecuteAsync)
+                            if (curCommandTask != null)
                             {
-                                commandTasks.Add(curCommandTask);
-                                curCommandTask.Start();
-                            }
-                            else
-                            {
-                                curCommandTask.RunSynchronously();
-                                commandRes.CommandResults.Add(curCommandTask.Result);
+                                if (this.ExecuteAsync)
+                                {
+                                    commandTasks.Add(curCommandTask);
+                                    curCommandTask.Start();
+                                }
+                                else
+                                {
+                                    curCommandTask.RunSynchronously();
+                                    commandRes.CommandResults.Add(curCommandTask.Result);
+                                }
                             }
                         }
 

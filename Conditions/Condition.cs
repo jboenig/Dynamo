@@ -36,5 +36,15 @@ namespace Headway.Dynamo.Conditions
         /// of the condition.
         /// </returns>
         public abstract bool Evaluate(IServiceProvider serviceProvider, object context);
+
+        /// <summary>
+        /// Singleton <see cref="Condition"/> that always evaluates to true.
+        /// </summary>
+        public static Condition True = new True();
+
+        /// <summary>
+        /// Singleton <see cref="Condition"/> that always evaluates to false.
+        /// </summary>
+        public static Condition False = new False();
     }
 }

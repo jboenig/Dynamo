@@ -30,7 +30,7 @@ namespace Headway.Dynamo.Commands
     /// should execute.  If <see cref="ExecuteWhen"/> is null, then the
     /// command is always executed.
     /// </summary>
-    public abstract class ConditionalCommand : Command
+    public class ConditionalCommand : Command
     {
         /// <summary>
         /// Gets or sets the <see cref="Condition"/> that determines
@@ -73,7 +73,7 @@ namespace Headway.Dynamo.Commands
             {
                 return this.Command.Execute(serviceProvider, context);
             }
-            return null;
+            return new Task<CommandResult>(() => CommandResult.Success);
         }
     }
 }

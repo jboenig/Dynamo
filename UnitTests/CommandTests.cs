@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Commands;
+using Headway.Dynamo.Conditions;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.RestServices;
@@ -72,6 +73,63 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(idVal, 1);
             var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
             Assert.IsTrue(title.StartsWith("delectus"));
+        }
+
+        [TestMethod]
+        public void NullConditionalSynchronousCommand()
+        {
+            var person = new Person();
+            var cmdConditional = new ConditionalCommand()
+            {
+                ExecuteWhen = null,
+                Command = new SetPropertyValueCommand()
+                {
+                    PropertyName = "FirstName",
+                    Value = "Dude"
+                }
+            };
+            var cmdTask = cmdConditional.Execute(this.svcProvider, person);
+            cmdTask.RunSynchronously();
+            Assert.IsTrue(cmdTask.Result.IsSuccess);
+            Assert.AreEqual(person.FirstName, "Dude");
+        }
+
+        [TestMethod]
+        public void FalseConditionalSynchronousCommand()
+        {
+            var person = new Person();
+            var cmdConditional = new ConditionalCommand()
+            {
+                ExecuteWhen = Condition.False,
+                Command = new SetPropertyValueCommand()
+                {
+                    PropertyName = "FirstName",
+                    Value = "Dude"
+                }
+            };
+            var cmdTask = cmdConditional.Execute(this.svcProvider, person);
+            cmdTask.RunSynchronously();
+            Assert.IsTrue(cmdTask.Result.IsSuccess);
+            Assert.AreEqual(person.FirstName, null);
+        }
+
+        [TestMethod]
+        public void TrueConditionalSynchronousCommand()
+        {
+            var person = new Person();
+            var cmdConditional = new ConditionalCommand()
+            {
+                ExecuteWhen = Condition.True,
+                Command = new SetPropertyValueCommand()
+                {
+                    PropertyName = "FirstName",
+                    Value = "Dude"
+                }
+            };
+            var cmdTask = cmdConditional.Execute(this.svcProvider, person);
+            cmdTask.RunSynchronously();
+            Assert.IsTrue(cmdTask.Result.IsSuccess);
+            Assert.AreEqual(person.FirstName, "Dude");
         }
 
         [TestMethod]

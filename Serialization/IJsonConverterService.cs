@@ -16,7 +16,7 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
-using Headway.Dynamo.Metadata;
+using System;
 using Newtonsoft.Json;
 
 namespace Headway.Dynamo.Serialization
@@ -31,6 +31,6 @@ namespace Headway.Dynamo.Serialization
         /// </summary>
         /// <param name="objType"></param>
         /// <returns></returns>
-        JsonConverter[] GetConverters(ObjectType objType);
+        JsonConverter[] GetConverters(Type objType);
     }
 }

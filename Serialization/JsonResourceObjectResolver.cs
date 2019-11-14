@@ -90,15 +90,8 @@ namespace Headway.Dynamo.Serialization
                 throw new ServiceNotFoundException(typeof(IMetadataProvider));
             }
 
-            var objType = metadataProvider.GetDataType<ObjectType>(typeof(TResult));
-            if (objType == null)
-            {
-                var msg = string.Format("Unable to resolve data type {0}", typeof(TResult).FullName);
-                throw new InvalidOperationException(msg);
-            }
-
             var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
-                objType,
+                typeof(TResult),
                 this.svcProvider);
 
             using (var stream = this.sourceAssembly.GetManifestResourceStream(resourceName))

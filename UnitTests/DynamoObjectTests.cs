@@ -94,8 +94,8 @@ namespace Headway.Dynamo.UnitTests
             svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
-                this.MetadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
                 @"MockData/SuperheroMetadata.json",
+                svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );
             this.MetadataProvider.DynamicProvider.Load(metadataRepo);
@@ -119,8 +119,8 @@ namespace Headway.Dynamo.UnitTests
             svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
-                this.MetadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
                 @"MockData/SuperheroMetadata.json",
+                svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );
             this.MetadataProvider.DynamicProvider.Load(metadataRepo);
@@ -144,7 +144,7 @@ namespace Headway.Dynamo.UnitTests
             var objType = this.MetadataProvider.GetDataType<ObjectType>("Headway.Dynamo.UnitTests.Mockdata.Metahuman");
 
             var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
-                objType,
+                typeof(DynamoPerson),
                 svcProvider);
 
             var jsonMetaHuman = JsonConvert.SerializeObject(metaHuman, jsonSettings);

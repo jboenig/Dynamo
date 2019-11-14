@@ -61,8 +61,8 @@ namespace Headway.Dynamo.UnitTests
             svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
-                metadataProvider.GetDataType<ObjectType>(typeof(DynamicObjectType)),
                 @"MockData/SuperheroMetadata.json",
+                svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );
 

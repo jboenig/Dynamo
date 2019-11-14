@@ -36,41 +36,38 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
     public sealed class FlatFileRepo<TObject> : IObjectRepository<TObject>
         where TObject : class
     {
-        private ObjectType objType;
         private string filePath;
         private IServiceProvider svcProvider;
-//        private IJsonConverterService converterService;
+        private JsonSerializerSettings jsonSettings;
         private List<TObject> objects;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="objType"></param>
         /// <param name="filePath"></param>
+        /// <param name="serializerConfigSvc"></param>
         /// <param name="svcProvider"></param>
-        public FlatFileRepo(ObjectType objType,
-            string filePath,
+        public FlatFileRepo(string filePath,
+            ISerializerConfigService serializerConfigSvc,
             IServiceProvider svcProvider)
         {
-            if (objType == null)
-            {
-                throw new ArgumentNullException(nameof(objType));
-            }
-
             if (string.IsNullOrEmpty(filePath))
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (!typeof(TObject).IsAssignableFrom(objType.CLRType))
+            if (serializerConfigSvc == null)
             {
-                var msg = string.Format("CLR type {0} not compatible with {1}", typeof(TObject).Name, objType.CLRType.Name);
-                throw new ArgumentException(msg, nameof(objType));
+                throw new ArgumentNullException(nameof(serializerConfigSvc));
             }
 
-            this.objType = objType;
             this.filePath = filePath;
             this.svcProvider = svcProvider;
+
+            this.jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
+                typeof(TObject),
+                this.svcProvider);
+
             this.LoadRepo();
         }
 
@@ -122,20 +119,10 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
         {
             if (File.Exists(this.filePath))
             {
-                var serializerConfigSvc = this.svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;
-                if (serializerConfigSvc == null)
-                {
-                    throw new ServiceNotFoundException(typeof(ISerializerConfigService));
-                }
-
-                var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
-                    this.objType,
-                    this.svcProvider);
-
                 using (var stream = File.Open(this.filePath, FileMode.Open, FileAccess.Read))
                 using (StreamReader sr = new StreamReader(stream))
                 {
-                    this.objects = (List<TObject>)JsonConvert.DeserializeObject<List<TObject>>(sr.ReadToEnd(), jsonSettings);
+                    this.objects = (List<TObject>)JsonConvert.DeserializeObject<List<TObject>>(sr.ReadToEnd(), this.jsonSettings);
                 }
             }
             else
@@ -152,11 +139,7 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
                 throw new ServiceNotFoundException(typeof(ISerializerConfigService));
             }
 
-            var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
-                this.objType,
-                this.svcProvider);
-
-            var json = JsonConvert.SerializeObject(this.objects, jsonSettings);
+            var json = JsonConvert.SerializeObject(this.objects, this.jsonSettings);
 
             using (var stream = File.Open(this.filePath, FileMode.Create, FileAccess.Write))
             using (StreamWriter sw = new StreamWriter(stream))

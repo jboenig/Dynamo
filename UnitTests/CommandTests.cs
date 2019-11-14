@@ -45,8 +45,8 @@ namespace Headway.Dynamo.UnitTests
             this.svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
             var restApiRepo = new FlatFileRepo<RestApi>(
-                metadataProvider.GetDataType<ObjectType>(typeof(RestApi)),
                 @"MockData/RestApis.json",
+                svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );
 

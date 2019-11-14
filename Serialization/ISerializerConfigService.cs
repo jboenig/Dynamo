@@ -18,7 +18,6 @@
 
 using System;
 using Newtonsoft.Json;
-using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.Serialization
 {
@@ -34,7 +33,7 @@ namespace Headway.Dynamo.Serialization
         /// <param name="svcProvider"></param>
         /// <returns></returns>
         JsonSerializerSettings ConfigureJsonSerializerSettings(
-            ObjectType objType,
+            Type objType,
             IServiceProvider svcProvider);
     }
 }

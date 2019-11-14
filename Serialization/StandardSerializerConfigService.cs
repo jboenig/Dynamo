@@ -53,7 +53,7 @@ namespace Headway.Dynamo.Serialization
         /// <param name="svcProvider"></param>
         /// <returns></returns>
         public JsonSerializerSettings ConfigureJsonSerializerSettings(
-            ObjectType objType,
+            Type objType,
             IServiceProvider svcProvider)
         {
             var jsonSettings = new JsonSerializerSettings();

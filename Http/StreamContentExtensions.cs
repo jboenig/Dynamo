@@ -21,7 +21,7 @@ using System.IO.Compression;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Headway.Dynamo.RestServices
+namespace Headway.Dynamo.Http
 {
     /// <summary>
     /// Extension methods for HttpContent class

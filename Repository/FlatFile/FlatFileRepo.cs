@@ -33,7 +33,7 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
     /// <typeparam name="TObject">
     /// Type of object to store in the repository
     /// </typeparam>
-    public sealed class FlatFileRepo<TObject> : IObjectRepository<TObject>
+    public class FlatFileRepo<TObject> : IObjectRepository<TObject>
         where TObject : class
     {
         private string filePath;

@@ -23,7 +23,6 @@ using Headway.Dynamo.Commands;
 using Headway.Dynamo.Conditions;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
-using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Repository.FlatFileRepo;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.UnitTests.Mockdata;
@@ -43,36 +42,6 @@ namespace Headway.Dynamo.UnitTests
             var metadataProvider = new StandardMetadataProvider();
             this.svcProvider.AddService(typeof(IMetadataProvider), metadataProvider);
             this.svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
-
-            var restApiRepo = new FlatFileRepo<RestApi>(
-                @"MockData/RestApis.json",
-                svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
-                svcProvider
-                );
-
-            var restApiService = new RestApiServiceImpl();
-            restApiService.Load(restApiRepo.GetQueryable());
-
-            this.svcProvider.AddService(typeof(IRestApiService), restApiService);
-        }
-
-        [TestMethod]
-        public void CallRestServiceGetNoParams()
-        {
-            var cmd = new CallRestWebServiceCommand()
-            {
-                ApiName = "Test1",
-                ServiceName = "todos",
-                ResponseContentPropertyName = "ResponseContent"
-            };
-            var context = new JsonPlaceholderContext { Id = 1 };
-            var restCallTask = cmd.Execute(this.svcProvider, context);
-            restCallTask.RunSynchronously();
-            Assert.AreEqual(restCallTask.Result.IsSuccess, true);
-            var idVal = context.ResponseContent.Value<int>("id");
-            Assert.AreEqual(idVal, 1);
-            var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
-            Assert.IsTrue(title.StartsWith("delectus"));
         }
 
         [TestMethod]
@@ -194,38 +163,6 @@ namespace Headway.Dynamo.UnitTests
             var cmdRes = cmdMacroTask.Result;
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
-        }
-
-        [TestMethod]
-        public void CallRestServicePostTodo()
-        {
-            var cmd = new CallRestWebServiceCommand()
-            {
-                ApiName = "Test1",
-                ServiceName = "posts",
-                ResponseContentPropertyName = "ResponseContent",
-                RequestContentPropertyName = "RequestContent"
-            };
-
-            var context = new JsonPlaceholderContext
-            {
-                RequestContent = new
-                {
-                    title = "hello world",
-                    body = "dude",
-                    userId = 10101
-                }
-            };
-
-            var restCallTask = cmd.Execute(this.svcProvider, context);
-            restCallTask.RunSynchronously();
-            Assert.AreEqual(restCallTask.Result.IsSuccess, true);
-
-            var userIdVal = context.ResponseContent.Value<int>("userId");
-            Assert.AreEqual(userIdVal, 10101);
-
-            var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
-            Assert.IsTrue(title.StartsWith("hello world"));
         }
     }
 }

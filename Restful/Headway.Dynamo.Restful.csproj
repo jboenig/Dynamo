@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Headway.Dynamo.Restful</AssemblyName>
+    <RootNamespace>Headway.Dynamo.Restful</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.6.2</Version>
+    <PackageId>Headway.Dynamo.Restful</PackageId>
+    <Authors>Headway.Dynamo.Restful</Authors>
+    <Product>Headway.Dynamo.Restful</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UnitTests\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
+    <None Remove="UnitTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Headway.Dynamo" Version="0.6.0" />
+  </ItemGroup>
+
+</Project>

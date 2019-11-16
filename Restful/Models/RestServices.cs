@@ -1,19 +1,20 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // Copyright 2019 Jeff Boenig
 //
-// This file is part of Headway.Dynamo.
+// This file is part of Headway.Dynamo.Restful.
 //
-// Headway.Dynamo is free software: you can redistribute it and/or modify it under
-// the terms of the GNU General Public License as published by the Free Software
-// Foundation, either version 3 of the License, or (at your option) any later
-// version.
+// Headway.Dynamo.Restful is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// Headway.Dynamo is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-// FOR PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// Headway.Dynamo.Restful is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR PARTICULAR PURPOSE. See the GNU General
+// Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
+// Headway.Dynamo.Restful. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -26,7 +27,7 @@ using Newtonsoft.Json;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Runtime;
 
-namespace Headway.Dynamo.RestServices
+namespace Headway.Dynamo.Restful.Models
 {
     /// <summary>
     /// This class encapsulates a rest-based web service.
@@ -193,7 +194,7 @@ namespace Headway.Dynamo.RestServices
             };
             request.Headers.Connection.Add("keep-alive");
             request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Dynamo", "1.0.0"));
-//            request.Headers.Range = new RangeHeaderValue(null, 10000);
+            //            request.Headers.Range = new RangeHeaderValue(null, 10000);
 
             if (this.Post && contentObj != null)
             {

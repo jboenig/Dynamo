@@ -1,36 +1,37 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // Copyright 2019 Jeff Boenig
 //
-// This file is part of Headway.Dynamo.
+// This file is part of Headway.Dynamo.Restful.
 //
-// Headway.Dynamo is free software: you can redistribute it and/or modify it under
-// the terms of the GNU General Public License as published by the Free Software
-// Foundation, either version 3 of the License, or (at your option) any later
-// version.
+// Headway.Dynamo.Restful is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// Headway.Dynamo is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-// FOR PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// Headway.Dynamo.Restful is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR PARTICULAR PURPOSE. See the GNU General
+// Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
+// Headway.Dynamo.Restful. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Runtime;
+using Headway.Dynamo.Restful.Services;
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Restful.Commands
 {
     /// <summary>
     /// Implements the <see cref="Command"/> pattern for a
     /// rest-based web service call.
     /// </summary>
-    public sealed class CallRestWebServiceCommand : Command
+    public sealed class CallRestServiceCommand : Command
     {
         private Task<HttpResponseMessage> taskWebServiceCall;
 

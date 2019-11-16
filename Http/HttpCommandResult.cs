@@ -16,12 +16,11 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
-using Headway.Dynamo.RestServices;
+using Headway.Dynamo.Commands;
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Http
 {
     /// <summary>
     /// Encapsulates an HttpResponseMessage as a

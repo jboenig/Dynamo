@@ -1,32 +1,33 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // Copyright 2019 Jeff Boenig
 //
-// This file is part of Headway.Dynamo.
+// This file is part of Headway.Dynamo.Restful.
 //
-// Headway.Dynamo is free software: you can redistribute it and/or modify it under
-// the terms of the GNU General Public License as published by the Free Software
-// Foundation, either version 3 of the License, or (at your option) any later
-// version.
+// Headway.Dynamo.Restful is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// Headway.Dynamo is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-// FOR PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// Headway.Dynamo.Restful is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR PARTICULAR PURPOSE. See the GNU General
+// Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
+// Headway.Dynamo.Restful. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Headway.Dynamo.Commands;
-using Headway.Dynamo.Conditions;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
-using Headway.Dynamo.RestServices;
 using Headway.Dynamo.Repository.FlatFileRepo;
 using Headway.Dynamo.Runtime;
-using Headway.Dynamo.UnitTests.Mockdata;
+using Headway.Dynamo.Restful.Services;
+using Headway.Dynamo.Restful.Models;
+using Headway.Dynamo.Restful.Commands;
+using Headway.Dynamo.Restful.UnitTests.Mockdata;
 
 namespace Headway.Dynamo.Restful.UnitTests
 {
@@ -59,7 +60,7 @@ namespace Headway.Dynamo.Restful.UnitTests
         [TestMethod]
         public void CallRestServiceGetNoParams()
         {
-            var cmd = new CallRestWebServiceCommand()
+            var cmd = new CallRestServiceCommand()
             {
                 ApiName = "Test1",
                 ServiceName = "todos",
@@ -79,7 +80,7 @@ namespace Headway.Dynamo.Restful.UnitTests
         [TestMethod]
         public void CallRestServicePostTodo()
         {
-            var cmd = new CallRestWebServiceCommand()
+            var cmd = new CallRestServiceCommand()
             {
                 ApiName = "Test1",
                 ServiceName = "posts",

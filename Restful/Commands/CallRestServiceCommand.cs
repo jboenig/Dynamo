@@ -23,6 +23,7 @@ using System.Net.Http;
 using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Runtime;
+using Headway.Dynamo.Http;
 using Headway.Dynamo.Restful.Services;
 
 namespace Headway.Dynamo.Restful.Commands

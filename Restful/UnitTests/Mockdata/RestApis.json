@@ -1,11 +1,11 @@
 ﻿[
   {
-    "$type": "Headway.Dynamo.RestServices.RestApi, Headway.Dynamo",
+    "$type": "Headway.Dynamo.Restful.Models.RestApi, Headway.Dynamo.Restful",
     "Name": "Test1",
     "RootEndpointUri": "https://jsonplaceholder.typicode.com/",
     "Services": [
       {
-        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
         "Name": "todos",
         "RelativePath": "todos/{Id}",
         "Version": "1",
@@ -18,7 +18,7 @@
         ]
       },
       {
-        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
         "Name": "posts",
         "RelativePath": "posts",
         "Version": "1",
@@ -27,18 +27,18 @@
     ]
   },
   {
-    "$type": "Headway.Dynamo.RestServices.RestApi, Headway.Dynamo",
+    "$type": "Headway.Dynamo.Restful.Models.RestApi, Headway.Dynamo.Restful",
     "Name": "Dummy Rest Example",
     "RootEndpointUri": "http://dummy.restapiexample.com/api/v1/",
     "Services": [
       {
-        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
         "Name": "Employees",
         "RelativePath": "employees",
         "Version": "1"
       },
       {
-        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
         "Name": "GetEmployee",
         "RelativePath": "employee/{id}",
         "Version": "1",
@@ -51,7 +51,7 @@
         ]
       },
       {
-        "$type": "Headway.Dynamo.RestServices.RestService, Headway.Dynamo",
+        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
         "Name": "CreateEmployee",
         "RelativePath": "create",
         "Version": "1",

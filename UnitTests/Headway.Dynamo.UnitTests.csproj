@@ -94,16 +94,12 @@
     <Compile Include="DynamicMetadataTests.cs" />
     <Compile Include="Mockdata\DynamoPerson.cs" />
     <Compile Include="Mockdata\Employee.cs" />
-    <Compile Include="Mockdata\JsonPlaceholderContext.cs" />
     <Compile Include="ReflectionMetadataTests.cs" />
     <Compile Include="Mockdata\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mockdata\SuperheroMetadata.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Mockdata\RestApis.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

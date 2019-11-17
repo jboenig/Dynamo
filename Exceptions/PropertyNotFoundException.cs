@@ -37,5 +37,16 @@ namespace Headway.Dynamo.Exceptions
         {
 
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clrType"></param>
+        /// <param name="propertyName"></param>
+        public PropertyNotFoundException(Type clrType, string propertyName) :
+            base(string.Format("Property name {0} does not exist on data type {1}", propertyName, clrType.Name))
+        {
+
+        }
     }
 }

@@ -100,6 +100,71 @@ namespace Headway.Dynamo.Runtime
         }
 
         /// <summary>
+        /// Return the value of the specified property on
+        /// the object.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Data type of the property to get.
+        /// </typeparam>
+        /// <param name="obj">
+        /// Object containing the property.
+        /// </param>
+        /// <param name="propertyName">
+        /// Name of the property to retrieve.
+        /// </param>
+        /// <param name="res">
+        /// Receives property value.
+        /// </param>
+        /// <returns>
+        /// True if the property is found and false if it
+        /// is not found
+        /// </returns>
+        public static bool TryGetPropertyValue<T>(object obj, string propertyName, out T res)
+        {
+            bool propFound = false;
+
+            res = default(T);
+
+            if (obj != null)
+            {
+                var propAccessor = obj as IPropertyAccessor;
+                if (propAccessor != null)
+                {
+                    try
+                    {
+                        res = propAccessor.GetPropertyValue<T>(propertyName);
+                        propFound = true;
+                    }
+                    catch { }
+                }
+                else
+                {
+                    var jObj = obj as Newtonsoft.Json.Linq.JObject;
+                    if (jObj != null)
+                    {
+                        if (jObj.ContainsKey(propertyName))
+                        {
+                            res = jObj.Value<T>(propertyName);
+                            propFound = true;
+                        }
+                    }
+                    else
+                    {
+                        // Attempt to use reflection
+                        var prop = obj.GetType().GetProperty(propertyName);
+                        if (prop != null)
+                        {
+                            res = (T)prop.GetValue(obj);
+                            propFound = true;
+                        }
+                    }
+                }
+            }
+
+            return propFound;
+        }
+
+        /// <summary>
         /// Sets the value of the specified property on
         /// the object.
         /// </summary>

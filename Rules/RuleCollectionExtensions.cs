@@ -22,17 +22,26 @@ using System.Collections.Generic;
 namespace Headway.Dynamo.Rules
 {
     /// <summary>
-    /// 
+    /// Extension methods for collections of <see cref="Rule"/>
+    /// objects.
     /// </summary>
     public static class RuleCollectionExtensions
     {
         /// <summary>
-        /// 
+        /// Applies a collection of rules.
         /// </summary>
-        /// <param name="rules"></param>
-        /// <param name="serviceProvider"></param>
-        /// <param name="context"></param>
-        public static void Apply(this IEnumerable<Rule> rules, IServiceProvider serviceProvider, object context)
+        /// <param name="rules">
+        /// Collection of rules to apply.
+        /// </param>
+        /// <param name="serviceProvider">
+        /// Service provider.
+        /// </param>
+        /// <param name="context">
+        /// Context object.
+        /// </param>
+        public static void Apply(this IEnumerable<Rule> rules,
+            IServiceProvider serviceProvider,
+            object context)
         {
             foreach (var curRule in rules)
             {

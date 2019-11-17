@@ -44,6 +44,11 @@ namespace Headway.Dynamo.UnitTests
             this.svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
         }
 
+        /// <summary>
+        /// Test a <see cref="ConditionalCommand"/> using
+        /// a null <see cref="ConditionalCommand.ExecuteWhen"/>
+        /// value and verify that the command executes.
+        /// </summary>
         [TestMethod]
         public void NullConditionalSynchronousCommand()
         {
@@ -63,6 +68,11 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(person.FirstName, "Dude");
         }
 
+        /// <summary>
+        /// Test a <see cref="ConditionalCommand"/> using
+        /// a <see cref="Condition"/> that evaluates to false
+        /// and verify that the command does not execute.
+        /// </summary>
         [TestMethod]
         public void FalseConditionalSynchronousCommand()
         {
@@ -82,6 +92,11 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(person.FirstName, null);
         }
 
+        /// <summary>
+        /// Test a <see cref="ConditionalCommand"/> using
+        /// a <see cref="Condition"/> that evaluates to true
+        /// and verify that the command executes successfully.
+        /// </summary>
         [TestMethod]
         public void TrueConditionalSynchronousCommand()
         {
@@ -101,6 +116,11 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(person.FirstName, "Dude");
         }
 
+        /// <summary>
+        /// Executes a <see cref="MacroCommand"/> with several
+        /// commands synchronously and verifies successful
+        /// execution.
+        /// </summary>
         [TestMethod]
         public void SyncronousMacroCommand()
         {
@@ -131,6 +151,11 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
 
+        /// <summary>
+        /// Executes a <see cref="MacroCommand"/> with several
+        /// commands asynchronously and verifies successful
+        /// execution.
+        /// </summary>
         [TestMethod]
         public void AsyncronousMacroCommand()
         {

@@ -7,7 +7,7 @@
     <Authors>Jeff Boenig</Authors>
     <AssemblyName>Headway.Dynamo</AssemblyName>
     <RootNamespace>Headway.Dynamo</RootNamespace>
-    <Version>0.9.1</Version>
+    <Version>0.9.5</Version>
     <Description>Dynamo is a .NET application extensibility toolkit that helps developers to create applications with dynamic data and behavior driven by metadata, commands, conditions, and rules. Build customization into your applications from the start using Dynamo! Custom, user-defined data becomes a seamless part of your object model. Build your own metadata sources or use the ones built into Dynamo. Enable customized behavior in your applications using condition, command, and rule objects. Dynamo is a lightweight and library that pulls together some very powerful design patterns and helps you create more flexible and reliable applications!</Description>
     <PackageProjectUrl>https://github.com/jboenig/Dynamo/wiki</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
@@ -45,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Conditions\" />
     <Folder Include="Repository\FlatFile\" />
     <Folder Include="Rules\" />
     <Folder Include="Collections\" />

@@ -43,7 +43,7 @@ namespace Headway.Dynamo.Runtime
                 var childPropAccessor = propAccessor.GetPropertyValue<IPropertyAccessor>(parentName);
                 if (childPropAccessor == null)
                 {
-                    throw new PropertyNotFoundException(null, parentName);
+                    throw new PropertyNotFoundException(propAccessor.GetType(), parentName);
                 }
                 return childPropAccessor.GetPropertyValueRecursive<T>(childName);
             }

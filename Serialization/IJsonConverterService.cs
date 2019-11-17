@@ -22,12 +22,14 @@ using Newtonsoft.Json;
 namespace Headway.Dynamo.Serialization
 {
     /// <summary>
-    /// 
+    /// Returns an array of JsonConverter objects to be
+    /// used by the Json serializer.
     /// </summary>
     public interface IJsonConverterService
     {
         /// <summary>
-        /// 
+        /// Returns the list of JsonConverter objects to
+        /// be used by the serializer.
         /// </summary>
         /// <param name="objType"></param>
         /// <returns></returns>

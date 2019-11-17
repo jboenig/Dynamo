@@ -27,19 +27,33 @@ using Headway.Dynamo.Exceptions;
 namespace Headway.Dynamo.Serialization
 {
     /// <summary>
-    /// 
+    /// Implements <see cref="IObjectResolver{TKey, TResult}"/> for
+    /// the specified object type using a JSON file stored as an
+    /// assembly resource.
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
+    /// <typeparam name="TResult">
+    /// Type of objects to resolve.
+    /// </typeparam>
+    /// <remarks>
+    /// This resolver is useful for JSON objects that are known
+    /// at compile-time and can be compiled into an assembly resource.
+    /// </remarks>
     public sealed class JsonResourceObjectResolver<TResult> : IObjectResolver<string, TResult> where TResult : class
     {
         private Assembly sourceAssembly;
         private IServiceProvider svcProvider;
 
         /// <summary>
-        /// 
+        /// Constructs a <see cref="JsonResourceObjectResolver{TResult}"/>
+        /// given a service provider and source assembly.
         /// </summary>
-        /// <param name="svcProvider"></param>
-        /// <param name="sourceAssembly"></param>
+        /// <param name="svcProvider">
+        /// Service provider used for deserialization
+        /// </param>
+        /// <param name="sourceAssembly">
+        /// Reference to assembly that contains the JSON file
+        /// as a resource.
+        /// </param>
         public JsonResourceObjectResolver(IServiceProvider svcProvider,
             Assembly sourceAssembly)
         {
@@ -57,10 +71,15 @@ namespace Headway.Dynamo.Serialization
         }
 
         /// <summary>
-        /// 
+        /// Finds the object matching the specified key value.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">
+        /// Key value of object to resolve.
+        /// </param>
+        /// <returns>
+        /// Returns the object matching the specified key or null
+        /// if the object is not found.
+        /// </returns>
         public TResult Resolve(string key)
         {
             TResult result = default(TResult);

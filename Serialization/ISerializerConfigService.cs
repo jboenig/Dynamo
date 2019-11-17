@@ -22,16 +22,25 @@ using Newtonsoft.Json;
 namespace Headway.Dynamo.Serialization
 {
     /// <summary>
-    /// 
+    /// Interface to service that configures JsonSerializerSettings
+    /// to be used during Json serialization.
     /// </summary>
     public interface ISerializerConfigService
     {
         /// <summary>
-        /// 
+        /// Returns a JsonSerializerSettings object to be used
+        /// for the Json serializer.
         /// </summary>
-        /// <param name="objType"></param>
-        /// <param name="svcProvider"></param>
-        /// <returns></returns>
+        /// <param name="objType">
+        /// Type of object to be serialized.
+        /// </param>
+        /// <param name="svcProvider">
+        /// Service provider to attach.
+        /// </param>
+        /// <returns>
+        /// Returns a JsonSerializerSettings object to be used
+        /// by the Json serializer.
+        /// </returns>
         JsonSerializerSettings ConfigureJsonSerializerSettings(
             Type objType,
             IServiceProvider svcProvider);

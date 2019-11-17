@@ -33,15 +33,20 @@ namespace Headway.Dynamo.Runtime
     /// it with metadata provided via the <see cref="ObjectType"/>
     /// interface and implements serialization.
     /// </summary>
-    [Serializable]
-    public class Dynamo : IDynamicMetaObjectProvider,
-                          IPropertyAccessor,
-                          IDynamicPropertyAccessor,
-                          ISerializable
+    public class DynamoObject : IDynamicMetaObjectProvider,
+                                IPropertyAccessor,
+                                IDynamicPropertyAccessor
     {
         #region Member Variables
 
-        private readonly Dictionary<string, object> values;
+        [JsonProperty(PropertyName = "DynamicPropertyValues")]
+        private readonly PropertyValueDictionary values;
+
+        /// <summary>
+        /// Used to temporarily store name of object type
+        /// during deserialization
+        /// </summary>
+        private string dataTypeName;
 
         #endregion
 
@@ -50,35 +55,35 @@ namespace Headway.Dynamo.Runtime
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public Dynamo()
+        public DynamoObject()
         {
             this.DataType = Metadata.Reflection.ReflectionObjectType.Get(this.GetType());
-            this.values = new Dictionary<string, object>();
+            this.values = new PropertyValueDictionary();
         }
 
         /// <summary>
-        /// Constructs a <see cref="Dynamo"/> given an
+        /// Constructs a <see cref="DynamoObject"/> given an
         /// <see cref="ObjectType"/> metadata object.
         /// </summary>
         /// <param name="objType">
         /// Object containing the metadata for this
-        /// <see cref="Dynamo"/> object.
+        /// <see cref="DynamoObject"/> object.
         /// </param>
-        public Dynamo(ObjectType objType)
+        public DynamoObject(ObjectType objType)
         {
             this.DataType = objType;
-            this.values = new Dictionary<string, object>();
+            this.values = new PropertyValueDictionary();
         }
 
         /// <summary>
-        /// Constructs a copy of the specified <see cref="Dynamo"/>
+        /// Constructs a copy of the specified <see cref="DynamoObject"/>
         /// object.
         /// </summary>
         /// <param name="source">Source object to copy</param>
-        public Dynamo(Dynamo source)
+        public DynamoObject(DynamoObject source)
         {
             this.DataType = source.DataType;
-            this.values = new Dictionary<string, object>();
+            this.values = new PropertyValueDictionary();
             foreach (var curKey in source.values.Keys)
             {
                 this.values.Add(curKey, source.values[curKey]);
@@ -98,6 +103,36 @@ namespace Headway.Dynamo.Runtime
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the fully qualified name of the <see cref="ObjectType"/>
+        /// metadata that defines the properties and metadata for this dynamic
+        /// object.
+        /// </summary>
+        /// <seealso cref="DynamoObject.DataType"/>
+        /// <remarks>
+        /// Used 
+        /// </remarks>
+        [JsonProperty]
+        internal string DataTypeName
+        {
+            get
+            {
+                if (this.DataType == null)
+                {
+                    return this.dataTypeName;
+                }
+                return this.DataType.FullName;
+            }
+            set
+            {
+                if (value != this.dataTypeName)
+                {
+                    this.dataTypeName = value;
+                    this.DataType = null;
+                }
+            }
         }
 
         #endregion
@@ -266,23 +301,9 @@ namespace Headway.Dynamo.Runtime
 
         #region Serialization
 
-        private const string PropNameDataTypeName = "DataTypeName";
-
-        /// <summary>
-        /// Serialization constructor.
-        /// </summary>
-        /// <param name="info">Serialiation info</param>
-        /// <param name="context">Streaming context</param>
-        /// <remarks>
-        /// Deserializes the given SerializationInfo into a new
-        /// instance of this class.
-        /// </remarks>
-        protected Dynamo(SerializationInfo info, StreamingContext context)
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
         {
-            ///////////////////////////////////////////////////////////////
-            // Create dictionary to store dynamic property values
-            this.values = new Dictionary<string, object>();
-
             ///////////////////////////////////////////////////////////////
             // Get IServiceProvider instance from streaming context
             var svcProvider = context.Context as IServiceProvider;
@@ -293,8 +314,7 @@ namespace Headway.Dynamo.Runtime
 
             ///////////////////////////////////////////////////////////////
             // Load data type information
-            var dataTypeName = info.GetString(PropNameDataTypeName);
-
+            var dataTypeName = this.DataTypeName;
             if (!string.IsNullOrEmpty(dataTypeName))
             {
                 var metadataProvider = svcProvider.GetService(typeof(IMetadataProvider)) as IMetadataProvider;
@@ -303,61 +323,6 @@ namespace Headway.Dynamo.Runtime
                     throw new ServiceNotFoundException(typeof(IMetadataProvider));
                 }
                 this.DataType = metadataProvider.GetDataType<ObjectType>(dataTypeName);
-            }
-
-            ///////////////////////////////////////////////////////////////
-            // Iterate through all serialized properties and
-            // use metadata to assign values to object
-
-            var valEnumerator = info.GetEnumerator();
-            while (valEnumerator.MoveNext())
-            {
-                var curPropName = valEnumerator.Current.Name;
-                if (curPropName == PropNameDataTypeName)
-                {
-                    continue;
-                }
-
-                var curProp = this.DataType.GetPropertyByName(curPropName);
-                if (curProp == null)
-                {
-                    // Property not found - create one
-                    var propVal = info.GetValue(curPropName, typeof(object));
-                    DataType propType = IntegralType.Get(propVal.GetType());
-                    if (propType == null)
-                    {
-                        throw new NotSupportedException("DynamicExtObject only supports dynamic creation of integral types during deserialization");
-                    }
-                    curProp = this.DataType.AddProperty(curPropName, propType);
-                    curProp.SetValue<object>(this, propVal);
-                }
-                else
-                {
-                    var propVal = info.GetValue(curPropName, curProp.DataType.CLRType);
-                    curProp.SetValue<object>(this, propVal);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Serializes this object to the given SerializationInfo object
-        /// </summary>
-        /// <param name="info">Serialiation info</param>
-        /// <param name="context">Streaming context</param>
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(PropNameDataTypeName, this.DataType.FullName);
-
-            foreach (var prop in this.DataType.FindAllProperties())
-            {
-                if (prop.Serialize)
-                {
-                    var propVal = prop.GetValue<object>(this);
-                    if (propVal != null || !prop.DataType.CLRType.IsValueType)
-                    {
-                        info.AddValue(prop.Name, propVal);
-                    }
-                }
             }
         }
 

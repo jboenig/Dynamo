@@ -29,7 +29,7 @@ namespace Headway.Dynamo.Runtime
         private const string BindGetMemberMethodName = "GetPropertyValue";
 
         public DynamoMetaObject(Expression parameter,
-                Dynamo dynamo) :
+                DynamoObject dynamo) :
             base(parameter, BindingRestrictions.Empty, dynamo)
         {
         }
@@ -52,7 +52,7 @@ namespace Headway.Dynamo.Runtime
             Expression self = Expression.Convert(Expression, LimitType);
 
             // Setup the method call expression
-            var setPropertyValueMethod = typeof(Dynamo).GetMethod(BindSetMemberMethodName);
+            var setPropertyValueMethod = typeof(DynamoObject).GetMethod(BindSetMemberMethodName);
             var setPropertyValueGenericMethod = setPropertyValueMethod.MakeGenericMethod(new Type[] { value.RuntimeType });
 
             Expression setPropertyValueExpr = Expression.Call(self,
@@ -84,7 +84,7 @@ namespace Headway.Dynamo.Runtime
             Expression self = Expression.Convert(Expression, LimitType);
 
             // Use reflection to get generic getter method
-            var getPropertyValueMethod = typeof(Dynamo).GetMethod(BindGetMemberMethodName);
+            var getPropertyValueMethod = typeof(DynamoObject).GetMethod(BindGetMemberMethodName);
             var getPropertyValueGenericMethod = getPropertyValueMethod.MakeGenericMethod(new Type[] { typeof(object) });
 
             Expression getPropertyValueExpr = Expression.Call(self,
@@ -115,7 +115,7 @@ namespace Headway.Dynamo.Runtime
             DynamicMetaObject methodInfo = new DynamicMetaObject(
             Expression.Call(
             Expression.Convert(Expression, LimitType),
-            typeof(Dynamo).GetMethod("WriteMethodInfo"),
+            typeof(DynamoObject).GetMethod("WriteMethodInfo"),
             parameters),
             BindingRestrictions.GetTypeRestriction(Expression, LimitType));
             return methodInfo;

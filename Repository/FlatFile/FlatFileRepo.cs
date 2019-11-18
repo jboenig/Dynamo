@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-using Headway.Dynamo.Metadata;
+using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Exceptions;
 using Newtonsoft.Json;
@@ -36,17 +36,23 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
     public class FlatFileRepo<TObject> : IObjectRepository<TObject>
         where TObject : class
     {
-        private string filePath;
-        private IServiceProvider svcProvider;
-        private JsonSerializerSettings jsonSettings;
+        private readonly string filePath;
+        private readonly IServiceProvider svcProvider;
+        private readonly JsonSerializerSettings jsonSettings;
         private List<TObject> objects;
 
         /// <summary>
-        /// 
+        /// Constructs a <see cref="FlatFileRepo{TObject}"/>
         /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="serializerConfigSvc"></param>
-        /// <param name="svcProvider"></param>
+        /// <param name="filePath">
+        /// Path to the file that persists the repo.
+        /// </param>
+        /// <param name="serializerConfigSvc">
+        /// Serializer configuration service
+        /// </param>
+        /// <param name="svcProvider">
+        /// Service provider.
+        /// </param>
         public FlatFileRepo(string filePath,
             ISerializerConfigService serializerConfigSvc,
             IServiceProvider svcProvider)
@@ -81,34 +87,79 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
         }
 
         /// <summary>
-        /// 
+        /// Adds an object to the repo.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">
+        /// Object to add
+        /// </param>
         public void Add(TObject obj)
         {
+            var pkAccessor = obj as IPrimaryKeyAccessor;
+            if (pkAccessor != null)
+            {
+                var pkValue = pkAccessor.PrimaryKey;
+                if (pkValue != null)
+                {
+                    var existingObj = this.GetObjectById(pkValue);
+                    if (existingObj != null)
+                    {
+                        // Duplicate key
+                        throw new DuplicateKeyException(pkValue);
+                    }
+                }
+            }
             this.objects.Add(obj);
         }
 
         /// <summary>
-        /// 
+        /// Updates an object in the repo.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">
+        /// Object to update
+        /// </param>
         public void Update(TObject obj)
         {
-            throw new NotImplementedException();
+            var pkAccessor = obj as IPrimaryKeyAccessor;
+            if (pkAccessor != null)
+            {
+                var pkValue = pkAccessor.PrimaryKey;
+                if (pkValue != null)
+                {
+                    var existingObj = this.GetObjectById(pkValue);
+                    if (existingObj != null)
+                    {
+                        this.objects.Remove(existingObj);
+                    }
+                    this.objects.Add(obj);
+                }
+            }
         }
 
         /// <summary>
-        /// 
+        /// Removes an object from the repo.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">
+        /// Object to remove.
+        /// </param>
         public void Remove(TObject obj)
         {
-            throw new NotImplementedException();
+            var pkAccessor = obj as IPrimaryKeyAccessor;
+            if (pkAccessor != null)
+            {
+                var pkValue = pkAccessor.PrimaryKey;
+                if (pkValue != null)
+                {
+                    var existingObj = this.GetObjectById(pkValue);
+                    if (existingObj != null)
+                    {
+                        this.objects.Remove(existingObj);
+                    }
+                }
+            }
         }
 
         /// <summary>
-        /// 
+        /// Saves all pending changes to the repo.
         /// </summary>
         public void SaveChanges()
         {
@@ -146,6 +197,13 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
             {
                 sw.WriteLine(json);
             }
+        }
+
+        private TObject GetObjectById(object pkValue)
+        {
+            return (from o in this.objects.Cast<IPrimaryKeyAccessor>()
+                    where o.PrimaryKey == pkValue
+                    select o).Cast<TObject>().FirstOrDefault();
         }
     }
 }

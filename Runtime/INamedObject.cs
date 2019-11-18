@@ -16,8 +16,6 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace Headway.Dynamo.Runtime
 {
     /// <summary>

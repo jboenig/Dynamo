@@ -17,44 +17,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
 
-namespace Headway.Dynamo.Repository
+namespace Headway.Dynamo.Exceptions
 {
-	/// <summary>
-	/// Interface to transaction objects.
-	/// </summary>
-	public interface ITransaction : IDisposable
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="objs"></param>
-		void Insert<T>(IEnumerable<T> objs) where T : class;
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="objs"></param>
-		void Update<T>(IEnumerable<T> objs) where T : class;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DuplicateKeyException : Exception
+    {
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="objs"></param>
-        void Delete<T>(IEnumerable<T> objs) where T : class;
-
-		/// <summary>
-		/// Commit the transaction.
-		/// </summary>
-		void Commit();
-
-		/// <summary>
-		/// Rollback the transaction.
-		/// </summary>
-		void Rollback();
-	}
+        /// <param name="keyVal"></param>
+        public DuplicateKeyException(object keyVal) :
+            base(string.Format("Duplicate key value {0}", keyVal))
+        {
+        }
+    }
 }

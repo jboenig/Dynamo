@@ -24,8 +24,8 @@ namespace Headway.Dynamo.Runtime
     public interface IPrimaryKeyAccessor
     {
         /// <summary>
-        /// Gets the primary key value for the object.
+        /// Gets or sets the primary key value for the object.
         /// </summary>
-        object PrimaryKey { get; }
+        object PrimaryKey { get; set; }
     }
 }

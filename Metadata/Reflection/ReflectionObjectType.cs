@@ -202,7 +202,7 @@ namespace Headway.Dynamo.Metadata.Reflection
         internal static ObjectType Get(string fullName)
         {
             return ReflectionObjectType.Get(fullName,
-                new DefaultAssemblyLoader());
+                new AppDomainAssemblyLoader());
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Headway.Dynamo.Metadata.Reflection
             string fullName)
 		{
 			return ReflectionObjectType.Get(metadataProvider, fullName,
-                new DefaultAssemblyLoader());
+                new AppDomainAssemblyLoader());
 		}
 
         /// <summary>

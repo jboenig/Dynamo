@@ -23,7 +23,8 @@ using Headway.Dynamo.Runtime;
 namespace Headway.Dynamo.Commands
 {
     /// <summary>
-    /// Implements a <see cref="Command"/> that sets a 
+    /// Implements a <see cref="Command"/> that sets the value
+    /// of a property on the context object passed to the command.
     /// </summary>
     public sealed class SetPropertyValueCommand : Command
     {
@@ -39,6 +40,15 @@ namespace Headway.Dynamo.Commands
         /// <summary>
         /// Gets or sets the value to assign to the property.
         /// </summary>
+        /// <remarks>
+        /// If the value assigned is a string, it may optionally
+        /// contain variable references that are resolved at run-time.
+        /// The syntax for a variable can be either $(VariableName)
+        /// or {VariableName}.  The variable must reference a property
+        /// that exists on the context object passed to the
+        /// <see cref="SetPropertyValueCommand.Execute(IServiceProvider, object)"/>
+        /// method.
+        /// </remarks>
         public object Value
         {
             get;
@@ -54,6 +64,20 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Assigns the <see cref="SetPropertyValueCommand.Value"/>
+        /// to the property in the context object.
+        /// </para>
+        /// <para>
+        /// If the<see cref="SetPropertyValueCommand.Value"/> is a
+        /// string, it may optionally contain variable references that
+        /// are resolved at run-time. The syntax for a variable can be
+        /// either $(VariableName) or {VariableName}.  The variable must
+        /// reference a property that exists on the context object passed
+        /// to this method.
+        /// </para>
+        /// </remarks>
         public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             if (context == null)

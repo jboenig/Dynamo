@@ -17,17 +17,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using Newtonsoft.Json;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.UnitTests.Mockdata
 {
+    [JsonObject]
     public class DynamoPerson : DynamoObject
     {
         public DynamoPerson()
         {
         }
-
         public DynamoPerson(ObjectType objType) :
             base(objType)
         {
@@ -112,6 +113,12 @@ namespace Headway.Dynamo.UnitTests.Mockdata
         /// Gets or sets the date of birth for this <see cref="Person"/>.
         /// </summary>
         public DateTime DateOfBirth
+        {
+            get;
+            set;
+        }
+
+        public Address Addr
         {
             get;
             set;

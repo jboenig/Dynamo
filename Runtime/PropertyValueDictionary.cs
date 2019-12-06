@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace Headway.Dynamo.Runtime
 {
     /// <summary>
-    /// 
+    /// Container to store name-value pairs.
     /// </summary>
     public sealed class PropertyValueDictionary : Dictionary<string, object>
     {

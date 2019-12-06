@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
-using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Repository.FlatFileRepo;
@@ -133,6 +132,12 @@ namespace Headway.Dynamo.UnitTests
             var sp1 = metaHuman.Superpower1;
             Assert.AreEqual(sp1, "Invisibility");
             metaHuman.FirstName = "Fred";
+            metaHuman.Addr = new Address()
+            {
+                Line1 = "123 Somewhere Pl",
+                City = "Tulsa",
+                State = "OK"
+            };
 
             // Serialize object
             var serializerConfigSvc = svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;

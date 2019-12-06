@@ -92,6 +92,7 @@
     <Compile Include="CommandTests.cs" />
     <Compile Include="DynamoObjectTests.cs" />
     <Compile Include="DynamicMetadataTests.cs" />
+    <Compile Include="Mockdata\Address.cs" />
     <Compile Include="Mockdata\DynamoPerson.cs" />
     <Compile Include="Mockdata\Employee.cs" />
     <Compile Include="PropertyCompareTest.cs" />

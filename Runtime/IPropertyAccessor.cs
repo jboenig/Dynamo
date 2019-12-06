@@ -29,9 +29,16 @@ namespace Headway.Dynamo.Runtime
         /// <summary>
         /// Gets the value of the specified property
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">
+        /// Type of value to return.
+        /// </typeparam>
+        /// <param name="propertyName">
+        /// Name of property to retrieve.
+        /// </param>
+        /// <returns>
+        /// Returns the value of the property or null
+        /// if not found.
+        /// </returns>
         T GetPropertyValue<T>(string propertyName);
 
         /// <summary>

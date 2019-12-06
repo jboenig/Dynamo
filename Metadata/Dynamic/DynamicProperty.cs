@@ -180,6 +180,18 @@ namespace Headway.Dynamo.Metadata.Dynamic
 		}
 
         /// <summary>
+        /// Gets a flag indicating whether or not the property
+        /// has a getter.
+        /// </summary>
+        public override bool CanRead => true;
+
+        /// <summary>
+        /// Gets a flag indicating whether or not the property
+        /// has a setter.
+        /// </summary>
+        public override bool CanWrite => true;
+
+        /// <summary>
         /// Gets a flag indicating whether or not this property should be serialized.
         /// </summary>
         public override bool Serialize

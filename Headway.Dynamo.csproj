@@ -49,7 +49,6 @@
     <Folder Include="Rules\" />
     <Folder Include="Collections\" />
     <Folder Include="Metadata\Attributes\" />
-    <Folder Include="Reflection\" />
   </ItemGroup>
 
   <ItemGroup>

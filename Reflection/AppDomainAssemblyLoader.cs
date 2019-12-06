@@ -23,29 +23,39 @@ using System.Reflection;
 namespace Headway.Dynamo.Reflection
 {
 	/// <summary>
-	/// 
+	/// Implementation of the <see cref="IAssemblyLoader"/>
+    /// interface based on all assemblies in the current
+    /// AppDomain.
 	/// </summary>
-	public sealed class DefaultAssemblyLoader : IAssemblyLoader
+	public sealed class AppDomainAssemblyLoader : IAssemblyLoader
 	{
 		#region Constructors
 
 		/// <summary>
-		/// 
+		/// Default constructor.
 		/// </summary>
-		public DefaultAssemblyLoader()
+		public AppDomainAssemblyLoader()
 		{
 		}
 
-		#endregion
+        #endregion
 
-		#region IAssemblyLoader Interface
+        #region IAssemblyLoader Interface
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="assemblyName"></param>
-		/// <returns></returns>
-		public Assembly LoadAssembly(string assemblyName)
+        /// <summary>
+        /// Loads the specified assembly into the current app domain.
+        /// </summary>
+        /// <param name="assemblyName">Fully qualified name of the assembly.</param>
+        /// <returns>
+        /// Returns the Assembly that was loaded or null if not found.
+        /// </returns>
+        /// <remarks>
+        /// This implementation iterates through all assemblies returned
+        /// by the <see cref="AppDomainAssemblyLoader.GetAllAssemblies"/>
+        /// method and returns the one matching the specified assembly name
+        /// parameter.  If not found, returns null.
+        /// </remarks>
+        public Assembly LoadAssembly(string assemblyName)
 		{
 			foreach (var curAssembly in this.GetAllAssemblies())
 			{
@@ -69,9 +79,11 @@ namespace Headway.Dynamo.Reflection
 		}
 
 		/// <summary>
-		/// 
+		/// Returns all assemblies in the current AppDomain.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>
+        /// Collection of assemblies in the current AppDomain.
+        /// </returns>
 		public IEnumerable<Assembly> GetAllAssemblies()
 		{
 			var appDomain = AppDomain.CurrentDomain;

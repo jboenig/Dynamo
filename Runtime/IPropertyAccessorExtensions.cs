@@ -21,17 +21,32 @@ using Headway.Dynamo.Exceptions;
 namespace Headway.Dynamo.Runtime
 {
     /// <summary>
-    /// 
+    /// Extension methods for the <see cref="IPropertyAccessor"/>
+    /// interface.
     /// </summary>
     public static class IPropertyAccessorExtensions
     {
         /// <summary>
-        /// 
+        /// Accesses properties more than one-level deep in an
+        /// object graph by parsing property names that specify a
+        /// path.  For example, a path might look like this -
+        /// "Location.X" or "Customer.SSN".
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propAccessor"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">
+        /// Type of value to return.
+        /// </typeparam>
+        /// <param name="propAccessor">
+        /// Reference to <see cref="IPropertyAccessor"/> object.
+        /// </param>
+        /// <param name="propertyName">
+        /// Name of the property to return.  May optionally specify
+        /// a path multiple levels deep. Each level in the path is
+        /// separated using dot notation.
+        /// </param>
+        /// <returns>
+        /// Returns the value of the property or null
+        /// if not found.
+        /// </returns>
         public static T GetPropertyValueRecursive<T>(this IPropertyAccessor propAccessor,
             string propertyName)
         {
@@ -48,6 +63,41 @@ namespace Headway.Dynamo.Runtime
                 return childPropAccessor.GetPropertyValueRecursive<T>(childName);
             }
             return propAccessor.GetPropertyValue<T>(propertyName);
+        }
+
+        /// <summary>
+        /// Gets a property value by name as an object.
+        /// </summary>
+        /// <param name="propertyAccessor">
+        /// Reference to <see cref="IPropertyAccessor"/> object.
+        /// </param>
+        /// <param name="propertyName">
+        /// Name of the property to retrieve.
+        /// </param>
+        /// <returns>
+        /// Value of property as an object type.
+        /// </returns>
+        public static object GetPropertyValue(this IPropertyAccessor propertyAccessor,
+            string propertyName)
+        {
+            return propertyAccessor.GetPropertyValue<object>(propertyName);
+        }
+
+        /// <summary>
+        /// Sets a property by name given an object value
+        /// </summary>
+        /// <param name="propertyAccessor">
+        /// Reference to <see cref="IPropertyAccessor"/> object.
+        /// </param>
+        /// <param name="propertyName">Name of property to set</param>
+        /// <param name="value">
+        /// Value to assign to the property.
+        /// </param>
+        public static void SetPropertyValue(this IPropertyAccessor propertyAccessor,
+            string propertyName,
+            object value)
+        {
+            propertyAccessor.SetPropertyValue<object>(propertyName, value);
         }
     }
 }

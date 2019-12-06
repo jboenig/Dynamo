@@ -139,6 +139,24 @@ namespace Headway.Dynamo.Metadata.Reflection
 		}
 
         /// <summary>
+        /// Gets a flag indicating whether or not the property
+        /// has a getter.
+        /// </summary>
+        public override bool CanRead
+        {
+            get { return this.propInfo.CanRead; }
+        }
+
+        /// <summary>
+        /// Gets a flag indicating whether or not the property
+        /// has a setter.
+        /// </summary>
+        public override bool CanWrite
+        {
+            get { return this.propInfo.CanWrite; }
+        }
+
+        /// <summary>
         /// Gets or sets the default value for this property.
         /// </summary>
         public override object DefaultValue

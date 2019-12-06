@@ -39,10 +39,28 @@ namespace Headway.Dynamo.Metadata
 			get;
 		}
 
-		/// <summary>
-		/// Gets or sets the default value of the property.
-		/// </summary>
-		public abstract object DefaultValue
+        /// <summary>
+        /// Gets a flag indicating whether or not the property
+        /// has a getter.
+        /// </summary>
+        public abstract bool CanRead
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a flag indicating whether or not the property
+        /// has a setter.
+        /// </summary>
+        public abstract bool CanWrite
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets or sets the default value of the property.
+        /// </summary>
+        public abstract object DefaultValue
 		{
 			get;
             set;

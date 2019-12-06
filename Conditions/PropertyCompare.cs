@@ -118,6 +118,15 @@ namespace Headway.Dynamo.Conditions
         /// <summary>
         /// Gets or sets the value to compare against.
         /// </summary>
+        /// <remarks>
+        /// If the value assigned is a string, it may optionally
+        /// contain variable references that are resolved at run-time.
+        /// The syntax for a variable can be either $(VariableName)
+        /// or {VariableName}.  The variable must reference a property
+        /// that exists on the context object passed to the
+        /// <see cref="PropertyCompare.Evaluate(IServiceProvider, object)"/>
+        /// method.
+        /// </remarks>
         public object PropertyValue
         {
             get;

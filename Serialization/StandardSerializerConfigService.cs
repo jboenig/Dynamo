@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -74,9 +75,17 @@ namespace Headway.Dynamo.Serialization
             jsonSettings.TypeNameHandling = TypeNameHandling.Objects;
 
             // Use IJsonConverterService to get any converters needed
-            jsonSettings.Converters = (this.converterService != null) ?
-                (this.converterService.GetConverters(objType)) :
-                (null);
+            var converters = new List<JsonConverter>();
+            converters.Add(new DynamoObjectJsonConverter());
+            if (this.converterService != null)
+            {
+                var additionalConverters = this.converterService.GetConverters(objType);
+                if (additionalConverters != null)
+                {
+                    converters.AddRange(additionalConverters);
+                }
+            }
+            jsonSettings.Converters = converters;
 
             return jsonSettings;
         }

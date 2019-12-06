@@ -19,32 +19,32 @@
 namespace Headway.Dynamo.Metadata
 {
 	/// <summary>
-	/// 
+	/// Cardinality for relationships.
 	/// </summary>
 	public enum RelationshipCardinality
 	{
 		/// <summary>
-		/// 
+		/// Unknown or not set.
 		/// </summary>
 		None = 0,
 
 		/// <summary>
-		/// 
+		/// One to one relationship.
 		/// </summary>
 		OneToOne = 1,
 
 		/// <summary>
-		/// 
+		/// One to many relationship.
 		/// </summary>
 		OneToMany = 2,
 
 		/// <summary>
-		/// 
+		/// Many to one relationship.
 		/// </summary>
 		ManyToOne = 3,
 
 		/// <summary>
-		/// 
+		/// Many to many relationship.
 		/// </summary>
 		ManyToMany = 4
 	}

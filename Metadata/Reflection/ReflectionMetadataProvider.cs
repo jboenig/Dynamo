@@ -33,17 +33,25 @@ namespace Headway.Dynamo.Metadata.Reflection
         {
             T resDataType = null;
 
+            // Check reflection object type cache
             if (!this.reflectionTypes.ContainsKey(fullName))
             {
+                // Type not found in cache
                 resDataType = ReflectionObjectType.Get(this, fullName) as T;
                 if (resDataType != null)
                 {
                     this.reflectionTypes.Add(fullName, resDataType);
                 }
             }
+            else
+            {
+                // Type found in cache
+                resDataType = (T)this.reflectionTypes[fullName];
+            }
 
             if (resDataType == default(T) && this.NextProvider != null)
             {
+                // Type not found. Type the next metadata provider.
                 resDataType = this.NextProvider.GetDataType<T>(fullName);
             }
 

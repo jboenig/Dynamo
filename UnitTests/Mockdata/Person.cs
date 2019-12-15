@@ -135,6 +135,15 @@ namespace Headway.Dynamo.UnitTests.Mockdata
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public object ExtraStuff
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Returns human-readable string for this object.
         /// </summary>
         /// <returns>

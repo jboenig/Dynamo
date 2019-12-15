@@ -140,7 +140,6 @@ namespace Headway.Dynamo.UnitTests
                 City = "Tulsa",
                 State = "OK"
             };
-            metaHuman.ExtraStuff = "Stuff";
 
             // Serialize object
             var serializerConfigSvc = svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;

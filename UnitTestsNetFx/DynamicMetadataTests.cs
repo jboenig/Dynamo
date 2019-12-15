@@ -30,9 +30,6 @@ namespace Headway.Dynamo.UnitTests
             Assert.IsNotNull(firstNameProp);
             var lastNameProp = dynamicPersonObjectType.GetPropertyByName("LastName");
             Assert.IsNotNull(lastNameProp);
-            var extraStuffProp = dynamicPersonObjectType.GetPropertyByName("ExtraStuff");
-            Assert.IsNotNull(extraStuffProp);
-            Assert.IsNotNull(extraStuffProp.DataType);
         }
 
         [TestMethod]

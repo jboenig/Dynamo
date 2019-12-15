@@ -185,6 +185,8 @@ namespace Headway.Dynamo.Metadata.Reflection
 
         #region Static Get Methods
 
+        private static readonly ObjectType RootObjectType = new ReflectionObjectType(typeof(System.Object));
+
         // Static cache of reflection object types
         private static readonly Dictionary<string, ObjectType> classCache = new Dictionary<string, ObjectType>();
 
@@ -285,6 +287,12 @@ namespace Headway.Dynamo.Metadata.Reflection
 				return classCache[fullName];
 			}
 
+            // Check to see if this is base object
+            if (fullName.Equals(nameof(System.Object)))
+            {
+                return RootObjectType;
+            }
+
             // Performance optimization! Give preferential treatment to the Abp.Runtime
             // assembly since it is hit frequently.
             var objType = LoadObjectTypeFromAssembly(metadataProvider, typeof(ObjectType).Assembly, fullName);
@@ -345,6 +353,12 @@ namespace Headway.Dynamo.Metadata.Reflection
                 return classCache[fullName];
             }
 
+            // Check to see if this is base object
+            if (fullName.Equals(nameof(System.Object)))
+            {
+                return RootObjectType;
+            }
+
             return new ReflectionObjectType(metadataProvider, clrType);
         }
 
@@ -370,6 +384,12 @@ namespace Headway.Dynamo.Metadata.Reflection
             if (classCache.ContainsKey(fullName))
             {
                 return classCache[fullName];
+            }
+
+            // Check to see if this is base object
+            if (fullName.Equals(nameof(System.Object)))
+            {
+                return RootObjectType;
             }
 
             return new ReflectionObjectType(clrType);

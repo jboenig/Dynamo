@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Headway Software</Copyright>
     <Authors>Jeff Boenig</Authors>
@@ -27,10 +27,16 @@
 
   <ItemGroup>
     <Compile Remove="Restful\**" />
+    <Compile Remove="UnitTestsCore\**" />
+    <Compile Remove="UnitTestsNetFx\**" />
     <Compile Remove="UnitTests\**" />
     <EmbeddedResource Remove="Restful\**" />
+    <EmbeddedResource Remove="UnitTestsCore\**" />
+    <EmbeddedResource Remove="UnitTestsNetFx\**" />
     <EmbeddedResource Remove="UnitTests\**" />
     <None Remove="Restful\**" />
+    <None Remove="UnitTestsCore\**" />
+    <None Remove="UnitTestsNetFx\**" />
     <None Remove="UnitTests\**" />
     <None Include="license.txt">
       <Pack>True</Pack>

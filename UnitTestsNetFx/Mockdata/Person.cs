@@ -17,23 +17,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using Newtonsoft.Json;
-using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Metadata;
+using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.UnitTests.Mockdata
 {
-    [JsonObject]
-    public class DynamoPerson : DynamoObject
+    /// <summary>
+    /// Available choices for formatting the
+    /// name of a person
+    /// </summary>
+    public enum NameFormats
     {
-        public DynamoPerson()
-        {
-        }
-        public DynamoPerson(ObjectType objType) :
-            base(objType)
-        {
-        }
+        FirstMiddleInitialLast,
+        LastFirstMiddleInitial
+    }
 
+    public class Person
+    {
         /// <summary>
         /// Gets or sets the unique ID of this person.
         /// </summary>
@@ -118,12 +118,6 @@ namespace Headway.Dynamo.UnitTests.Mockdata
             set;
         }
 
-        public Address Addr
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Gets or sets the age of the <see cref="Person"/> in years.
         /// </summary>
@@ -138,15 +132,6 @@ namespace Headway.Dynamo.UnitTests.Mockdata
                         (((curDateTime.Month > dob.Month) ||
                         ((curDateTime.Month == dob.Month) && (curDateTime.Day >= dob.Day))) ? 1 : 0);
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public object ExtraStuff
-        {
-            get;
-            set;
         }
 
         /// <summary>

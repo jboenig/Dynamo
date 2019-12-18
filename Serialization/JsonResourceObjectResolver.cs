@@ -71,6 +71,32 @@ namespace Headway.Dynamo.Serialization
         }
 
         /// <summary>
+        /// Constructs a <see cref="JsonResourceObjectResolver{TResult}"/>
+        /// given a service provider.
+        /// </summary>
+        /// <param name="svcProvider">
+        /// Service provider used for deserialization
+        /// </param>
+        /// <remarks>
+        /// Source assembly is determined by calling
+        /// Assembly.GetExecutingAssembly().
+        /// </remarks>
+        public JsonResourceObjectResolver(IServiceProvider svcProvider)
+        {
+            if (svcProvider == null)
+            {
+                throw new ArgumentNullException(nameof(svcProvider));
+            }
+            this.svcProvider = svcProvider;
+
+            if (sourceAssembly == null)
+            {
+                throw new ArgumentNullException(nameof(sourceAssembly));
+            }
+            this.sourceAssembly = Assembly.GetExecutingAssembly();
+        }
+
+        /// <summary>
         /// Finds the object matching the specified key value.
         /// </summary>
         /// <param name="key">

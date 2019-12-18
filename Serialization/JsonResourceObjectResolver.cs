@@ -88,11 +88,6 @@ namespace Headway.Dynamo.Serialization
                 throw new ArgumentNullException(nameof(svcProvider));
             }
             this.svcProvider = svcProvider;
-
-            if (sourceAssembly == null)
-            {
-                throw new ArgumentNullException(nameof(sourceAssembly));
-            }
             this.sourceAssembly = Assembly.GetExecutingAssembly();
         }
 

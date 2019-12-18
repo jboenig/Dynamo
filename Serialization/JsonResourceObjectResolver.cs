@@ -79,7 +79,7 @@ namespace Headway.Dynamo.Serialization
         /// </param>
         /// <remarks>
         /// Source assembly is determined by calling
-        /// Assembly.GetExecutingAssembly().
+        /// Assembly.GetEntryAssembly().
         /// </remarks>
         public JsonResourceObjectResolver(IServiceProvider svcProvider)
         {
@@ -88,7 +88,7 @@ namespace Headway.Dynamo.Serialization
                 throw new ArgumentNullException(nameof(svcProvider));
             }
             this.svcProvider = svcProvider;
-            this.sourceAssembly = Assembly.GetExecutingAssembly();
+            this.sourceAssembly = Assembly.GetEntryAssembly();
         }
 
         /// <summary>

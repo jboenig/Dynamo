@@ -22,7 +22,7 @@ using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
-using Headway.Dynamo.Repository.FlatFileRepo;
+using Headway.Dynamo.Repository.FlatFile;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Restful.Services;
 using Headway.Dynamo.Restful.Models;

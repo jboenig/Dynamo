@@ -16,6 +16,7 @@
 // Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
 ////////////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Headway.Dynamo.Repository
@@ -37,6 +38,12 @@ namespace Headway.Dynamo.Repository
         /// </summary>
         /// <param name="obj">Object to add</param>
         void Add(TObject obj);
+
+        /// <summary>
+        /// Adds a collection of objects to the repository.
+        /// </summary>
+        /// <param name="objColl">Collection of objects to add</param>
+        void Add(IEnumerable<TObject> objColl);
 
         /// <summary>
         /// Updates an object in the repository.

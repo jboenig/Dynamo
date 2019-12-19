@@ -25,7 +25,7 @@ using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Exceptions;
 using Newtonsoft.Json;
 
-namespace Headway.Dynamo.Repository.FlatFileRepo
+namespace Headway.Dynamo.Repository.FlatFile
 {
     /// <summary>
     /// Implements a simple flat file repository.
@@ -40,6 +40,7 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
         private readonly IServiceProvider svcProvider;
         private readonly JsonSerializerSettings jsonSettings;
         private List<TObject> objects;
+        private const string JsonExtension = ".json";
 
         /// <summary>
         /// Constructs a <see cref="FlatFileRepo{TObject}"/>
@@ -57,17 +58,13 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
             ISerializerConfigService serializerConfigSvc,
             IServiceProvider svcProvider)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
             if (serializerConfigSvc == null)
             {
                 throw new ArgumentNullException(nameof(serializerConfigSvc));
             }
 
-            this.filePath = filePath;
+            this.filePath = ResolveFilePath(filePath);
+
             this.svcProvider = svcProvider;
 
             this.jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
@@ -75,6 +72,21 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
                 this.svcProvider);
 
             this.LoadRepo();
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="FlatFileRepo{TObject}"/>
+        /// </summary>
+        /// <param name="serializerConfigSvc">
+        /// Serializer configuration service
+        /// </param>
+        /// <param name="svcProvider">
+        /// Service provider.
+        /// </param>
+        public FlatFileRepo(ISerializerConfigService serializerConfigSvc,
+            IServiceProvider svcProvider) :
+            this(null, serializerConfigSvc, svcProvider)
+        {
         }
 
         /// <summary>
@@ -109,6 +121,19 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
                 }
             }
             this.objects.Add(obj);
+        }
+
+        /// <summary>
+        /// Adds a collection of objects to the repository.
+        /// </summary>
+        /// <param name="objColl">Collection of objects to add</param>
+        public void Add(IEnumerable<TObject> objColl)
+        {
+            // TODO: optimize this
+            foreach (var obj in objColl)
+            {
+                this.Add(obj);
+            }
         }
 
         /// <summary>
@@ -192,6 +217,8 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
 
             var json = JsonConvert.SerializeObject(this.objects, this.jsonSettings);
 
+            this.CreateDirectoryIfNeeded();
+
             using (var stream = File.Open(this.filePath, FileMode.Create, FileAccess.Write))
             using (StreamWriter sw = new StreamWriter(stream))
             {
@@ -204,6 +231,57 @@ namespace Headway.Dynamo.Repository.FlatFileRepo
             return (from o in this.objects.Cast<IPrimaryKeyAccessor>()
                     where o.PrimaryKey == pkValue
                     select o).Cast<TObject>().FirstOrDefault();
+        }
+
+        private static string ResolveFilePath(string filePathIn)
+        {
+            string filePathOut;
+
+            if (string.IsNullOrEmpty(filePathIn))
+            {
+                // Generate default path and filename
+                filePathOut = Path.Combine(GetDefaultDirectory(),
+                    typeof(TObject).FullName + JsonExtension);
+            }
+            else if (!Path.IsPathRooted(filePathIn))
+            {
+                // Use relative filename and add default path
+                filePathOut = Path.Combine(GetDefaultDirectory(),
+                    filePathIn);
+            }
+            else
+            {
+                // Use entire path as-is
+                filePathOut = filePathIn;
+            }
+
+            // Set default file extension to .json
+            if (!Path.HasExtension(filePathOut))
+            {
+                filePathOut += JsonExtension;
+            }
+
+            return filePathOut;
+        }
+
+        private static string GetDefaultDirectory()
+        {
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var objTypeNamespaces = typeof(TObject).FullName.Split('.');
+            if (objTypeNamespaces.Length > 1)
+            {
+                return Path.Combine(localAppData, objTypeNamespaces[0]);
+            }
+            return localAppData;
+        }
+
+        private void CreateDirectoryIfNeeded()
+        {
+            var folderPath = Path.GetDirectoryName(this.filePath);
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
         }
     }
 }

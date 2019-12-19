@@ -1,4 +1,22 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////////////////////////////
+// Copyright 2019 Jeff Boenig
+//
+// This file is part of Headway.Dynamo.
+//
+// Headway.Dynamo is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// Headway.Dynamo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Headway.Dynamo. If not, see http://www.gnu.org/licenses/.
+////////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,7 +27,7 @@ using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Exceptions;
-using Headway.Dynamo.Repository.FlatFileRepo;
+using Headway.Dynamo.Repository.FlatFile;
 using Headway.Dynamo.UnitTests.Mockdata;
 
 namespace Headway.Dynamo.UnitTests
@@ -94,8 +112,10 @@ namespace Headway.Dynamo.UnitTests
             svcProvider.AddService(typeof(IMetadataProvider), this.MetadataProvider);
             svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
+            var metadataRepoFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"MockData/SuperheroMetadata.json");
+
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
-                @"MockData/SuperheroMetadata.json",
+                metadataRepoFilePath,
                 svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );
@@ -119,8 +139,10 @@ namespace Headway.Dynamo.UnitTests
             svcProvider.AddService(typeof(IMetadataProvider), this.MetadataProvider);
             svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
+            var metadataRepoFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"MockData/SuperheroMetadata.json");
+
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
-                @"MockData/SuperheroMetadata.json",
+                metadataRepoFilePath,
                 svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );
@@ -189,8 +211,10 @@ namespace Headway.Dynamo.UnitTests
             svcProvider.AddService(typeof(IMetadataProvider), this.MetadataProvider);
             svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
 
+            var metadataRepoFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"MockData/SuperheroMetadata.json");
+
             var metadataRepo = new FlatFileRepo<DynamicObjectType>(
-                @"MockData/SuperheroMetadata.json",
+                metadataRepoFilePath,
                 svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider
                 );

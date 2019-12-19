@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Http;
 using Headway.Dynamo.Serialization;
-using Headway.Dynamo.Repository.FlatFileRepo;
+using Headway.Dynamo.Repository.FlatFile;
 using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Restful.Models;
 using Headway.Dynamo.Restful.Services;

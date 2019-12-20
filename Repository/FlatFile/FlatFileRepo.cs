@@ -209,12 +209,6 @@ namespace Headway.Dynamo.Repository.FlatFile
 
         private void SaveRepo()
         {
-            var serializerConfigSvc = this.svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;
-            if (serializerConfigSvc == null)
-            {
-                throw new ServiceNotFoundException(typeof(ISerializerConfigService));
-            }
-
             var json = JsonConvert.SerializeObject(this.objects, this.jsonSettings);
 
             this.CreateDirectoryIfNeeded();

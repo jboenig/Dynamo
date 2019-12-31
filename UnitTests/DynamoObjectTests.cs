@@ -202,7 +202,6 @@ namespace Headway.Dynamo.UnitTests
             }
         }
 
-
         [TestMethod]
         public void SerializeDynamicObjectCollection()
         {
@@ -355,6 +354,83 @@ namespace Headway.Dynamo.UnitTests
                     }
 
                     Assert.AreEqual(deserializedMetaHumanCount, metaHumans.Count);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void DeserializeNestedDynamicObject()
+        {
+            // Use StandardMetadataProvider
+            var svcProvider = new ServiceContainer();
+            svcProvider.AddService(typeof(IMetadataProvider), this.MetadataProvider);
+            svcProvider.AddService(typeof(ISerializerConfigService), new StandardSerializerConfigService(null));
+
+            var metadataRepoFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"MockData/SuperheroMetadata.json");
+
+            var metadataRepo = new FlatFileRepo<DynamicObjectType>(
+                metadataRepoFilePath,
+                svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
+                svcProvider
+                );
+            this.MetadataProvider.DynamicProvider.Load(metadataRepo);
+
+            // Create an instance of a metahuman
+            dynamic metaHuman = this.MetadataProvider.CreateInstance<DynamoPerson>(null,
+                "Headway.Dynamo.UnitTests.Mockdata.Metahuman",
+                null);
+            Assert.IsNotNull(metaHuman);
+            metaHuman.Superpower1 = "Invisibility";
+            var sp1 = metaHuman.Superpower1;
+            Assert.AreEqual(sp1, "Invisibility");
+            metaHuman.FirstName = "Fred";
+            metaHuman.Addr = new Address()
+            {
+                Line1 = "123 Somewhere Pl",
+                City = "Tulsa",
+                State = "OK"
+            };
+            metaHuman.ExtraStuff = "Stuff";
+
+            // Create model that wraps the dynamo object
+            var superHeroMdl = new SuperheroModel()
+            {
+                Superhero = metaHuman,
+                StatusCode = 2
+            };
+
+            // Serialize object
+            var serializerConfigSvc = svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService;
+            if (serializerConfigSvc == null)
+            {
+                throw new ServiceNotFoundException(typeof(ISerializerConfigService));
+            }
+
+            var jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
+                typeof(SuperheroModel),
+                svcProvider);
+
+            var jsonModel = JsonConvert.SerializeObject(superHeroMdl, jsonSettings);
+
+            byte[] buffer;
+
+            using (var stream = new MemoryStream())
+            {
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine(jsonModel);
+                }
+                buffer = stream.GetBuffer();
+            }
+
+            using (var stream = new MemoryStream(buffer))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    dynamic superHeroMdl_2 = JsonConvert.DeserializeObject<SuperheroModel>(sr.ReadToEnd(), jsonSettings);
+                    Assert.IsNotNull(superHeroMdl_2);
+                    var sp1_2 = superHeroMdl_2.Superhero.Superpower1;
+                    Assert.AreEqual(sp1_2, "Invisibility");
                 }
             }
         }

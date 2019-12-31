@@ -67,7 +67,7 @@ namespace Headway.Dynamo.Serialization
         /// <param name="reader">
         /// Reader used to read data from the serialization stream.
         /// </param>
-        /// <param name="objectType">
+        /// <param name="objClrType">
         /// Type of object to deserialize.
         /// </param>
         /// <param name="existingValue">
@@ -80,7 +80,7 @@ namespace Headway.Dynamo.Serialization
         /// Returns a new <see cref="DynamoObject"/> containing the
         /// state information read from the serialization context.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objClrType, object existingValue, JsonSerializer serializer)
         {
             // Reference to service provider MUST be attached to the context
             var svcProvider = serializer.Context.Context as IServiceProvider;
@@ -99,32 +99,46 @@ namespace Headway.Dynamo.Serialization
             // Parse JSON into JObject from stream
             JObject jObject = JObject.Load(reader);
 
-            // Determine type of object
-            var tokenType = jObject.SelectToken(TypeToken);
-            var objTypeFullName = tokenType.Value<string>();
-
-            // Retrieve metadata for object type
-            var objType = metadataProvider.GetDataType<ObjectType>(objTypeFullName);
-            if (objType == null)
+            // Retrieve metadata for the object via
+            // IMetadataProvider service
+            ObjectType objType;
+            var tokenDataTypeName = jObject.SelectToken(DataTypeNameToken);
+            if (tokenDataTypeName != null)
             {
-                var msg = string.Format("Unable to resolve metadata for object type {0}", objTypeFullName);
-                throw new InvalidOperationException(msg);
+                // Retrieve metadata for object type
+                var objTypeFullName = tokenDataTypeName.Value<string>();
+                objType = metadataProvider.GetDataType<ObjectType>(objTypeFullName);
+                if (objType == null)
+                {
+                    throw new DataTypeNotFound(objTypeFullName);
+                }
+            }
+            else
+            {
+                objType = metadataProvider.GetDataType<ObjectType>(objClrType);
+                if (objType == null)
+                {
+                    throw new DataTypeNotFound(objClrType.FullName);
+                }
             }
 
             // Create object instance
-            var resultObj = objType.CreateInstance<DynamoObject>(svcProvider,
-                null);
+            var resultObj = objType.CreateInstance<DynamoObject>(svcProvider, null);
 
-            // Populate object
+            // Populate object by iterating through every
+            // property in the parsedd JSON object
             foreach (var curJProp in jObject.Properties())
             {
                 var curPropName = curJProp.Name;
 
-                if (curPropName.Equals(TypeToken))
+                // Skip data type information
+                if (curPropName.Equals(CLRTypeToken) ||
+                    curPropName.Equals(DataTypeNameToken))
                 {
                     continue;
                 }
 
+                // Get property metadata
                 var curProp = objType.GetPropertyByName(curPropName);
                 if (curProp != null)
                 {
@@ -135,6 +149,7 @@ namespace Headway.Dynamo.Serialization
                 }
                 else
                 {
+                    // Attempt to find property through reflection
                     var clrProp = objType.CLRType.GetProperty(curJProp.Name);
                     if (clrProp != null)
                     {
@@ -177,8 +192,20 @@ namespace Headway.Dynamo.Serialization
             writer.WriteStartObject();
 
             // Write the $type property
-            writer.WritePropertyName(TypeToken);
-            writer.WriteValue(dynamoObj.DataTypeName);
+            writer.WritePropertyName(CLRTypeToken);
+            var clrType = value.GetType();
+            var clrClassName = clrType.FullName;
+            var clrAssemblyName = clrType.Assembly.GetName().Name;
+            var clrTypeInfo = $"{clrClassName}, {clrAssemblyName}";
+            writer.WriteValue(clrTypeInfo);
+
+            // Write the DataTypeName property
+            var dataTypeName = dynamoObj.DataTypeName;
+            if (!string.IsNullOrEmpty(dataTypeName))
+            {
+                writer.WritePropertyName(DataTypeNameToken);
+                writer.WriteValue(dataTypeName);
+            }
 
             // Write each property of the object
             foreach (var curProp in dynamoObj.DataType.FindAllProperties())
@@ -214,7 +241,8 @@ namespace Headway.Dynamo.Serialization
             writer.WriteEndObject();
         }
 
-        private const string TypeToken = "$type";
+        private const string CLRTypeToken = "$type";
+        private const string DataTypeNameToken = "DataTypeName";
 
         private static void SetPropertyValue(DynamoObject target, Property prop, JToken token)
         {

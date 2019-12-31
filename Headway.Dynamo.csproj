@@ -53,6 +53,7 @@
     <Compile Remove="Repository\IRepositoryManager.cs" />
     <Compile Remove="Runtime\IObjectRepository.cs" />
     <Compile Remove="Runtime\PrimaryKeyValue.cs" />
+    <Compile Remove="Serialization\DynamoSerializationBinder.cs" />
   </ItemGroup>
 
   <ItemGroup>

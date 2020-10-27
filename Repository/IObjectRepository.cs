@@ -68,6 +68,11 @@ namespace Headway.Dynamo.Repository
         void Remove(TObject obj);
 
         /// <summary>
+        /// Removes all objects from the repository.
+        /// </summary>
+        void RemoveAll();
+
+        /// <summary>
         /// Save changes made to the repository.
         /// </summary>
         void SaveChanges();

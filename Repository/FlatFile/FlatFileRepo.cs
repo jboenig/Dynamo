@@ -190,6 +190,14 @@ namespace Headway.Dynamo.Repository.FlatFile
         }
 
         /// <summary>
+        /// Removes all objects from the repository.
+        /// </summary>
+        public void RemoveAll()
+        {
+            this.objects.Clear();
+        }
+
+        /// <summary>
         /// Saves all pending changes to the repo.
         /// </summary>
         public void SaveChanges()

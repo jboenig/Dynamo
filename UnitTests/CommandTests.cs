@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Commands;
@@ -68,9 +69,8 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdTask = cmdConditional.Execute(this.svcProvider, person);
-            cmdTask.RunSynchronously();
-            Assert.IsTrue(cmdTask.Result.IsSuccess);
+            var cmdRes = cmdConditional.Execute(this.svcProvider, person);
+            Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, "Dude");
         }
 
@@ -92,9 +92,8 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdTask = cmdConditional.Execute(this.svcProvider, person);
-            cmdTask.RunSynchronously();
-            Assert.IsTrue(cmdTask.Result.IsSuccess);
+            var cmdRes = cmdConditional.Execute(this.svcProvider, person);
+            Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, null);
         }
 
@@ -116,9 +115,8 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdTask = cmdConditional.Execute(this.svcProvider, person);
-            cmdTask.RunSynchronously();
-            Assert.IsTrue(cmdTask.Result.IsSuccess);
+            var cmdRes = cmdConditional.Execute(this.svcProvider, person);
+            Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, "Dude");
         }
 
@@ -143,16 +141,14 @@ namespace Headway.Dynamo.UnitTests
             cmdMacro.Commands.Add(cmdAddNumbers);
             cmdMacro.Commands.Add(cmdNoop);
             cmdMacro.Commands.Add(cmdAddNumbers);
-            cmdMacro.ExecuteAsync = false;
+            cmdMacro.AllowAsyncExecution = false;
             var contextObj = new
             {
                 Val1 = 2,
                 Val2 = 5,
                 Result = -1
             };
-            var cmdMacroTask = cmdMacro.Execute(this.svcProvider, contextObj);
-            cmdMacroTask.RunSynchronously();
-            var cmdRes = cmdMacroTask.Result;
+            var cmdRes = cmdMacro.Execute(this.svcProvider, contextObj);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
@@ -163,7 +159,7 @@ namespace Headway.Dynamo.UnitTests
         /// execution.
         /// </summary>
         [TestMethod]
-        public void AsyncronousMacroCommand()
+        public async Task AsyncronousMacroCommand()
         {
             var cmdNoop = new DelegateCommand(() =>
             {
@@ -182,16 +178,14 @@ namespace Headway.Dynamo.UnitTests
             cmdMacro.Commands.Add(cmdAddNumbers);
             cmdMacro.Commands.Add(cmdNoop);
             cmdMacro.Commands.Add(cmdAddNumbers);
-            cmdMacro.ExecuteAsync = true;
+            cmdMacro.AllowAsyncExecution = true;
             var contextObj = new
             {
                 Val1 = 2,
                 Val2 = 5,
                 Result = -1
             };
-            var cmdMacroTask = cmdMacro.Execute(this.svcProvider, contextObj);
-            cmdMacroTask.RunSynchronously();
-            var cmdRes = cmdMacroTask.Result;
+            var cmdRes = await cmdMacro.ExecuteAsync(this.svcProvider, contextObj);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }

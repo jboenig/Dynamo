@@ -125,9 +125,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        var cmdTask = this.WhenTrue.Execute(serviceProvider, context);
-                        cmdTask.RunSynchronously();
-                        cmdRes = cmdTask.Result;
+                        cmdRes = this.WhenTrue.Execute(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -148,9 +146,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        var cmdTask = this.WhenFalse.Execute(serviceProvider, context);
-                        cmdTask.RunSynchronously();
-                        cmdRes = cmdTask.Result;
+                        cmdRes = this.WhenFalse.Execute(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -223,9 +219,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        var cmdTask = this.WhenTrue.Execute(serviceProvider, context);
-                        await cmdTask;
-                        cmdRes = cmdTask.Result;
+                        cmdRes = await this.WhenTrue.ExecuteAsync(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -246,9 +240,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        var cmdTask = this.WhenFalse.Execute(serviceProvider, context);
-                        await cmdTask;
-                        cmdRes = cmdTask.Result;
+                        cmdRes = await this.WhenFalse.ExecuteAsync(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {

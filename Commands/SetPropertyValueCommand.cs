@@ -84,26 +84,22 @@ namespace Headway.Dynamo.Commands
         /// to this method.
         /// </para>
         /// </remarks>
-        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            return new Task<CommandResult>(() =>
+            var actualValue = this.Value;
+            if (this.Value is string strValue)
             {
-                var actualValue = this.Value;
-                var strValue = this.Value as string;
-                if (strValue != null)
-                {
-                    // Value is a string. Attempt to resolve any variables
-                    // it may contain.
-                    actualValue = PropertyResolver.ResolvePropertyValues(context, strValue);
-                }
-                PropertyResolver.SetPropertyValue<object>(context, this.PropertyName, actualValue);
-                return CommandResult.Success;
-            });
+                // Value is a string. Attempt to resolve any variables
+                // it may contain.
+                actualValue = PropertyResolver.ResolvePropertyValues(context, strValue);
+            }
+            PropertyResolver.SetPropertyValue<object>(context, this.PropertyName, actualValue);
+            return CommandResult.Success;
         }
     }
 }

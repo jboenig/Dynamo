@@ -73,13 +73,13 @@ namespace Headway.Dynamo.Commands
         /// command is executed.  Also, if <see cref="ExecuteWhen"/> evaluates
         /// true, then the command is also execute.
         /// </remarks>
-        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
         {
             if (this.ExecuteWhen == null || this.ExecuteWhen.Evaluate(serviceProvider, context) == true)
             {
                 return this.Command.Execute(serviceProvider, context);
             }
-            return new Task<CommandResult>(() => CommandResult.Success);
+            return CommandResult.Success;
         }
     }
 }

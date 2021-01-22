@@ -49,7 +49,7 @@ namespace Headway.Dynamo.Commands
         public MacroCommand()
         {
             this.commands = new List<Command>();
-            this.ExecuteAsync = true;
+            this.AllowAsyncExecution = true;
         }
 
         #endregion
@@ -70,7 +70,7 @@ namespace Headway.Dynamo.Commands
         /// commands in this macro should be executed asynchrounously
         /// or synchronously.
         /// </summary>
-        public bool ExecuteAsync
+        public bool AllowAsyncExecution
         {
             get;
             set;
@@ -89,54 +89,40 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
         {
-            return new Task<CommandResult>(() =>
+            var commandRes = new MacroCommandResult();
+
+            foreach (var command in this.Commands)
             {
-                var commandRes = new MacroCommandResult();
+                var curCommandRes = command.Execute(serviceProvider, context);
+                commandRes.CommandResults.Add(curCommandRes);
+            }
 
-                var commandTasks = new List<Task<CommandResult>>();
+            return commandRes;
+        }
 
-                using (var scope = new TransactionScope(TransactionScopeOption.Required))
-                {
-                    try
-                    {
-                        foreach (var command in this.Commands)
-                        {
-                            var curCommandTask = command.Execute(serviceProvider, context);
-                            if (curCommandTask != null)
-                            {
-                                if (this.ExecuteAsync)
-                                {
-                                    commandTasks.Add(curCommandTask);
-                                    curCommandTask.Start();
-                                }
-                                else
-                                {
-                                    curCommandTask.RunSynchronously();
-                                    commandRes.CommandResults.Add(curCommandTask.Result);
-                                }
-                            }
-                        }
+        /// <summary>
+        /// Executes this macro command asynchronously.
+        /// </summary>
+        /// <param name="serviceProvider">Interface to service provider</param>
+        /// <param name="context">User defined context data</param>
+        /// <returns>
+        /// Returns a <see cref="CommandResult"/> object that describes
+        /// the result.
+        /// </returns>
+        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
+        {
+            var commandRes = new MacroCommandResult();
 
-                        Task.WaitAll(commandTasks.ToArray());
+            foreach (var command in this.Commands)
+            {
+                var curCommandRes = await command.ExecuteAsync(serviceProvider, context);
+                commandRes.CommandResults.Add(curCommandRes);
+            }
 
-                        foreach(var curCommandTask in commandTasks)
-                        {
-                            commandRes.CommandResults.Add(curCommandTask.Result);
-                        }
-
-                        scope.Complete();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                }
-
-                return commandRes;
-            });
-        }        
+            return commandRes;
+        }
 
         #endregion
     }

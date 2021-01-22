@@ -66,9 +66,9 @@ namespace Headway.Dynamo.Commands
         /// </returns>
         public delegate bool CommandFuncAllParamsBoolResult(IServiceProvider svcProvider, object context);
 
-        private CommandFuncNoParams cmdFuncNoParams;
-        private CommandFuncFull cmdFuncFull;
-        private CommandFuncAllParamsBoolResult cmdFuncAllParamsBoolRes;
+        private readonly CommandFuncNoParams cmdFuncNoParams;
+        private readonly CommandFuncFull cmdFuncFull;
+        private readonly CommandFuncAllParamsBoolResult cmdFuncAllParamsBoolRes;
 
         /// <summary>
         /// Construct a <see cref="DelegateCommand"/> with a
@@ -117,33 +117,30 @@ namespace Headway.Dynamo.Commands
         /// The implementation invokes the delegate function associated
         /// with this command.
         /// </remarks>
-        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
         {
-            return new Task<CommandResult>(() =>
+            CommandResult res = CommandResult.Success;
+
+            if (this.cmdFuncFull != null)
             {
-                CommandResult res = CommandResult.Success;
+                res = this.cmdFuncFull(serviceProvider, context);
+            }
+            else if (this.cmdFuncAllParamsBoolRes != null)
+            {
+                if (!this.cmdFuncAllParamsBoolRes(serviceProvider, context))
+                {
+                    res = CommandResult.Fail;
+                }
+            }
+            else if (this.cmdFuncNoParams != null)
+            {
+                if (!this.cmdFuncNoParams())
+                {
+                    res = CommandResult.Fail;
+                }
+            }
 
-                if (this.cmdFuncFull != null)
-                {
-                    res = this.cmdFuncFull(serviceProvider, context);
-                }
-                else if (this.cmdFuncAllParamsBoolRes != null)
-                {
-                    if (!this.cmdFuncAllParamsBoolRes(serviceProvider, context))
-                    {
-                        res = CommandResult.Fail;
-                    }
-                }
-                else if (this.cmdFuncNoParams != null)
-                {
-                    if (!this.cmdFuncNoParams())
-                    {
-                        res = CommandResult.Fail;
-                    }
-                }
-
-                return res;
-            });
+            return res;
         }
     }
 }

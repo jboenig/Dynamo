@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
 
 using Headway.Dynamo.Conditions;
 using Headway.Dynamo.Commands;
@@ -149,6 +150,104 @@ namespace Headway.Dynamo.Rules
                     {
                         var cmdTask = this.WhenFalse.Execute(serviceProvider, context);
                         cmdTask.RunSynchronously();
+                        cmdRes = cmdTask.Result;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new CommandExecuteException("An exception was thrown while attempting to execute the WhenFalse command on a rule", ex);
+                    }
+
+                    if (!cmdRes.IsSuccess)
+                    {
+                        throw new CommandExecuteException("Execution of the WhenFalse command failed", cmdRes);
+                    }
+                }
+            }
+
+            return evalRes;
+        }
+
+        /// <summary>
+        /// Applies the rule to the specified context.
+        /// </summary>
+        /// <param name="serviceProvider">Interface to service provider</param>
+        /// <param name="context">
+        /// Context containing data used to apply the rule.
+        /// </param>
+        /// <returns>
+        /// Returns the result of evaluating the <see cref="Rule.Condition"/>
+        /// associated with this rule.
+        /// </returns>
+        /// <remarks>
+        /// This method evaluates the <see cref="Rule.Condition"/> and fires
+        /// either the <see cref="Rule.WhenTrue"/> or <see cref="Rule.WhenFalse"/>
+        /// command based on the result.
+        /// 
+        /// This method can throw the following exceptions -
+        ///   <see cref="RuleInitException"/>
+        ///   <see cref="ConditionEvalException"/>
+        ///   <see cref="CommandExecuteException"/>
+        /// </remarks>
+        public async Task<bool> ApplyAsync(IServiceProvider serviceProvider, object context)
+        {
+            try
+            {
+                this.OnBeforeApply(serviceProvider, context);
+            }
+            catch (Exception ex)
+            {
+                throw new RuleInitException(ex);
+            }
+
+            if (this.Condition == null)
+            {
+                return false;
+            }
+
+            bool evalRes;
+
+            try
+            {
+                evalRes = this.Condition.Evaluate(serviceProvider, context);
+            }
+            catch (Exception ex)
+            {
+                throw new ConditionEvalException(ex);
+            }
+
+            if (evalRes)
+            {
+                if (this.WhenTrue != null)
+                {
+                    CommandResult cmdRes;
+
+                    try
+                    {
+                        var cmdTask = this.WhenTrue.Execute(serviceProvider, context);
+                        await cmdTask;
+                        cmdRes = cmdTask.Result;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new CommandExecuteException("An exception was thrown while attempting to execute the WhenTrue command on a rule", ex);
+                    }
+
+                    if (!cmdRes.IsSuccess)
+                    {
+                        throw new CommandExecuteException("Execution of the WhenTrue command failed", cmdRes);
+                    }
+                }
+            }
+            else
+            {
+                if (this.WhenFalse != null)
+                {
+                    CommandResult cmdRes;
+
+                    try
+                    {
+                        var cmdTask = this.WhenFalse.Execute(serviceProvider, context);
+                        await cmdTask;
                         cmdRes = cmdTask.Result;
                     }
                     catch (Exception ex)

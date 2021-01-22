@@ -13,11 +13,13 @@
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/jboenig/Dynamo</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Convert to .NET Standard 2.1 and fix issue with not returning ObjectType for System.Object.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add async version of Rule.Apply</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageId>Headway.Dynamo</PackageId>
     <PackageIcon>Dynamo.png</PackageIcon>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <FileVersion>1.5.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

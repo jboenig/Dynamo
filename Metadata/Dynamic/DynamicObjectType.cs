@@ -36,7 +36,7 @@ namespace Headway.Dynamo.Metadata.Dynamic
     /// configurable at run-time.
     /// </summary>
     [Serializable]
-    public sealed class DynamicObjectType : ObjectTypeBaseImpl, ISerializable
+    public class DynamicObjectType : ObjectTypeBaseImpl, ISerializable
     {
         #region Member Variables
 

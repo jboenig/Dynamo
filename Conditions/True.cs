@@ -22,8 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace Headway.Dynamo.Conditions
 {
     /// <summary>
@@ -40,9 +38,9 @@ namespace Headway.Dynamo.Conditions
         /// <returns>
         /// Always returns TRUE.
         /// </returns>
-        public override bool Evaluate(IServiceProvider serviceProvider, object context)
+        public override Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
         {
-            return true;
+            return Task.FromResult(true);
         }
     }
 }

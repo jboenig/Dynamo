@@ -22,7 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Exceptions;
 
@@ -70,7 +69,7 @@ namespace Headway.Dynamo.Conditions
         /// Returns TRUE or FALSE based on evaluation
         /// of the condition.
         /// </returns>
-        public override bool Evaluate(IServiceProvider serviceProvider, object context)
+        public override Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
         {
             object actualValue;
 
@@ -94,11 +93,11 @@ namespace Headway.Dynamo.Conditions
 
             if (curValue == null && this.PropertyValue == null)
             {
-                return true;
+                return Task.FromResult(true);
             }
             else if (curValue == null || this.PropertyValue == null)
             {
-                return false;
+                return Task.FromResult(false);
             }
 
             if (this.compareFunc == null)
@@ -108,7 +107,7 @@ namespace Headway.Dynamo.Conditions
                 throw new InvalidOperationException(msg);
             }
 
-            return this.compareFunc(curValue, actualValue);
+            return Task.FromResult(this.compareFunc(curValue, actualValue));
         }
 
         /// <summary>

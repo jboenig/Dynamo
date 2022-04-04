@@ -22,9 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-
 namespace Headway.Dynamo.Conditions
 {
     /// <summary>
@@ -91,7 +88,7 @@ namespace Headway.Dynamo.Conditions
         /// Boolean flag indicating whether the
         /// condition is true or false.
         /// </returns>
-        public override bool Evaluate(IServiceProvider serviceProvider, object context)
+        public override async Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
         {
             bool result;
 
@@ -104,7 +101,7 @@ namespace Headway.Dynamo.Conditions
                 while (!result && enumConditions.MoveNext())
                 {
                     var curCondition = enumConditions.Current;
-                    result = curCondition.Evaluate(serviceProvider, context);
+                    result = await curCondition.EvaluateAsync(serviceProvider, context);
                 }
             }
             else
@@ -114,7 +111,7 @@ namespace Headway.Dynamo.Conditions
                 while (result && enumConditions.MoveNext())
                 {
                     var curCondition = enumConditions.Current;
-                    result = curCondition.Evaluate(serviceProvider, context);
+                    result = await curCondition.EvaluateAsync(serviceProvider, context);
                 }
             }
 

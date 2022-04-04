@@ -22,8 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
 using Headway.Dynamo.Runtime;
 
 namespace Headway.Dynamo.Commands
@@ -84,7 +82,7 @@ namespace Headway.Dynamo.Commands
         /// to this method.
         /// </para>
         /// </remarks>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
         {
             if (context == null)
             {
@@ -99,7 +97,8 @@ namespace Headway.Dynamo.Commands
                 actualValue = PropertyResolver.ResolvePropertyValues(context, strValue);
             }
             PropertyResolver.SetPropertyValue<object>(context, this.PropertyName, actualValue);
-            return CommandResult.Success;
+
+            return Task.FromResult(CommandResult.Success);
         }
     }
 }

@@ -22,8 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
 using Headway.Dynamo.Conditions;
 
 namespace Headway.Dynamo.Commands
@@ -73,11 +71,11 @@ namespace Headway.Dynamo.Commands
         /// command is executed.  Also, if <see cref="ExecuteWhen"/> evaluates
         /// true, then the command is also execute.
         /// </remarks>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
         {
-            if (this.ExecuteWhen == null || this.ExecuteWhen.Evaluate(serviceProvider, context) == true)
+            if (this.ExecuteWhen == null || await this.ExecuteWhen.EvaluateAsync(serviceProvider, context) == true)
             {
-                return this.Command.Execute(serviceProvider, context);
+                return await this.Command.ExecuteAsync(serviceProvider, context);
             }
             return CommandResult.Success;
         }

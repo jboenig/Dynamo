@@ -22,7 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
 using Headway.Dynamo.Metadata;
 
 namespace Headway.Dynamo.Exceptions

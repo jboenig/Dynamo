@@ -1,72 +1,34 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>Headway Software</Copyright>
-    <Authors>Jeff Boenig</Authors>
-    <AssemblyName>Headway.Dynamo</AssemblyName>
-    <RootNamespace>Headway.Dynamo</RootNamespace>
-    <Version>2.2</Version>
-    <Description>Dynamo is a .NET application extensibility toolkit that helps developers to create applications with dynamic data and behavior driven by metadata, commands, conditions, and rules. Build customization into your applications from the start using Dynamo! Custom, user-defined data becomes a seamless part of your object model. Build your own metadata sources or use the ones built into Dynamo. Enable customized behavior in your applications using condition, command, and rule objects. Dynamo is a lightweight and library that pulls together some very powerful design patterns and helps you create more flexible and reliable applications!</Description>
-    <PackageProjectUrl>https://github.com/jboenig/Dynamo/wiki</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
-    <RepositoryUrl>https://github.com/jboenig/Dynamo</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Revamp Command.Execute and Command.ExecuteAsync</PackageReleaseNotes>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageId>Headway.Dynamo</PackageId>
-    <PackageIcon>Dynamo.png</PackageIcon>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <DocumentationFile>C:\Users\jeffb\Source\Repos\Headway\Dynamo\Headway.Dynamo.xml</DocumentationFile>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <SignAssembly>False</SignAssembly>
+	<Authors>Headway Software</Authors>
+	<VersionPrefix>3.0.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Http\**" />
     <Compile Remove="Restful\**" />
-    <Compile Remove="UnitTestsCore\**" />
-    <Compile Remove="UnitTestsNetFx\**" />
     <Compile Remove="UnitTests\**" />
+    <EmbeddedResource Remove="Http\**" />
     <EmbeddedResource Remove="Restful\**" />
-    <EmbeddedResource Remove="UnitTestsCore\**" />
-    <EmbeddedResource Remove="UnitTestsNetFx\**" />
     <EmbeddedResource Remove="UnitTests\**" />
+    <None Remove="Http\**" />
     <None Remove="Restful\**" />
-    <None Remove="UnitTestsCore\**" />
-    <None Remove="UnitTestsNetFx\**" />
     <None Remove="UnitTests\**" />
-    <None Include="Dynamo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="license.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Repository\IRepositoryManager.cs" />
-    <Compile Remove="Runtime\IObjectRepository.cs" />
-    <Compile Remove="Runtime\PrimaryKeyValue.cs" />
-    <Compile Remove="Serialization\DynamoSerializationBinder.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Rules\" />
-    <Folder Include="Collections\" />
-    <Folder Include="Metadata\Attributes\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

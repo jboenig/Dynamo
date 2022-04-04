@@ -33,17 +33,6 @@ namespace Headway.Dynamo.Commands
     public abstract class Command
     {
         /// <summary>
-        /// Executes this command.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        public abstract CommandResult Execute(IServiceProvider serviceProvider, object context);
-
-        /// <summary>
         /// Executes this command asynchrously.
         /// </summary>
         /// <param name="serviceProvider">Interface to service provider</param>
@@ -52,12 +41,6 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public virtual async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
-        {
-            return await Task.Run(() =>
-            {
-                return this.Execute(serviceProvider, context);
-            });
-        }
+        public abstract Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context);
     }
 }

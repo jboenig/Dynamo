@@ -22,11 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Transactions;
-
 namespace Headway.Dynamo.Commands
 {
     /// <summary>
@@ -49,7 +44,7 @@ namespace Headway.Dynamo.Commands
         public MacroCommand()
         {
             this.commands = new List<Command>();
-            this.AllowAsyncExecution = true;
+            this.AllowParallelExecution = false;
         }
 
         #endregion
@@ -67,10 +62,9 @@ namespace Headway.Dynamo.Commands
 
         /// <summary>
         /// Gets or sets a flag indicating whether or not the
-        /// commands in this macro should be executed asynchrounously
-        /// or synchronously.
+        /// commands in this macro should be executed in parallel.
         /// </summary>
-        public bool AllowAsyncExecution
+        public bool AllowParallelExecution
         {
             get;
             set;
@@ -79,28 +73,6 @@ namespace Headway.Dynamo.Commands
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Executes this macro command.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
-        {
-            var commandRes = new MacroCommandResult();
-
-            foreach (var command in this.Commands)
-            {
-                var curCommandRes = command.Execute(serviceProvider, context);
-                commandRes.CommandResults.Add(curCommandRes);
-            }
-
-            return commandRes;
-        }
 
         /// <summary>
         /// Executes this macro command asynchronously.
@@ -113,6 +85,15 @@ namespace Headway.Dynamo.Commands
         /// </returns>
         public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
         {
+            if (this.AllowParallelExecution)
+            {
+                return await this.ExecuteParallel(serviceProvider, context);
+            }
+            return await this.ExecuteSequential(serviceProvider, context);
+        }
+
+        private async Task<CommandResult> ExecuteSequential(IServiceProvider serviceProvider, object context)
+        {
             var commandRes = new MacroCommandResult();
 
             foreach (var command in this.Commands)
@@ -120,6 +101,24 @@ namespace Headway.Dynamo.Commands
                 var curCommandRes = await command.ExecuteAsync(serviceProvider, context);
                 commandRes.CommandResults.Add(curCommandRes);
             }
+
+            return commandRes;
+        }
+
+        private async Task<CommandResult> ExecuteParallel(IServiceProvider serviceProvider, object context)
+        {
+            var commandRes = new MacroCommandResult();
+
+            List<Task<CommandResult>> cmdTasks = new List<Task<CommandResult>>();
+
+            foreach (var command in this.Commands)
+            {
+                cmdTasks.Add(command.ExecuteAsync(serviceProvider, context));
+            }
+
+            await Task.WhenAll(cmdTasks);
+
+            commandRes.CommandResults.AddRange(cmdTasks.Select(t => t.Result));
 
             return commandRes;
         }

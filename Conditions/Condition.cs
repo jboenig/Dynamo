@@ -22,8 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace Headway.Dynamo.Conditions
 {
     /// <summary>
@@ -41,7 +39,7 @@ namespace Headway.Dynamo.Conditions
         /// Returns TRUE or FALSE based on evaluation
         /// of the condition.
         /// </returns>
-        public abstract bool Evaluate(IServiceProvider serviceProvider, object context);
+        public abstract Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context);
 
         /// <summary>
         /// Singleton <see cref="Condition"/> that always evaluates to true.

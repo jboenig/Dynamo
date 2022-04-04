@@ -22,9 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-
 namespace Headway.Dynamo.Rules
 {
     /// <summary>
@@ -45,13 +42,13 @@ namespace Headway.Dynamo.Rules
         /// <param name="context">
         /// Context object.
         /// </param>
-        public static void Apply(this IEnumerable<Rule> rules,
+        public static async void Apply(this IEnumerable<Rule> rules,
             IServiceProvider serviceProvider,
             object context)
         {
             foreach (var curRule in rules)
             {
-                curRule.Apply(serviceProvider, context);
+                await curRule.Apply(serviceProvider, context);
             }
         }
     }

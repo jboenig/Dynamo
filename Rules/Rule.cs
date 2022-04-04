@@ -22,9 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
-
 using Headway.Dynamo.Conditions;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Exceptions;
@@ -90,7 +87,7 @@ namespace Headway.Dynamo.Rules
         ///   <see cref="ConditionEvalException"/>
         ///   <see cref="CommandExecuteException"/>
         /// </remarks>
-        public bool Apply(IServiceProvider serviceProvider, object context)
+        public async Task<bool> Apply(IServiceProvider serviceProvider, object context)
         {
             try
             {
@@ -110,7 +107,7 @@ namespace Headway.Dynamo.Rules
 
             try
             {
-                evalRes = this.Condition.Evaluate(serviceProvider, context);
+                evalRes = await this.Condition.EvaluateAsync(serviceProvider, context);
             }
             catch (Exception ex)
             {
@@ -125,7 +122,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        cmdRes = this.WhenTrue.Execute(serviceProvider, context);
+                        cmdRes = await this.WhenTrue.ExecuteAsync(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -146,7 +143,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        cmdRes = this.WhenFalse.Execute(serviceProvider, context);
+                        cmdRes = await this.WhenFalse.ExecuteAsync(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -204,7 +201,7 @@ namespace Headway.Dynamo.Rules
 
             try
             {
-                evalRes = this.Condition.Evaluate(serviceProvider, context);
+                evalRes = await this.Condition.EvaluateAsync(serviceProvider, context);
             }
             catch (Exception ex)
             {

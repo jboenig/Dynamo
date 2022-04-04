@@ -22,9 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
-
 namespace Headway.Dynamo.Commands
 {
     /// <summary>
@@ -39,7 +36,7 @@ namespace Headway.Dynamo.Commands
         /// <returns>
         /// Returns true if successful, otherwise returns false.
         /// </returns>
-        public delegate bool CommandFuncNoParams();
+        public delegate Task<bool> CommandFuncNoParams();
 
         /// <summary>
         /// Signature for a command function that takes all
@@ -52,7 +49,7 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public delegate CommandResult CommandFuncFull(IServiceProvider svcProvider, object context);
+        public delegate Task<CommandResult> CommandFuncFull(IServiceProvider svcProvider, object context);
 
         /// <summary>
         /// Signature for a command function that takes all
@@ -64,7 +61,7 @@ namespace Headway.Dynamo.Commands
         /// <returns>
         /// Returns true if successful, otherwise returns false.
         /// </returns>
-        public delegate bool CommandFuncAllParamsBoolResult(IServiceProvider svcProvider, object context);
+        public delegate Task<bool> CommandFuncAllParamsBoolResult(IServiceProvider svcProvider, object context);
 
         private readonly CommandFuncNoParams cmdFuncNoParams;
         private readonly CommandFuncFull cmdFuncFull;
@@ -117,24 +114,24 @@ namespace Headway.Dynamo.Commands
         /// The implementation invokes the delegate function associated
         /// with this command.
         /// </remarks>
-        public override CommandResult Execute(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
         {
             CommandResult res = CommandResult.Success;
 
             if (this.cmdFuncFull != null)
             {
-                res = this.cmdFuncFull(serviceProvider, context);
+                res = await this.cmdFuncFull(serviceProvider, context);
             }
             else if (this.cmdFuncAllParamsBoolRes != null)
             {
-                if (!this.cmdFuncAllParamsBoolRes(serviceProvider, context))
+                if (!await this.cmdFuncAllParamsBoolRes(serviceProvider, context))
                 {
                     res = CommandResult.Fail;
                 }
             }
             else if (this.cmdFuncNoParams != null)
             {
-                if (!this.cmdFuncNoParams())
+                if (!await this.cmdFuncNoParams())
                 {
                     res = CommandResult.Fail;
                 }

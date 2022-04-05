@@ -22,11 +22,11 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Commands;
+using Headway.Dynamo.Http.IO;
 
-namespace Headway.Dynamo.Http
+namespace Headway.Dynamo.Http.Commands
 {
     /// <summary>
     /// Encapsulates an HttpResponseMessage as a

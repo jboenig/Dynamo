@@ -22,12 +22,9 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Linq;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Net.Http;
 
-namespace Headway.Dynamo.Restful.Models
+namespace Headway.Dynamo.Http.Models
 {
     /// <summary>
     /// Encapsulates a rest-based web service API. A

@@ -32,7 +32,7 @@ using Newtonsoft.Json;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Runtime;
 
-namespace Headway.Dynamo.Restful.Models
+namespace Headway.Dynamo.Http.Models
 {
     /// <summary>
     /// This class encapsulates a rest-based web service.

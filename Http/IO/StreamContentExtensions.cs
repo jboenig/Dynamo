@@ -22,12 +22,10 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Net.Http;
 using System.IO.Compression;
-using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Headway.Dynamo.Http
+namespace Headway.Dynamo.Http.IO
 {
     /// <summary>
     /// Extension methods for HttpContent class

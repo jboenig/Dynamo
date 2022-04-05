@@ -22,18 +22,26 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Threading.Tasks;
-using System.Net.Http;
-using Headway.Dynamo.Restful.Models;
+using Headway.Dynamo.Http.Models;
 
-namespace Headway.Dynamo.Restful.Services
+namespace Headway.Dynamo.Http.Services
 {
     /// <summary>
-    /// Service interface for discovering and invoking Restful
-    /// web services.
+    /// Basic implementation of the <see cref="IRestApiService"/>
+    /// interface.
     /// </summary>
-    public interface IRestApiService
+    public sealed class RestApiServiceImpl : IRestApiService
     {
+        private IEnumerable<RestApi> restServiceApis;
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public RestApiServiceImpl()
+        {
+            this.restServiceApis = null;
+        }
+
         /// <summary>
         /// Gets the <see cref="RestApi"/> matching the specified name.
         /// </summary>
@@ -44,7 +52,16 @@ namespace Headway.Dynamo.Restful.Services
         /// Returns the <see cref="RestApi"/> matching the specified name
         /// or null if the API is not found.
         /// </returns>
-        RestApi GetApiByName(string apiName);
+        public RestApi GetApiByName(string apiName)
+        {
+            if (this.restServiceApis != null)
+            {
+                return (from a in this.restServiceApis
+                        where a.Name == apiName
+                        select a).FirstOrDefault();
+            }
+            return null;
+        }
 
         /// <summary>
         /// Invokes a restful web service given the name of the API,
@@ -67,6 +84,35 @@ namespace Headway.Dynamo.Restful.Services
         /// Returns a Task that executes the call to the web service
         /// and returns an HttpResponseMessage.
         /// </returns>
-        Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null);
+        public Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null)
+        {
+            var restApi = this.GetApiByName(apiName);
+            if (restApi == null)
+            {
+                var msg = string.Format("API not found - {0}", apiName);
+                throw new ArgumentException(msg, nameof(apiName));
+            }
+
+            var restSvc = restApi.GetServiceByName(serviceName);
+            if (restSvc == null)
+            {
+                var msg = string.Format("Rest service not found - {0}", serviceName);
+                throw new ArgumentException(msg, nameof(serviceName));
+            }
+
+            return restSvc.Invoke(paramObj, contentObj);
+        }
+
+        /// <summary>
+        /// Loads the service with <see cref="RestApi"/> objects.
+        /// </summary>
+        /// <param name="source">
+        /// Source collection containing <see cref="RestApi"/>
+        /// objects to load.
+        /// </param>
+        public void Load(IEnumerable<RestApi> source)
+        {
+            this.restServiceApis = source;
+        }
     }
 }

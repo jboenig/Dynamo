@@ -25,10 +25,10 @@
 using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Runtime;
-using Headway.Dynamo.Http;
-using Headway.Dynamo.Restful.Services;
+using Headway.Dynamo.Http.Services;
+using Headway.Dynamo.Http.IO;
 
-namespace Headway.Dynamo.Restful.Commands
+namespace Headway.Dynamo.Http.Commands
 {
     /// <summary>
     /// Implements the <see cref="Command"/> pattern for a

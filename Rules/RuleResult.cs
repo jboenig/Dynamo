@@ -22,7 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
 using Headway.Dynamo.Commands;
 
 namespace Headway.Dynamo.Rules

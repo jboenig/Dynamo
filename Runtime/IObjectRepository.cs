@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Headway.AppCore.Runtime
+﻿namespace Headway.AppCore.Runtime
 {
     public interface IObjectRepository<TObject> where TObject : class
     {

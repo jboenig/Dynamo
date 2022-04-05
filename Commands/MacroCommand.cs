@@ -92,6 +92,10 @@ namespace Headway.Dynamo.Commands
             return await this.ExecuteSequential(serviceProvider, context);
         }
 
+        #endregion
+
+        #region Implementation
+
         private async Task<CommandResult> ExecuteSequential(IServiceProvider serviceProvider, object context)
         {
             var commandRes = new MacroCommandResult();

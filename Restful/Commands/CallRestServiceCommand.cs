@@ -22,9 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Threading.Tasks;
-using System.Net.Http;
 using Headway.Dynamo.Exceptions;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Runtime;
@@ -39,8 +36,6 @@ namespace Headway.Dynamo.Restful.Commands
     /// </summary>
     public sealed class CallRestServiceCommand : Command
     {
-        private Task<HttpResponseMessage> taskWebServiceCall;
-
         /// <summary>
         /// Gets or sets the name of the rest-based API.
         /// </summary>
@@ -91,7 +86,7 @@ namespace Headway.Dynamo.Restful.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
         {
             var restApiService = serviceProvider.GetService(typeof(IRestApiService)) as IRestApiService;
             if (restApiService == null)
@@ -99,34 +94,30 @@ namespace Headway.Dynamo.Restful.Commands
                 throw new ServiceNotFoundException(typeof(IRestApiService));
             }
 
-            return new Task<CommandResult>(() =>
+            object contentObj = null;
+
+            if (!string.IsNullOrEmpty(this.RequestContentPropertyName))
             {
-                object contentObj = null;
+                // Get content to pass to web service
+                contentObj = PropertyResolver.GetPropertyValue<object>(context, this.RequestContentPropertyName);
+            }
 
-                if (!string.IsNullOrEmpty(this.RequestContentPropertyName))
+            var response = await restApiService.Invoke(this.ApiName, this.ServiceName, context, contentObj);
+            if (response.IsSuccessStatusCode)
+            {
+                if (!string.IsNullOrEmpty(this.ResponseContentPropertyName))
                 {
-                    // Get content to pass to web service
-                    contentObj = PropertyResolver.GetPropertyValue<object>(context, this.RequestContentPropertyName);
-                }
-
-                this.taskWebServiceCall = restApiService.Invoke(this.ApiName, this.ServiceName, context, contentObj);
-                this.taskWebServiceCall.Wait();
-                if (this.taskWebServiceCall.Result.IsSuccessStatusCode)
-                {
-                    if (!string.IsNullOrEmpty(this.ResponseContentPropertyName))
+                    // Push response to context object
+                    var resultJsonObj = response.Content.GetAsJObject();
+                    var setPropValCmd = new SetPropertyValueCommand()
                     {
-                        // Push response to context object
-                        var resultJsonObj = this.taskWebServiceCall.Result.Content.GetAsJObject();
-                        var setPropValCmd = new SetPropertyValueCommand()
-                        {
-                            PropertyName = this.ResponseContentPropertyName,
-                            Value = resultJsonObj
-                        };
-                        setPropValCmd.Execute(serviceProvider, context).RunSynchronously();
-                    }
+                        PropertyName = this.ResponseContentPropertyName,
+                        Value = resultJsonObj
+                    };
+                    await setPropValCmd.ExecuteAsync(serviceProvider, context);
                 }
-                return new HttpCommandResult(this.taskWebServiceCall.Result);
-            });
+            }
+            return new HttpCommandResult(response);
         }
     }
 }

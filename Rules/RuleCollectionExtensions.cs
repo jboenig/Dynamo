@@ -48,7 +48,7 @@ namespace Headway.Dynamo.Rules
         {
             foreach (var curRule in rules)
             {
-                await curRule.Apply(serviceProvider, context);
+                await curRule.ApplyAsync(serviceProvider, context);
             }
         }
     }

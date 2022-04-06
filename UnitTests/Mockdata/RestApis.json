@@ -1,11 +1,11 @@
 ﻿[
   {
-    "$type": "Headway.Dynamo.Restful.Models.RestApi, Headway.Dynamo.Restful",
+    "$type": "Headway.Dynamo.Http.Models.RestApi, Headway.Dynamo.Http",
     "Name": "Test1",
     "RootEndpointUri": "https://jsonplaceholder.typicode.com/",
     "Services": [
       {
-        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
+        "$type": "Headway.Dynamo.Http.Models.RestService, Headway.Dynamo.Http",
         "Name": "todos",
         "RelativePath": "todos/{Id}",
         "Version": "1",
@@ -18,27 +18,27 @@
         ]
       },
       {
-        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
+        "$type": "Headway.Dynamo.Http.Models.RestService, Headway.Dynamo.Http",
         "Name": "posts",
         "RelativePath": "posts",
         "Version": "1",
-        "Post":  "true"
+        "Post": "true"
       }
     ]
   },
   {
-    "$type": "Headway.Dynamo.Restful.Models.RestApi, Headway.Dynamo.Restful",
+    "$type": "Headway.Dynamo.Http.Models.RestApi, Headway.Dynamo.Http",
     "Name": "Dummy Rest Example",
     "RootEndpointUri": "http://dummy.restapiexample.com/api/v1/",
     "Services": [
       {
-        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
+        "$type": "Headway.Dynamo.Http.Models.RestService, Headway.Dynamo.Http",
         "Name": "Employees",
         "RelativePath": "employees",
         "Version": "1"
       },
       {
-        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
+        "$type": "Headway.Dynamo.Http.Models.RestService, Headway.Dynamo.Http",
         "Name": "GetEmployee",
         "RelativePath": "employee/{id}",
         "Version": "1",
@@ -51,7 +51,7 @@
         ]
       },
       {
-        "$type": "Headway.Dynamo.Restful.Models.RestService, Headway.Dynamo.Restful",
+        "$type": "Headway.Dynamo.Http.Models.RestService, Headway.Dynamo.Http",
         "Name": "CreateEmployee",
         "RelativePath": "create",
         "Version": "1",

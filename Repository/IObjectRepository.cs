@@ -76,5 +76,10 @@ namespace Headway.Dynamo.Repository
         /// Save changes made to the repository.
         /// </summary>
         void SaveChanges();
+
+        /// <summary>
+        /// Save changes made to the repository asynchronously.
+        /// </summary>
+        Task SaveChangesAsync();
     }
 }

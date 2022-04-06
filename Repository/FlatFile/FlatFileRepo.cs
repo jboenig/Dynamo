@@ -22,10 +22,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Exceptions;
@@ -46,6 +42,7 @@ namespace Headway.Dynamo.Repository.FlatFile
         private readonly IServiceProvider svcProvider;
         private readonly JsonSerializerSettings jsonSettings;
         private List<TObject> objects;
+        private bool isRepoLoaded = false;
         private const string JsonExtension = ".json";
 
         /// <summary>
@@ -76,8 +73,6 @@ namespace Headway.Dynamo.Repository.FlatFile
             this.jsonSettings = serializerConfigSvc.ConfigureJsonSerializerSettings(
                 typeof(TObject),
                 this.svcProvider);
-
-            this.LoadRepo();
         }
 
         /// <summary>
@@ -101,6 +96,8 @@ namespace Headway.Dynamo.Repository.FlatFile
         /// <returns></returns>
         public IQueryable<TObject> GetQueryable()
         {
+            this.EnsureRepoLoaded();
+
             return this.objects.AsQueryable();
         }
 
@@ -112,6 +109,8 @@ namespace Headway.Dynamo.Repository.FlatFile
         /// </param>
         public void Add(TObject obj)
         {
+            this.EnsureRepoLoaded();
+
             var pkAccessor = obj as IPrimaryKeyAccessor;
             if (pkAccessor != null)
             {
@@ -135,6 +134,8 @@ namespace Headway.Dynamo.Repository.FlatFile
         /// <param name="objColl">Collection of objects to add</param>
         public void Add(IEnumerable<TObject> objColl)
         {
+            this.EnsureRepoLoaded();
+
             // TODO: optimize this
             foreach (var obj in objColl)
             {
@@ -150,6 +151,8 @@ namespace Headway.Dynamo.Repository.FlatFile
         /// </param>
         public void Update(TObject obj)
         {
+            this.EnsureRepoLoaded();
+
             var pkAccessor = obj as IPrimaryKeyAccessor;
             if (pkAccessor != null)
             {
@@ -202,17 +205,35 @@ namespace Headway.Dynamo.Repository.FlatFile
         /// </summary>
         public void SaveChanges()
         {
-            this.SaveRepo();
+            Task.Run(() => this.SaveChangesAsync()).GetAwaiter().GetResult();
         }
 
-        private void LoadRepo()
+        /// <summary>
+        /// Saves all pending changes to the repo asynchronously.
+        /// </summary>
+        public async Task SaveChangesAsync()
+        {
+            await this.SaveRepoAsync();
+        }
+
+        private void EnsureRepoLoaded()
+        {
+            if (!this.isRepoLoaded)
+            {
+                Task.Run(() => this.LoadRepoAsync()).GetAwaiter().GetResult();
+                this.isRepoLoaded = true;
+            }
+        }
+
+        private async Task LoadRepoAsync()
         {
             if (File.Exists(this.filePath))
             {
                 using (var stream = File.Open(this.filePath, FileMode.Open, FileAccess.Read))
                 using (StreamReader sr = new StreamReader(stream))
                 {
-                    this.objects = (List<TObject>)JsonConvert.DeserializeObject<List<TObject>>(sr.ReadToEnd(), this.jsonSettings);
+                    var jsonStr = await sr.ReadToEndAsync();
+                    this.objects = (List<TObject>)JsonConvert.DeserializeObject<List<TObject>>(jsonStr, this.jsonSettings);
                 }
             }
             else
@@ -221,7 +242,7 @@ namespace Headway.Dynamo.Repository.FlatFile
             }
         }
 
-        private void SaveRepo()
+        private async Task SaveRepoAsync()
         {
             var json = JsonConvert.SerializeObject(this.objects, this.jsonSettings);
 
@@ -230,7 +251,7 @@ namespace Headway.Dynamo.Repository.FlatFile
             using (var stream = File.Open(this.filePath, FileMode.Create, FileAccess.Write))
             using (StreamWriter sw = new StreamWriter(stream))
             {
-                sw.WriteLine(json);
+                await sw.WriteLineAsync(json);
             }
         }
 

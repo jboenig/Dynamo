@@ -120,7 +120,6 @@ namespace Headway.Dynamo.UnitTests
             Assert.AreEqual(person.FirstName, "Dude");
         }
 
-#if false
         /// <summary>
         /// Executes a <see cref="MacroCommand"/> with several
         /// commands synchronously and verifies successful
@@ -129,13 +128,14 @@ namespace Headway.Dynamo.UnitTests
         [TestMethod]
         public async Task SequentialMacroCommandTest()
         {
-            var cmdNoop = new DelegateCommand(() => true);
+            var cmdNoop = new DelegateCommand(() => Task.FromResult(true));
             var cmdAddNumbers = new DelegateCommand((s,c) =>
             {
                 var v1 = PropertyResolver.GetPropertyValue<int>(c, "Val1");
                 var v2 = PropertyResolver.GetPropertyValue<int>(c, "Val2");
                 var sum = v1 + v2;
-                return new BoolCommandResult(true, string.Format("Sum of {0} + {1} = {2}", v1, v2, sum));
+                var cmdRes = new BoolCommandResult(true, string.Format("Sum of {0} + {1} = {2}", v1, v2, sum));
+                return Task.FromResult<CommandResult>(cmdRes);
             });
             var cmdMacro = new MacroCommand();
             cmdMacro.Commands.Add(cmdNoop);
@@ -165,14 +165,15 @@ namespace Headway.Dynamo.UnitTests
             var cmdNoop = new DelegateCommand(() =>
             {
                 System.Threading.Thread.Sleep(20);
-                return true;
+                return Task.FromResult(true);
             });
             var cmdAddNumbers = new DelegateCommand((s, c) =>
             {
                 var v1 = PropertyResolver.GetPropertyValue<int>(c, "Val1");
                 var v2 = PropertyResolver.GetPropertyValue<int>(c, "Val2");
                 var sum = v1 + v2;
-                return new BoolCommandResult(true, string.Format("Sum of {0} + {1} = {2}", v1, v2, sum));
+                var cmdRes = new BoolCommandResult(true, string.Format("Sum of {0} + {1} = {2}", v1, v2, sum));
+                return Task.FromResult<CommandResult>(cmdRes);
             });
             var cmdMacro = new MacroCommand();
             cmdMacro.Commands.Add(cmdNoop);
@@ -190,6 +191,5 @@ namespace Headway.Dynamo.UnitTests
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
-#endif
     }
 }

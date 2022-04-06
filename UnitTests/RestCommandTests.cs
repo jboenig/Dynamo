@@ -23,18 +23,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Repository.FlatFile;
 using Headway.Dynamo.Runtime;
-using Headway.Dynamo.Restful.Services;
-using Headway.Dynamo.Restful.Models;
-using Headway.Dynamo.Restful.Commands;
-using Headway.Dynamo.Restful.UnitTests.Mockdata;
+using Headway.Dynamo.Http.IO;
+using Headway.Dynamo.Http.Services;
+using Headway.Dynamo.Http.Models;
+using Headway.Dynamo.Http.Commands;
+using Headway.Dynamo.Http.UnitTests.Mockdata;
 
-namespace Headway.Dynamo.Restful.UnitTests
+namespace Headway.Dynamo.Http.UnitTests
 {
     [TestClass]
     public class CommandTests
@@ -63,7 +65,7 @@ namespace Headway.Dynamo.Restful.UnitTests
         }
 
         [TestMethod]
-        public void CallRestServiceGetNoParams()
+        public async Task CallRestServiceGetNoParams()
         {
             var cmd = new CallRestServiceCommand()
             {
@@ -72,9 +74,8 @@ namespace Headway.Dynamo.Restful.UnitTests
                 ResponseContentPropertyName = "ResponseContent"
             };
             var context = new JsonPlaceholderContext { Id = 1 };
-            var restCallTask = cmd.Execute(this.svcProvider, context);
-            restCallTask.RunSynchronously();
-            Assert.AreEqual(restCallTask.Result.IsSuccess, true);
+            var restCallResult = await cmd.ExecuteAsync(this.svcProvider, context);
+            Assert.AreEqual(restCallResult.IsSuccess, true);
             var idVal = context.ResponseContent.Value<int>("id");
             Assert.AreEqual(idVal, 1);
             var title = PropertyResolver.GetPropertyValue<string>(context.ResponseContent, "title");
@@ -83,7 +84,7 @@ namespace Headway.Dynamo.Restful.UnitTests
 
 
         [TestMethod]
-        public void CallRestServicePostTodo()
+        public async Task CallRestServicePostTodo()
         {
             var cmd = new CallRestServiceCommand()
             {
@@ -103,9 +104,8 @@ namespace Headway.Dynamo.Restful.UnitTests
                 }
             };
 
-            var restCallTask = cmd.Execute(this.svcProvider, context);
-            restCallTask.RunSynchronously();
-            Assert.AreEqual(restCallTask.Result.IsSuccess, true);
+            var restCallResult = await cmd.ExecuteAsync(this.svcProvider, context);
+            Assert.AreEqual(restCallResult.IsSuccess, true);
 
             var userIdVal = context.ResponseContent.Value<int>("userId");
             Assert.AreEqual(userIdVal, 10101);

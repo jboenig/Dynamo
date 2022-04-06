@@ -57,7 +57,7 @@ namespace Headway.Dynamo.UnitTests
         /// value and verify that the command executes.
         /// </summary>
         [TestMethod]
-        public void NullConditionalSynchronousCommand()
+        public async Task NullConditionalCommand()
         {
             var person = new Person();
             var cmdConditional = new ConditionalCommand()
@@ -69,7 +69,7 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdRes = cmdConditional.Execute(this.svcProvider, person);
+            var cmdRes = await cmdConditional.ExecuteAsync(this.svcProvider, person);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, "Dude");
         }
@@ -80,7 +80,7 @@ namespace Headway.Dynamo.UnitTests
         /// and verify that the command does not execute.
         /// </summary>
         [TestMethod]
-        public void FalseConditionalSynchronousCommand()
+        public async Task FalseConditionalCommand()
         {
             var person = new Person();
             var cmdConditional = new ConditionalCommand()
@@ -92,7 +92,7 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdRes = cmdConditional.Execute(this.svcProvider, person);
+            var cmdRes = await cmdConditional.ExecuteAsync(this.svcProvider, person);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, null);
         }
@@ -103,7 +103,7 @@ namespace Headway.Dynamo.UnitTests
         /// and verify that the command executes successfully.
         /// </summary>
         [TestMethod]
-        public void TrueConditionalSynchronousCommand()
+        public async Task TrueConditionalCommand()
         {
             var person = new Person();
             var cmdConditional = new ConditionalCommand()
@@ -115,18 +115,19 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdRes = cmdConditional.Execute(this.svcProvider, person);
+            var cmdRes = await cmdConditional.ExecuteAsync(this.svcProvider, person);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, "Dude");
         }
 
+#if false
         /// <summary>
         /// Executes a <see cref="MacroCommand"/> with several
         /// commands synchronously and verifies successful
         /// execution.
         /// </summary>
         [TestMethod]
-        public void SyncronousMacroCommand()
+        public async Task SequentialMacroCommandTest()
         {
             var cmdNoop = new DelegateCommand(() => true);
             var cmdAddNumbers = new DelegateCommand((s,c) =>
@@ -141,14 +142,14 @@ namespace Headway.Dynamo.UnitTests
             cmdMacro.Commands.Add(cmdAddNumbers);
             cmdMacro.Commands.Add(cmdNoop);
             cmdMacro.Commands.Add(cmdAddNumbers);
-            cmdMacro.AllowAsyncExecution = false;
+            cmdMacro.AllowParallelExecution = false;
             var contextObj = new
             {
                 Val1 = 2,
                 Val2 = 5,
                 Result = -1
             };
-            var cmdRes = cmdMacro.Execute(this.svcProvider, contextObj);
+            var cmdRes = await cmdMacro.ExecuteAsync(this.svcProvider, contextObj);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
@@ -159,7 +160,7 @@ namespace Headway.Dynamo.UnitTests
         /// execution.
         /// </summary>
         [TestMethod]
-        public async Task AsyncronousMacroCommand()
+        public async Task ParallelMacroCommandTest()
         {
             var cmdNoop = new DelegateCommand(() =>
             {
@@ -178,7 +179,7 @@ namespace Headway.Dynamo.UnitTests
             cmdMacro.Commands.Add(cmdAddNumbers);
             cmdMacro.Commands.Add(cmdNoop);
             cmdMacro.Commands.Add(cmdAddNumbers);
-            cmdMacro.AllowAsyncExecution = true;
+            cmdMacro.AllowParallelExecution = true;
             var contextObj = new
             {
                 Val1 = 2,
@@ -189,5 +190,6 @@ namespace Headway.Dynamo.UnitTests
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
+#endif
     }
 }

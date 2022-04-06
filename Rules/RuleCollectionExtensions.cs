@@ -42,7 +42,7 @@ namespace Headway.Dynamo.Rules
         /// <param name="context">
         /// Context object.
         /// </param>
-        public static async void Apply(this IEnumerable<Rule> rules,
+        public static async Task Apply(this IEnumerable<Rule> rules,
             IServiceProvider serviceProvider,
             object context)
         {

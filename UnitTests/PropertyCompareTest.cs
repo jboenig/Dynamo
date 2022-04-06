@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading.Tasks;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Headway.Dynamo.Commands;
@@ -52,7 +53,7 @@ namespace Headway.Dynamo.UnitTests
         /// to a string constant.
         /// </summary>
         [TestMethod]
-        public void StringPropEqualToConstant()
+        public async Task StringPropEqualToConstant()
         {
             var person = new Person()
             {
@@ -65,7 +66,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "Fred",
                 Operator = PropertyCompareOps.AreEqual
             };
-            var evalRes = propCompareCondition.Evaluate(this.svcProvider, person);
+            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -75,7 +76,7 @@ namespace Headway.Dynamo.UnitTests
         /// string constant.
         /// </summary>
         [TestMethod]
-        public void StringPropContainsConstant()
+        public async Task StringPropContainsConstant()
         {
             var person = new Person()
             {
@@ -88,7 +89,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "dr",
                 Operator = PropertyCompareOps.Contains
             };
-            var evalRes = propCompareCondition.Evaluate(this.svcProvider, person);
+            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -98,7 +99,7 @@ namespace Headway.Dynamo.UnitTests
         /// a string constant.
         /// </summary>
         [TestMethod]
-        public void StringPropBeginsWithConstant()
+        public async Task StringPropBeginsWithConstant()
         {
             var person = new Person()
             {
@@ -111,7 +112,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "An",
                 Operator = PropertyCompareOps.Contains
             };
-            var evalRes = propCompareCondition.Evaluate(this.svcProvider, person);
+            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -121,7 +122,7 @@ namespace Headway.Dynamo.UnitTests
         /// a string constant.
         /// </summary>
         [TestMethod]
-        public void StringPropEndsWithConstant()
+        public async Task StringPropEndsWithConstant()
         {
             var person = new Person()
             {
@@ -134,7 +135,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "ew",
                 Operator = PropertyCompareOps.Contains
             };
-            var evalRes = propCompareCondition.Evaluate(this.svcProvider, person);
+            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -144,7 +145,7 @@ namespace Headway.Dynamo.UnitTests
         /// a string variable.
         /// </summary>
         [TestMethod]
-        public void StringPropEqualToVariable()
+        public async Task StringPropEqualToVariable()
         {
             var person = new Person()
             {
@@ -158,7 +159,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "$(LastName)",
                 Operator = PropertyCompareOps.AreEqual
             };
-            var evalRes = propCompareCondition.Evaluate(this.svcProvider, person);
+            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -168,7 +169,7 @@ namespace Headway.Dynamo.UnitTests
         /// an integer constant.
         /// </summary>
         [TestMethod]
-        public void IntPropGreaterThanConstant()
+        public async Task IntPropGreaterThanConstant()
         {
             var person = new Person()
             {
@@ -183,7 +184,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = 50,
                 Operator = PropertyCompareOps.GreaterThan
             };
-            var evalRes = propCompareCondition.Evaluate(this.svcProvider, person);
+            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -194,7 +195,7 @@ namespace Headway.Dynamo.UnitTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(PropertyNotFoundException))]
-        public void ComparePropertyNotFound()
+        public async Task ComparePropertyNotFound()
         {
             var person = new Person()
             {
@@ -209,7 +210,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = 50,
                 Operator = PropertyCompareOps.GreaterThan
             };
-            propCompareCondition.Evaluate(this.svcProvider, person);
+            await propCompareCondition.EvaluateAsync(this.svcProvider, person);
         }
     }
 }

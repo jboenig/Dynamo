@@ -40,7 +40,7 @@ namespace Headway.Dynamo.Conditions
         /// </returns>
         public override Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
         {
-            return Task.FromResult(true);
+            return Task.FromResult(false);
         }
     }
 }

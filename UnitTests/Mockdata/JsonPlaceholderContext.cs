@@ -24,7 +24,7 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace Headway.Dynamo.Restful.UnitTests.Mockdata
+namespace Headway.Dynamo.Http.UnitTests.Mockdata
 {
     internal sealed class JsonPlaceholderContext
     {

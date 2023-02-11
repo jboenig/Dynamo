@@ -50,7 +50,7 @@ namespace Headway.Dynamo.Commands
         /// The syntax for a variable can be either $(VariableName)
         /// or {VariableName}.  The variable must reference a property
         /// that exists on the context object passed to the
-        /// <see cref="SetPropertyValueCommand.Execute(IServiceProvider, object)"/>
+        /// <see cref="SetPropertyValueCommand.ExecuteAsync(IServiceProvider, object)"/>
         /// method.
         /// </remarks>
         public object Value

@@ -26,7 +26,7 @@ namespace Headway.Dynamo.Exceptions
 {
     /// <summary>
     /// Exception thrown when a call to
-    /// <see cref="Headway.Dynamo.Conditions.Condition.Evaluate(IServiceProvider, object)"/>
+    /// <see cref="Headway.Dynamo.Conditions.Condition.EvaluateAsync(IServiceProvider, object)"/>
     /// fails.
     /// </summary>
     public sealed class ConditionEvalException : Exception

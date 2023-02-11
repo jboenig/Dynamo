@@ -161,7 +161,7 @@ namespace Headway.Dynamo.Rules
         }
 
         /// <summary>
-        /// This method is called by the <see cref="Apply"/> method before it
+        /// This method is called by the <see cref="ApplyAsync"/> method before it
         /// does anything. It allows derived classes to perform initialization
         /// on the service provider and/or context.
         /// </summary>

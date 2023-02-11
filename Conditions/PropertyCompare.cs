@@ -129,7 +129,7 @@ namespace Headway.Dynamo.Conditions
         /// The syntax for a variable can be either $(VariableName)
         /// or {VariableName}.  The variable must reference a property
         /// that exists on the context object passed to the
-        /// <see cref="PropertyCompare.Evaluate(IServiceProvider, object)"/>
+        /// <see cref="PropertyCompare.EvaluateAsync(IServiceProvider, object)"/>
         /// method.
         /// </remarks>
         public object PropertyValue

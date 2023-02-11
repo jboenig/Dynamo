@@ -40,7 +40,7 @@ namespace Headway.Dynamo.Commands
 
         /// <summary>
         /// Signature for a command function that takes all
-        /// <see cref="Command.Execute(IServiceProvider, object)"/>
+        /// <see cref="Command.ExecuteAsync(IServiceProvider, object)"/>
         /// parameters and returns a <see cref="CommandResult"/>.
         /// </summary>
         /// <param name="svcProvider">Interface to service provider</param>
@@ -53,7 +53,7 @@ namespace Headway.Dynamo.Commands
 
         /// <summary>
         /// Signature for a command function that takes all
-        /// <see cref="Command.Execute(IServiceProvider, object)"/>
+        /// <see cref="Command.ExecuteAsync(IServiceProvider, object)"/>
         /// parameters and returns a <see cref="CommandResult"/>.
         /// </summary>
         /// <param name="svcProvider">Interface to service provider</param>

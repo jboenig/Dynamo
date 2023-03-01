@@ -44,7 +44,7 @@ namespace Headway.Dynamo.Conditions
         /// an expression.
         /// </summary>
         /// <param name="expr">
-        /// Expression used to implement <see cref="EvaluateAsync(IServiceProvider, object)"/>
+        /// Expression used to implement <see cref="Evaluate(IServiceProvider, object)"/>
         /// </param>
         public LambdaCondition(Func<object, bool> expr)
         {
@@ -60,7 +60,7 @@ namespace Headway.Dynamo.Conditions
         /// Returns TRUE or FALSE based on evaluation
         /// of the condition.
         /// </returns>
-        public override Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
+        public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
         {
             if (this.expr == null)
             {

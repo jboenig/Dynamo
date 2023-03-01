@@ -38,6 +38,6 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public abstract Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context);
+        public abstract Task<CommandResult> Execute(IServiceProvider serviceProvider, object context);
     }
 }

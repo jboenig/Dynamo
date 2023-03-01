@@ -38,7 +38,7 @@ namespace Headway.Dynamo.Conditions
         /// <returns>
         /// Always returns TRUE.
         /// </returns>
-        public override Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
+        public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
         {
             return Task.FromResult(true);
         }

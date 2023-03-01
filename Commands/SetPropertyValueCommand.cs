@@ -50,7 +50,7 @@ namespace Headway.Dynamo.Commands
         /// The syntax for a variable can be either $(VariableName)
         /// or {VariableName}.  The variable must reference a property
         /// that exists on the context object passed to the
-        /// <see cref="SetPropertyValueCommand.ExecuteAsync(IServiceProvider, object)"/>
+        /// <see cref="SetPropertyValueCommand.Execute(IServiceProvider, object)"/>
         /// method.
         /// </remarks>
         public object Value
@@ -82,7 +82,7 @@ namespace Headway.Dynamo.Commands
         /// to this method.
         /// </para>
         /// </remarks>
-        public override Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
+        public override Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             if (context == null)
             {

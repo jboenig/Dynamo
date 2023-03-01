@@ -83,7 +83,7 @@ namespace Headway.Dynamo.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             if (this.AllowParallelExecution)
             {
@@ -102,7 +102,7 @@ namespace Headway.Dynamo.Commands
 
             foreach (var command in this.Commands)
             {
-                var curCommandRes = await command.ExecuteAsync(serviceProvider, context);
+                var curCommandRes = await command.Execute(serviceProvider, context);
                 commandRes.CommandResults.Add(curCommandRes);
             }
 
@@ -117,7 +117,7 @@ namespace Headway.Dynamo.Commands
 
             foreach (var command in this.Commands)
             {
-                cmdTasks.Add(command.ExecuteAsync(serviceProvider, context));
+                cmdTasks.Add(command.Execute(serviceProvider, context));
             }
 
             await Task.WhenAll(cmdTasks);

@@ -87,7 +87,7 @@ namespace Headway.Dynamo.Rules
         ///   <see cref="ConditionEvalException"/>
         ///   <see cref="CommandExecuteException"/>
         /// </remarks>
-        public async Task<bool> ApplyAsync(IServiceProvider serviceProvider, object context)
+        public async Task<bool> Apply(IServiceProvider serviceProvider, object context)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace Headway.Dynamo.Rules
 
             try
             {
-                evalRes = await this.Condition.EvaluateAsync(serviceProvider, context);
+                evalRes = await this.Condition.Evaluate(serviceProvider, context);
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        cmdRes = await this.WhenTrue.ExecuteAsync(serviceProvider, context);
+                        cmdRes = await this.WhenTrue.Execute(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -143,7 +143,7 @@ namespace Headway.Dynamo.Rules
 
                     try
                     {
-                        cmdRes = await this.WhenFalse.ExecuteAsync(serviceProvider, context);
+                        cmdRes = await this.WhenFalse.Execute(serviceProvider, context);
                     }
                     catch (Exception ex)
                     {
@@ -161,7 +161,7 @@ namespace Headway.Dynamo.Rules
         }
 
         /// <summary>
-        /// This method is called by the <see cref="ApplyAsync"/> method before it
+        /// This method is called by the <see cref="Apply"/> method before it
         /// does anything. It allows derived classes to perform initialization
         /// on the service provider and/or context.
         /// </summary>

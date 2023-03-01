@@ -71,11 +71,11 @@ namespace Headway.Dynamo.Commands
         /// command is executed.  Also, if <see cref="ExecuteWhen"/> evaluates
         /// true, then the command is also execute.
         /// </remarks>
-        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
-            if (this.ExecuteWhen == null || await this.ExecuteWhen.EvaluateAsync(serviceProvider, context) == true)
+            if (this.ExecuteWhen == null || await this.ExecuteWhen.Evaluate(serviceProvider, context) == true)
             {
-                return await this.Command.ExecuteAsync(serviceProvider, context);
+                return await this.Command.Execute(serviceProvider, context);
             }
             return CommandResult.Success;
         }

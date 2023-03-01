@@ -88,7 +88,7 @@ namespace Headway.Dynamo.Conditions
         /// Boolean flag indicating whether the
         /// condition is true or false.
         /// </returns>
-        public override async Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
+        public override async Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
         {
             bool result;
 
@@ -101,7 +101,7 @@ namespace Headway.Dynamo.Conditions
                 while (!result && enumConditions.MoveNext())
                 {
                     var curCondition = enumConditions.Current;
-                    result = await curCondition.EvaluateAsync(serviceProvider, context);
+                    result = await curCondition.Evaluate(serviceProvider, context);
                 }
             }
             else
@@ -111,7 +111,7 @@ namespace Headway.Dynamo.Conditions
                 while (result && enumConditions.MoveNext())
                 {
                     var curCondition = enumConditions.Current;
-                    result = await curCondition.EvaluateAsync(serviceProvider, context);
+                    result = await curCondition.Evaluate(serviceProvider, context);
                 }
             }
 

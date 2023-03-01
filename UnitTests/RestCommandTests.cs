@@ -75,7 +75,7 @@ namespace Headway.Dynamo.Http.UnitTests
                 ResponseContentPropertyName = "ResponseContent"
             };
             var context = new JsonPlaceholderContext { Id = 1 };
-            var restCallResult = await cmd.ExecuteAsync(this.svcProvider, context);
+            var restCallResult = await cmd.Execute(this.svcProvider, context);
             Assert.AreEqual(restCallResult.IsSuccess, true);
             var idVal = context.ResponseContent.Value<int>("id");
             Assert.AreEqual(idVal, 1);
@@ -105,7 +105,7 @@ namespace Headway.Dynamo.Http.UnitTests
                 }
             };
 
-            var restCallResult = await cmd.ExecuteAsync(this.svcProvider, context);
+            var restCallResult = await cmd.Execute(this.svcProvider, context);
             Assert.AreEqual(restCallResult.IsSuccess, true);
 
             var userIdVal = context.ResponseContent.Value<int>("userId");

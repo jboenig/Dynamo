@@ -40,7 +40,7 @@ namespace Headway.Dynamo.Commands
 
         /// <summary>
         /// Signature for a command function that takes all
-        /// <see cref="Command.ExecuteAsync(IServiceProvider, object)"/>
+        /// <see cref="Command.Execute(IServiceProvider, object)"/>
         /// parameters and returns a <see cref="CommandResult"/>.
         /// </summary>
         /// <param name="svcProvider">Interface to service provider</param>
@@ -53,7 +53,7 @@ namespace Headway.Dynamo.Commands
 
         /// <summary>
         /// Signature for a command function that takes all
-        /// <see cref="Command.ExecuteAsync(IServiceProvider, object)"/>
+        /// <see cref="Command.Execute(IServiceProvider, object)"/>
         /// parameters and returns a <see cref="CommandResult"/>.
         /// </summary>
         /// <param name="svcProvider">Interface to service provider</param>
@@ -114,7 +114,7 @@ namespace Headway.Dynamo.Commands
         /// The implementation invokes the delegate function associated
         /// with this command.
         /// </remarks>
-        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             CommandResult res = CommandResult.Success;
 

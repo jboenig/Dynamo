@@ -69,7 +69,7 @@ namespace Headway.Dynamo.Conditions
         /// Returns TRUE or FALSE based on evaluation
         /// of the condition.
         /// </returns>
-        public override Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context)
+        public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
         {
             object actualValue;
 
@@ -129,7 +129,7 @@ namespace Headway.Dynamo.Conditions
         /// The syntax for a variable can be either $(VariableName)
         /// or {VariableName}.  The variable must reference a property
         /// that exists on the context object passed to the
-        /// <see cref="PropertyCompare.EvaluateAsync(IServiceProvider, object)"/>
+        /// <see cref="PropertyCompare.Evaluate(IServiceProvider, object)"/>
         /// method.
         /// </remarks>
         public object PropertyValue

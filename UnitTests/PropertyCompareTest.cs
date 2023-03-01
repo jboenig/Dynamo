@@ -66,7 +66,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "Fred",
                 Operator = PropertyCompareOps.AreEqual
             };
-            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            var evalRes = await propCompareCondition.Evaluate(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -89,7 +89,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "dr",
                 Operator = PropertyCompareOps.Contains
             };
-            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            var evalRes = await propCompareCondition.Evaluate(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -112,7 +112,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "An",
                 Operator = PropertyCompareOps.Contains
             };
-            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            var evalRes = await propCompareCondition.Evaluate(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -135,7 +135,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "ew",
                 Operator = PropertyCompareOps.Contains
             };
-            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            var evalRes = await propCompareCondition.Evaluate(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -159,7 +159,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = "$(LastName)",
                 Operator = PropertyCompareOps.AreEqual
             };
-            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            var evalRes = await propCompareCondition.Evaluate(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -184,7 +184,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = 50,
                 Operator = PropertyCompareOps.GreaterThan
             };
-            var evalRes = await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            var evalRes = await propCompareCondition.Evaluate(this.svcProvider, person);
             Assert.IsTrue(evalRes);
         }
 
@@ -210,7 +210,7 @@ namespace Headway.Dynamo.UnitTests
                 PropertyValue = 50,
                 Operator = PropertyCompareOps.GreaterThan
             };
-            await propCompareCondition.EvaluateAsync(this.svcProvider, person);
+            await propCompareCondition.Evaluate(this.svcProvider, person);
         }
     }
 }

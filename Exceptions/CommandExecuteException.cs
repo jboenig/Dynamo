@@ -27,7 +27,7 @@ using Headway.Dynamo.Commands;
 namespace Headway.Dynamo.Exceptions
 {
     /// <summary>
-    /// Exception thrown when a call to <see cref="Command.ExecuteAsync(IServiceProvider, object)"/>
+    /// Exception thrown when a call to <see cref="Command.Execute(IServiceProvider, object)"/>
     /// fails due to an exception or a failure indicated by the <see cref="CommandResult"/>.
     /// </summary>
     public sealed class CommandExecuteException : Exception

@@ -69,7 +69,7 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdRes = await cmdConditional.ExecuteAsync(this.svcProvider, person);
+            var cmdRes = await cmdConditional.Execute(this.svcProvider, person);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, "Dude");
         }
@@ -92,7 +92,7 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdRes = await cmdConditional.ExecuteAsync(this.svcProvider, person);
+            var cmdRes = await cmdConditional.Execute(this.svcProvider, person);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, null);
         }
@@ -115,7 +115,7 @@ namespace Headway.Dynamo.UnitTests
                     Value = "Dude"
                 }
             };
-            var cmdRes = await cmdConditional.ExecuteAsync(this.svcProvider, person);
+            var cmdRes = await cmdConditional.Execute(this.svcProvider, person);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(person.FirstName, "Dude");
         }
@@ -149,7 +149,7 @@ namespace Headway.Dynamo.UnitTests
                 Val2 = 5,
                 Result = -1
             };
-            var cmdRes = await cmdMacro.ExecuteAsync(this.svcProvider, contextObj);
+            var cmdRes = await cmdMacro.Execute(this.svcProvider, contextObj);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }
@@ -187,7 +187,7 @@ namespace Headway.Dynamo.UnitTests
                 Val2 = 5,
                 Result = -1
             };
-            var cmdRes = await cmdMacro.ExecuteAsync(this.svcProvider, contextObj);
+            var cmdRes = await cmdMacro.Execute(this.svcProvider, contextObj);
             Assert.IsTrue(cmdRes.IsSuccess);
             Assert.AreEqual(cmdRes.Description, "4 commands executed - 4 successful and 0 failed");
         }

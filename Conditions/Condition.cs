@@ -39,7 +39,7 @@ namespace Headway.Dynamo.Conditions
         /// Returns TRUE or FALSE based on evaluation
         /// of the condition.
         /// </returns>
-        public abstract Task<bool> EvaluateAsync(IServiceProvider serviceProvider, object context);
+        public abstract Task<bool> Evaluate(IServiceProvider serviceProvider, object context);
 
         /// <summary>
         /// Singleton <see cref="Condition"/> that always evaluates to true.

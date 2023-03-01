@@ -86,7 +86,7 @@ namespace Headway.Dynamo.Http.Commands
         /// Returns a <see cref="CommandResult"/> object that describes
         /// the result.
         /// </returns>
-        public override async Task<CommandResult> ExecuteAsync(IServiceProvider serviceProvider, object context)
+        public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
         {
             var restApiService = serviceProvider.GetService(typeof(IRestApiService)) as IRestApiService;
             if (restApiService == null)
@@ -114,7 +114,7 @@ namespace Headway.Dynamo.Http.Commands
                         PropertyName = this.ResponseContentPropertyName,
                         Value = resultJsonObj
                     };
-                    await setPropValCmd.ExecuteAsync(serviceProvider, context);
+                    await setPropValCmd.Execute(serviceProvider, context);
                 }
             }
             return new HttpCommandResult(response);

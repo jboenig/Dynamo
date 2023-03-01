@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Compile Remove="Http\**" />
+    <Compile Remove="Restful\**" />
     <Compile Remove="UnitTestsNetFx\**" />
     <Compile Remove="UnitTests\**" />
     <EmbeddedResource Remove="Http\**" />
@@ -35,6 +36,7 @@
     <EmbeddedResource Remove="UnitTestsNetFx\**" />
     <EmbeddedResource Remove="UnitTests\**" />
     <None Remove="Http\**" />
+    <None Remove="Restful\**" />
     <None Remove="UnitTestsNetFx\**" />
     <None Remove="UnitTests\**" />
   </ItemGroup>

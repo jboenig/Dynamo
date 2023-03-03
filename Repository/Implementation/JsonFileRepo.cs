@@ -35,7 +35,7 @@ namespace Headway.Dynamo.Repository.Implementation;
 /// <typeparam name="TObject">
 /// Type of object to store in the repository
 /// </typeparam>
-public class FlatFileRepo<TObject> : IObjectRepository<TObject>
+public class JsonFileRepo<TObject> : IObjectRepository<TObject>
     where TObject : class
 {
     private readonly string filePath;
@@ -46,7 +46,7 @@ public class FlatFileRepo<TObject> : IObjectRepository<TObject>
     private const string JsonExtension = ".json";
 
     /// <summary>
-    /// Constructs a <see cref="FlatFileRepo{TObject}"/>
+    /// Constructs a <see cref="JsonFileRepo{TObject}"/>
     /// </summary>
     /// <param name="filePath">
     /// Path to the file that persists the repo.
@@ -57,7 +57,7 @@ public class FlatFileRepo<TObject> : IObjectRepository<TObject>
     /// <param name="svcProvider">
     /// Service provider.
     /// </param>
-    public FlatFileRepo(string filePath,
+    public JsonFileRepo(string filePath,
         ISerializerConfigService serializerConfigSvc,
         IServiceProvider svcProvider)
     {
@@ -76,7 +76,7 @@ public class FlatFileRepo<TObject> : IObjectRepository<TObject>
     }
 
     /// <summary>
-    /// Constructs a <see cref="FlatFileRepo{TObject}"/>
+    /// Constructs a <see cref="JsonFileRepo{TObject}"/>
     /// </summary>
     /// <param name="serializerConfigSvc">
     /// Serializer configuration service
@@ -84,7 +84,7 @@ public class FlatFileRepo<TObject> : IObjectRepository<TObject>
     /// <param name="svcProvider">
     /// Service provider.
     /// </param>
-    public FlatFileRepo(ISerializerConfigService serializerConfigSvc,
+    public JsonFileRepo(ISerializerConfigService serializerConfigSvc,
         IServiceProvider svcProvider) :
         this(null, serializerConfigSvc, svcProvider)
     {

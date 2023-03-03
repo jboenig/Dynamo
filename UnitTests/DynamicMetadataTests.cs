@@ -90,7 +90,7 @@ namespace Headway.Dynamo.UnitTests
 
             var metadataRepoFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"MockData/SuperheroMetadata.json");
 
-            var metadataRepo = new FlatFileRepo<DynamicObjectType>(
+            var metadataRepo = new JsonFileRepo<DynamicObjectType>(
                 metadataRepoFilePath,
                 svcProvider.GetService(typeof(ISerializerConfigService)) as ISerializerConfigService,
                 svcProvider

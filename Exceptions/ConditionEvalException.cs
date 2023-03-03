@@ -22,31 +22,30 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// Exception thrown when a call to
+/// <see cref="Headway.Dynamo.Conditions.Condition.Evaluate(IServiceProvider, object)"/>
+/// fails.
+/// </summary>
+public sealed class ConditionEvalException : Exception
 {
     /// <summary>
-    /// Exception thrown when a call to
-    /// <see cref="Headway.Dynamo.Conditions.Condition.Evaluate(IServiceProvider, object)"/>
-    /// fails.
+    /// Constructs a <see cref="ConditionEvalException"/> given an
+    /// inner exception.
     /// </summary>
-    public sealed class ConditionEvalException : Exception
+    /// <param name="innerException">Exception that caused the failure.</param>
+    public ConditionEvalException(Exception innerException) :
+        base(string.Format("Condition evaluation failed due to the following error - {0}", innerException.Message), innerException)
     {
-        /// <summary>
-        /// Constructs a <see cref="ConditionEvalException"/> given an
-        /// inner exception.
-        /// </summary>
-        /// <param name="innerException">Exception that caused the failure.</param>
-        public ConditionEvalException(Exception innerException) :
-            base(string.Format("Condition evaluation failed due to the following error - {0}", innerException.Message), innerException)
-        {
-        }
+    }
 
-        /// <summary>
-        /// Constructs a <see cref="ConditionEvalException"/> given a message.
-        /// </summary>
-        /// <param name="msg">Message explaining the exception.</param>
-        public ConditionEvalException(string msg) : base(msg)
-        {
-        }
+    /// <summary>
+    /// Constructs a <see cref="ConditionEvalException"/> given a message.
+    /// </summary>
+    /// <param name="msg">Message explaining the exception.</param>
+    public ConditionEvalException(string msg) : base(msg)
+    {
     }
 }

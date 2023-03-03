@@ -22,24 +22,23 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Interface for resolving objects given a key value.
+/// </summary>
+/// <typeparam name="TKey">
+/// Type of key values.
+/// </typeparam>
+/// <typeparam name="TResult">
+/// Result type.
+/// </typeparam>
+public interface IObjectResolver<TKey, TResult> where TResult : class
 {
     /// <summary>
-    /// Interface for resolving objects given a key value.
+    /// Resolves an object given a key value.
     /// </summary>
-    /// <typeparam name="TKey">
-    /// Type of key values.
-    /// </typeparam>
-    /// <typeparam name="TResult">
-    /// Result type.
-    /// </typeparam>
-    public interface IObjectResolver<TKey, TResult> where TResult : class
-    {
-        /// <summary>
-        /// Resolves an object given a key value.
-        /// </summary>
-        /// <param name="key">Key value</param>
-        /// <returns>Object matching the given key value.</returns>
-        TResult Resolve(TKey key);
-    }
+    /// <param name="key">Key value</param>
+    /// <returns>Object matching the given key value.</returns>
+    TResult Resolve(TKey key);
 }

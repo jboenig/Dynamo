@@ -22,29 +22,28 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Interface to service that creates objects of a
+/// given type.
+/// </summary>
+/// <typeparam name="TObject">
+/// Type of objects this factory creates.
+/// </typeparam>
+public interface IObjectFactory<TObject> where TObject : class
 {
     /// <summary>
-    /// Interface to service that creates objects of a
-    /// given type.
+    /// Creates an instance of type TObject.
     /// </summary>
-    /// <typeparam name="TObject">
-    /// Type of objects this factory creates.
-    /// </typeparam>
-    public interface IObjectFactory<TObject> where TObject : class
-    {
-        /// <summary>
-        /// Creates an instance of type TObject.
-        /// </summary>
-        /// <param name="svcProvider">
-        /// Service provider used during object creation.
-        /// </param>
-        /// <param name="context">
-        /// Context object used during creation.
-        /// </param>
-        /// <returns>
-        /// A new instance of type TObject.
-        /// </returns>
-        TObject CreateInstance(IServiceProvider svcProvider, object context);
-    }
+    /// <param name="svcProvider">
+    /// Service provider used during object creation.
+    /// </param>
+    /// <param name="context">
+    /// Context object used during creation.
+    /// </param>
+    /// <returns>
+    /// A new instance of type TObject.
+    /// </returns>
+    TObject CreateInstance(IServiceProvider svcProvider, object context);
 }

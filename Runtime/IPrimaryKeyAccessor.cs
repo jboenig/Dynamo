@@ -22,16 +22,15 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Interface to objects that contain a primary key.
+/// </summary>
+public interface IPrimaryKeyAccessor
 {
     /// <summary>
-    /// Interface to objects that contain a primary key.
+    /// Gets or sets the primary key value for the object.
     /// </summary>
-    public interface IPrimaryKeyAccessor
-    {
-        /// <summary>
-        /// Gets or sets the primary key value for the object.
-        /// </summary>
-        object PrimaryKey { get; set; }
-    }
+    object PrimaryKey { get; set; }
 }

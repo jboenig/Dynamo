@@ -22,42 +22,39 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
+namespace Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Metadata
+/// <summary>
+/// Encapsulates the metadata for a type of object.
+/// </summary>
+public abstract class ObjectType : ComplexType
 {
-	/// <summary>
-	/// Encapsulates the metadata for a type of object.
-	/// </summary>
-	public abstract class ObjectType : ComplexType
-	{
-		#region Public Properties
+    #region Public Properties
 
-		/// <summary>
-		/// Gets a reference to the base class for this class.
-		/// </summary>
-		public abstract ObjectType DerivesFrom
-		{
-			get;
-		}
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Creates an instance of the class.
-        /// </summary>
-        /// <typeparam name="T">CLR type to return</typeparam>
-        /// <param name="svcProvider">
-        /// Service provider used for initialization of the object.
-        /// </param>
-        /// <param name="paramList">
-        /// Array of parameters for constructor.
-        /// </param>
-        /// <returns>A new object of type T.</returns>
-        public abstract T CreateInstance<T>(IServiceProvider svcProvider, params object[] paramList) where T : class;
-
-        #endregion
+    /// <summary>
+    /// Gets a reference to the base class for this class.
+    /// </summary>
+    public abstract ObjectType DerivesFrom
+    {
+        get;
     }
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>
+    /// Creates an instance of the class.
+    /// </summary>
+    /// <typeparam name="T">CLR type to return</typeparam>
+    /// <param name="svcProvider">
+    /// Service provider used for initialization of the object.
+    /// </param>
+    /// <param name="paramList">
+    /// Array of parameters for constructor.
+    /// </param>
+    /// <returns>A new object of type T.</returns>
+    public abstract T CreateInstance<T>(IServiceProvider svcProvider, params object[] paramList) where T : class;
+
+    #endregion
 }

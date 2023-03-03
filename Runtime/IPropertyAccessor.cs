@@ -22,43 +22,42 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Interface to objects that have dynamic properties.
+/// </summary>
+public interface IPropertyAccessor
 {
     /// <summary>
-    /// Interface to objects that have dynamic properties.
+    /// Gets the value of the specified property
     /// </summary>
-    public interface IPropertyAccessor
-    {
-        /// <summary>
-        /// Gets the value of the specified property
-        /// </summary>
-        /// <typeparam name="T">
-        /// Type of value to return.
-        /// </typeparam>
-        /// <param name="propertyName">
-        /// Name of property to retrieve.
-        /// </param>
-        /// <returns>
-        /// Returns the value of the property or null
-        /// if not found.
-        /// </returns>
-        T GetPropertyValue<T>(string propertyName);
+    /// <typeparam name="T">
+    /// Type of value to return.
+    /// </typeparam>
+    /// <param name="propertyName">
+    /// Name of property to retrieve.
+    /// </param>
+    /// <returns>
+    /// Returns the value of the property or null
+    /// if not found.
+    /// </returns>
+    T GetPropertyValue<T>(string propertyName);
 
-        /// <summary>
-        /// Sets the value of the specified property.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName"></param>
-        /// <param name="value"></param>
-        /// <returns>Reference to this</returns>
-        IPropertyAccessor SetPropertyValue<T>(string propertyName, T value);
+    /// <summary>
+    /// Sets the value of the specified property.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="propertyName"></param>
+    /// <param name="value"></param>
+    /// <returns>Reference to this</returns>
+    IPropertyAccessor SetPropertyValue<T>(string propertyName, T value);
 
-        /// <summary>
-        /// Returns a collection of all available property names.
-        /// </summary>
-        /// <returns>
-        /// An enumerable of property names.
-        /// </returns>
-        IEnumerable<string> GetPropertyNames();
-    }
+    /// <summary>
+    /// Returns a collection of all available property names.
+    /// </summary>
+    /// <returns>
+    /// An enumerable of property names.
+    /// </returns>
+    IEnumerable<string> GetPropertyNames();
 }

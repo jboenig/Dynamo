@@ -22,79 +22,88 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Conditions
+namespace Headway.Dynamo.Conditions;
+
+/// <summary>
+/// Aggregates multiple <see cref="Condition"/> objects into
+/// a single condition using a <see cref="CompoundEvaluationType"/>,
+/// which determines whether the multiple conditions are AND'd or
+/// OR'd together.
+/// </summary>
+public class CompoundCondition : Condition
 {
+    #region Member Variables
+
+    private List<Condition> conditions;
+    private CompoundEvaluationType evalType = CompoundEvaluationType.All;
+
+    #endregion
+
+    #region Constructors
+
     /// <summary>
-    /// Aggregates multiple <see cref="Condition"/> objects into
-    /// a single condition using a <see cref="CompoundEvaluationType"/>,
-    /// which determines whether the multiple conditions are AND'd or
-    /// OR'd together.
+    /// Default constructor.
     /// </summary>
-    public class CompoundCondition : Condition
+    /// <remarks>
+    /// Default <see cref="CompoundEvaluationType"/> is
+    /// <see cref="CompoundEvaluationType.All"/>.
+    /// </remarks>
+    public CompoundCondition()
     {
-        #region Member Variables
+        this.evalType = CompoundEvaluationType.All;
+        this.conditions = new List<Condition>();
+    }
 
-        private List<Condition> conditions;
-        private CompoundEvaluationType evalType = CompoundEvaluationType.All;
+    /// <summary>
+    /// Constructs a <see cref="CompoundCondition"/> given
+    /// an <see cref="EvaluationType"/>.
+    /// </summary>
+    /// <param name="evalType">
+    /// Determines whether all inner conditions must be true
+    /// or any one condition must be true for this condition
+    /// to be true.
+    /// </param>
+    public CompoundCondition(CompoundEvaluationType evalType)
+    {
+        this.evalType = evalType;
+        this.conditions = new List<Condition>();
+    }
 
-        #endregion
+    #endregion
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <remarks>
-        /// Default <see cref="CompoundEvaluationType"/> is
-        /// <see cref="CompoundEvaluationType.All"/>.
-        /// </remarks>
-        public CompoundCondition()
+    #region Public Interface
+
+    /// <summary>
+    /// Gets or sets the <see cref="EvaluationType"/> for
+    /// this compound condition.
+    /// </summary>
+    public CompoundEvaluationType EvaluationType
+    {
+        get { return this.evalType; }
+        set { this.evalType = value; }
+    }
+
+    /// <summary>
+    /// Evaluate all of the <see cref="Condition"/> objects in the
+    /// <see cref="CompoundCondition.Conditions"/> collection based on
+    /// the <see cref="EvaluationType"/> associated with this
+    /// <see cref="CompoundCondition"/>.
+    /// </summary>
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Boolean flag indicating whether the
+    /// condition is true or false.
+    /// </returns>
+    public override async Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
+    {
+        bool result;
+
+        var enumConditions = this.conditions.GetEnumerator();
+
+        switch (this.evalType)
         {
-            this.evalType = CompoundEvaluationType.All;
-            this.conditions = new List<Condition>();
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="CompoundCondition"/> given
-        /// an <see cref="EvaluationType"/>.
-        /// </summary>
-        /// <param name="evalType">
-        /// Determines whether all inner conditions must be true
-        /// or any one condition must be true for this condition
-        /// to be true.
-        /// </param>
-        public CompoundCondition(CompoundEvaluationType evalType)
-        {
-            this.conditions = new List<Condition>();
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="EvaluationType"/> for
-        /// this compound condition.
-        /// </summary>
-        public CompoundEvaluationType EvaluationType
-        {
-            get { return this.evalType; }
-            set { this.evalType = value; }
-        }
-
-        /// <summary>
-        /// Evaluate all of the <see cref="Condition"/> objects in the
-        /// <see cref="CompoundCondition.Conditions"/> collection based on
-        /// the <see cref="EvaluationType"/> associated with this
-        /// <see cref="CompoundCondition"/>.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Boolean flag indicating whether the
-        /// condition is true or false.
-        /// </returns>
-        public override async Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
-        {
-            bool result;
-
-            var enumConditions = this.conditions.GetEnumerator();
-
-            if (this.evalType == CompoundEvaluationType.Any)
+            case CompoundEvaluationType.Any:
             {
                 // Any one condition must be true
                 result = false;
@@ -103,8 +112,10 @@ namespace Headway.Dynamo.Conditions
                     var curCondition = enumConditions.Current;
                     result = await curCondition.Evaluate(serviceProvider, context);
                 }
+                break;
             }
-            else
+
+            case CompoundEvaluationType.All:
             {
                 // All conditions must be true
                 result = true;
@@ -113,18 +124,24 @@ namespace Headway.Dynamo.Conditions
                     var curCondition = enumConditions.Current;
                     result = await curCondition.Evaluate(serviceProvider, context);
                 }
+                break;
             }
 
-            return result;
+            default:
+                throw new NotSupportedException($"{this.evalType} is not a supported evaluation type");
         }
 
-        /// <summary>
-        /// Gets the collection of <see cref="Condition"/> objects
-        /// that this compound condition evaluates.
-        /// </summary>
-        public ICollection<Condition> Conditions
-        {
-            get { return this.conditions; }
-        }
+        return result;
     }
+
+    /// <summary>
+    /// Gets the collection of <see cref="Condition"/> objects
+    /// that this compound condition evaluates.
+    /// </summary>
+    public ICollection<Condition> Conditions
+    {
+        get { return this.conditions; }
+    }
+
+    #endregion
 }

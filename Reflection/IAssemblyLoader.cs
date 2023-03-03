@@ -22,35 +22,32 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
-namespace Headway.Dynamo.Reflection
+namespace Headway.Dynamo.Reflection;
+
+/// <summary>
+/// Interface to objects that retrieve and load assemblies.
+/// </summary>
+public interface IAssemblyLoader
 {
 	/// <summary>
-	/// Interface to objects that retrieve and load assemblies.
+	/// Loads the specified assembly into the current app domain.
 	/// </summary>
-	public interface IAssemblyLoader
-	{
-		/// <summary>
-		/// Loads the specified assembly into the current app domain.
-		/// </summary>
-		/// <param name="assemblyName">Fully qualified name of the assembly.</param>
-		/// <returns>Returns the Assembly that was loaded or null if not found.</returns>
-		Assembly LoadAssembly(string assemblyName);
+	/// <param name="assemblyName">Fully qualified name of the assembly.</param>
+	/// <returns>Returns the Assembly that was loaded or null if not found.</returns>
+	Assembly LoadAssembly(string assemblyName);
 
-		/// <summary>
-		/// Returns the assembly as a byte array.
-		/// </summary>
-		/// <param name="assemblyName">Fully qualified name of the assembly.</param>
-		/// <returns>Contents of the assembly as a byte array.</returns>
-		byte[] GetAssemblyBytes(string assemblyName);
+	/// <summary>
+	/// Returns the assembly as a byte array.
+	/// </summary>
+	/// <param name="assemblyName">Fully qualified name of the assembly.</param>
+	/// <returns>Contents of the assembly as a byte array.</returns>
+	byte[] GetAssemblyBytes(string assemblyName);
 
-		/// <summary>
-		/// Returns a list of all available assemblies.
-		/// </summary>
-		/// <returns>Enumerable collection of Assembly objects.</returns>
-		IEnumerable<Assembly> GetAllAssemblies();
-	}
+	/// <summary>
+	/// Returns a list of all available assemblies.
+	/// </summary>
+	/// <returns>Enumerable collection of Assembly objects.</returns>
+	IEnumerable<Assembly> GetAllAssemblies();
 }

@@ -22,34 +22,33 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Rules
+namespace Headway.Dynamo.Rules;
+
+/// <summary>
+/// Extension methods for collections of <see cref="Rule"/>
+/// objects.
+/// </summary>
+public static class RuleCollectionExtensions
 {
     /// <summary>
-    /// Extension methods for collections of <see cref="Rule"/>
-    /// objects.
+    /// Applies a collection of rules.
     /// </summary>
-    public static class RuleCollectionExtensions
+    /// <param name="rules">
+    /// Collection of rules to apply.
+    /// </param>
+    /// <param name="serviceProvider">
+    /// Service provider.
+    /// </param>
+    /// <param name="context">
+    /// Context object.
+    /// </param>
+    public static async Task Apply(this IEnumerable<Rule> rules,
+        IServiceProvider serviceProvider,
+        object context)
     {
-        /// <summary>
-        /// Applies a collection of rules.
-        /// </summary>
-        /// <param name="rules">
-        /// Collection of rules to apply.
-        /// </param>
-        /// <param name="serviceProvider">
-        /// Service provider.
-        /// </param>
-        /// <param name="context">
-        /// Context object.
-        /// </param>
-        public static async Task Apply(this IEnumerable<Rule> rules,
-            IServiceProvider serviceProvider,
-            object context)
+        foreach (var curRule in rules)
         {
-            foreach (var curRule in rules)
-            {
-                await curRule.Apply(serviceProvider, context);
-            }
+            await curRule.Apply(serviceProvider, context);
         }
     }
 }

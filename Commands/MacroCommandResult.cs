@@ -22,74 +22,73 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Commands;
+
+/// <summary>
+/// This class implements a <see cref="CommandResult"/> that aggregates
+/// other <see cref="CommandResult"/> objects.
+/// </summary>
+public sealed class MacroCommandResult : CommandResult
 {
     /// <summary>
-    /// This class implements a <see cref="CommandResult"/> that aggregates
-    /// other <see cref="CommandResult"/> objects.
+    /// Default constructor.
     /// </summary>
-    public sealed class MacroCommandResult : CommandResult
+    public MacroCommandResult()
     {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public MacroCommandResult()
-        {
-            this.CommandResults = new List<CommandResult>();
-        }
+        this.CommandResults = new List<CommandResult>();
+    }
 
-        /// <summary>
-        /// Gets the collection of <see cref="CommandResult"/>
-        /// objects in this <see cref="MacroCommandResult"/>.
-        /// </summary>
-        public List<CommandResult> CommandResults
-        {
-            get;
-            private set;
-        }
+    /// <summary>
+    /// Gets the collection of <see cref="CommandResult"/>
+    /// objects in this <see cref="MacroCommandResult"/>.
+    /// </summary>
+    public List<CommandResult> CommandResults
+    {
+        get;
+        private set;
+    }
 
-        /// <summary>
-        /// Gets the description for this <see cref="MacroCommandResult"/>
-        /// </summary>
-        public override string Description
+    /// <summary>
+    /// Gets the description for this <see cref="MacroCommandResult"/>
+    /// </summary>
+    public override string Description
+    {
+        get
         {
-            get
+            int numSuccessful = 0;
+            int numFailed = 0;
+            int numTotal = 0;
+            foreach (var curRes in this.CommandResults)
             {
-                int numSuccessful = 0;
-                int numFailed = 0;
-                int numTotal = 0;
-                foreach (var curRes in this.CommandResults)
+                if (curRes.IsSuccess)
                 {
-                    if (curRes.IsSuccess)
-                    {
-                        numSuccessful++;
-                    }
-                    else
-                    {
-                        numFailed++;
-                    }
-                    numTotal++;
+                    numSuccessful++;
                 }
-                return string.Format("{0} commands executed - {1} successful and {2} failed", numTotal, numSuccessful, numFailed);
+                else
+                {
+                    numFailed++;
+                }
+                numTotal++;
             }
+            return string.Format("{0} commands executed - {1} successful and {2} failed", numTotal, numSuccessful, numFailed);
         }
+    }
 
-        /// <summary>
-        /// Gets a flag indicating whether or not the command
-        /// was successful.
-        /// </summary>
-        /// <remarks>
-        /// For a macro command to be considered successful, all
-        /// commands it executes must have executed successfully.
-        /// </remarks>
-        public override bool IsSuccess
+    /// <summary>
+    /// Gets a flag indicating whether or not the command
+    /// was successful.
+    /// </summary>
+    /// <remarks>
+    /// For a macro command to be considered successful, all
+    /// commands it executes must have executed successfully.
+    /// </remarks>
+    public override bool IsSuccess
+    {
+        get
         {
-            get
-            {
-                return !(from cr in this.CommandResults
-                         where cr.IsSuccess == false
-                         select cr).Any();
-            }
+            return !(from cr in this.CommandResults
+                     where cr.IsSuccess == false
+                     select cr).Any();
         }
     }
 }

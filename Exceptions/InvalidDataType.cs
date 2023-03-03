@@ -22,22 +22,22 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// Thrown when an invalid datatype is encountered during
+/// a metadata operation
+/// </summary>
+//	[Serializable]
+public sealed class InvalidDataType : Exception
 {
 	/// <summary>
 	/// 
 	/// </summary>
-//	[Serializable]
-	public sealed class InvalidDataType : Exception
+	/// <param name="propertyName"></param>
+	/// <param name="dataTypeName"></param>
+	public InvalidDataType(string propertyName, string dataTypeName) :
+		base(string.Format("Invalid data type {0} specified for property {1}", propertyName, dataTypeName))
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="propertyName"></param>
-		/// <param name="dataTypeName"></param>
-		public InvalidDataType(string propertyName, string dataTypeName) :
-			base(string.Format("Invalid data type {0} specified for property {1}", propertyName, dataTypeName))
-		{
-		}
 	}
 }

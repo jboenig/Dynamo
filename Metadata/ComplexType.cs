@@ -22,58 +22,54 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
+namespace Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Metadata
+/// <summary>
+/// Encapsulates data types that contain properties.
+/// </summary>
+public abstract class ComplexType : DataType
 {
-	/// <summary>
-	/// Encapsulates data types that contain properties.
-	/// </summary>
-	public abstract class ComplexType : DataType
-	{
-		#region Public Properties
+    #region Public Properties
 
-		/// <summary>
-		/// Gets the collection of properties associated with this class.
-		/// </summary>
-		public abstract IEnumerable<Property> Properties
-		{
-			get;
-		}
+    /// <summary>
+    /// Gets the collection of properties associated with this class.
+    /// </summary>
+    public abstract IEnumerable<Property> Properties
+    {
+        get;
+    }
 
-		#endregion
+    #endregion
 
-		#region Public Methods
+    #region Public Methods
 
-		/// <summary>
-		/// Gets the property matching the specified name.
-		/// </summary>
-		/// <param name="propertyName">Name of property to get.</param>
-		/// <returns><see cref="Property"/> matching the specified name.</returns>
-		public abstract Property GetPropertyByName(string propertyName);
+    /// <summary>
+    /// Gets the property matching the specified name.
+    /// </summary>
+    /// <param name="propertyName">Name of property to get.</param>
+    /// <returns><see cref="Property"/> matching the specified name.</returns>
+    public abstract Property GetPropertyByName(string propertyName);
 
-		/// <summary>
-		/// Gets all properties of this class including inherited properties.
-		/// </summary>
-		/// <returns>List of <see cref="Property"/> objects.</returns>
-		public abstract IEnumerable<Property> FindAllProperties();
+    /// <summary>
+    /// Gets all properties of this class including inherited properties.
+    /// </summary>
+    /// <returns>List of <see cref="Property"/> objects.</returns>
+    public abstract IEnumerable<Property> FindAllProperties();
 
-		/// <summary>
-		/// Gets all properties matching the specified filter - includes inherited properties.
-		/// </summary>
-		/// <param name="filter">Filter criteria.</param>
-		/// <returns>List of <see cref="Property"/> objects.</returns>
-		public abstract IEnumerable<Property> FindProperties(Func<Property, bool> filter);
+    /// <summary>
+    /// Gets all properties matching the specified filter - includes inherited properties.
+    /// </summary>
+    /// <param name="filter">Filter criteria.</param>
+    /// <returns>List of <see cref="Property"/> objects.</returns>
+    public abstract IEnumerable<Property> FindProperties(Func<Property, bool> filter);
 
-        /// <summary>
-        /// Adds a property to this type.
-        /// </summary>
-        /// <param name="propertyName">Name of property to add</param>
-        /// <param name="dataType">Data type of property to add</param>
-        /// <returns>Returns the new property created</returns>
-        public abstract Property AddProperty(string propertyName, DataType dataType);
+    /// <summary>
+    /// Adds a property to this type.
+    /// </summary>
+    /// <param name="propertyName">Name of property to add</param>
+    /// <param name="dataType">Data type of property to add</param>
+    /// <returns>Returns the new property created</returns>
+    public abstract Property AddProperty(string propertyName, DataType dataType);
 
-		#endregion
-	}
+    #endregion
 }

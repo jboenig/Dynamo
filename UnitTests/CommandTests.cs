@@ -30,7 +30,7 @@ using Headway.Dynamo.Commands;
 using Headway.Dynamo.Conditions;
 using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Serialization;
-using Headway.Dynamo.Repository.FlatFile;
+using Headway.Dynamo.Repository.Implementation;
 using Headway.Dynamo.Runtime;
 using Headway.Dynamo.UnitTests.Mockdata;
 

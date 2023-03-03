@@ -22,26 +22,25 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Interface to objects that have a fully qualified name.
+/// </summary>
+public interface INamedObject
 {
     /// <summary>
-    /// Interface to objects that have a fully qualified name.
+    /// Gets the name.
     /// </summary>
-    public interface INamedObject
-    {
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        string Name { get; }
+    string Name { get; }
 
-        /// <summary>
-        /// Gets the namespace.
-        /// </summary>
-        string Namespace { get; }
+    /// <summary>
+    /// Gets the namespace.
+    /// </summary>
+    string Namespace { get; }
 
-        /// <summary>
-        /// Gets the full name.
-        /// </summary>
-        string FullName { get; }
-    }
+    /// <summary>
+    /// Gets the full name.
+    /// </summary>
+    string FullName { get; }
 }

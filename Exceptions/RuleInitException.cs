@@ -22,20 +22,20 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// Thrown when the initialization of a <see cref="Rules.Rule"/>
+/// fails.
+/// </summary>
+public sealed class RuleInitException : Exception
 {
     /// <summary>
     /// 
     /// </summary>
-    public sealed class RuleInitException : Exception
+    /// <param name="ex"></param>
+    public RuleInitException(Exception ex) :
+        base("An exception occurred while initializing a rule", ex)
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ex"></param>
-        public RuleInitException(Exception ex) :
-            base("An exception occurred while initializing a rule", ex)
-        {
-        }
     }
 }

@@ -24,26 +24,25 @@
 
 using Headway.Dynamo.Runtime;
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Commands;
+
+/// <summary>
+/// A <see cref="Command"/> object with a full name.
+/// </summary>
+public abstract class NamedCommand : Command, INamedObject
 {
 	/// <summary>
-	/// A <see cref="Command"/> object with a full name.
+	/// Gets the name.
 	/// </summary>
-	public abstract class NamedCommand : Command, INamedObject
-	{
-		/// <summary>
-		/// Gets the name.
-		/// </summary>
-		public abstract string Name { get; }
+	public abstract string Name { get; }
 
-		/// <summary>
-		/// Gets the namespace.
-		/// </summary>
-		public abstract string Namespace { get; }
+	/// <summary>
+	/// Gets the namespace.
+	/// </summary>
+	public abstract string Namespace { get; }
 
-		/// <summary>
-		/// Gets the full name.
-		/// </summary>
-		public abstract string FullName { get; set; }
-	}
+	/// <summary>
+	/// Gets the full name.
+	/// </summary>
+	public abstract string FullName { get; set; }
 }

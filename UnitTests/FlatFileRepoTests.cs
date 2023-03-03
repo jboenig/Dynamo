@@ -100,13 +100,13 @@ namespace Headway.Dynamo.UnitTests
             }
 
             // Do not specify file path and allow default
-            var repo = new FlatFileRepo<Person>(serializerConfigSvc, this.svcProvider);
+            var repo = new JsonFileRepo<Person>(serializerConfigSvc, this.svcProvider);
             repo.Add(this.personColl);
             repo.SaveChanges();
 
             Assert.IsTrue(File.Exists(filePath));
 
-            var repo2 = new FlatFileRepo<Person>(serializerConfigSvc, this.svcProvider);
+            var repo2 = new JsonFileRepo<Person>(serializerConfigSvc, this.svcProvider);
             Assert.AreEqual(repo2.GetQueryable().Count(), this.personColl.Count());
         }
 
@@ -127,13 +127,13 @@ namespace Headway.Dynamo.UnitTests
             }
 
             // Do not specify file path and allow default
-            var repo = new FlatFileRepo<Person>(relativePath, serializerConfigSvc, this.svcProvider);
+            var repo = new JsonFileRepo<Person>(relativePath, serializerConfigSvc, this.svcProvider);
             repo.Add(this.personColl);
             repo.SaveChanges();
 
             Assert.IsTrue(File.Exists(filePath));
 
-            var repo2 = new FlatFileRepo<Person>(relativePath, serializerConfigSvc, this.svcProvider);
+            var repo2 = new JsonFileRepo<Person>(relativePath, serializerConfigSvc, this.svcProvider);
             Assert.AreEqual(repo2.GetQueryable().Count(), this.personColl.Count());
         }
 
@@ -154,13 +154,13 @@ namespace Headway.Dynamo.UnitTests
             }
 
             // Do not specify file path and allow default
-            var repo = new FlatFileRepo<Person>(filePath, serializerConfigSvc, this.svcProvider);
+            var repo = new JsonFileRepo<Person>(filePath, serializerConfigSvc, this.svcProvider);
             repo.Add(this.personColl);
             repo.SaveChanges();
 
             Assert.IsTrue(File.Exists(filePath));
 
-            var repo2 = new FlatFileRepo<Person>(relativePath, serializerConfigSvc, this.svcProvider);
+            var repo2 = new JsonFileRepo<Person>(relativePath, serializerConfigSvc, this.svcProvider);
             Assert.AreEqual(repo2.GetQueryable().Count(), this.personColl.Count());
         }
     }

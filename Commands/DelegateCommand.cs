@@ -22,122 +22,121 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Commands;
+
+/// <summary>
+/// Implements a command based on a delgate function.
+/// </summary>
+public class DelegateCommand : Command
 {
     /// <summary>
-    /// Implements a command based on a delgate function.
+    /// Signature for a command function with no
+    /// parameters.
     /// </summary>
-    public class DelegateCommand : Command
+    /// <returns>
+    /// Returns true if successful, otherwise returns false.
+    /// </returns>
+    public delegate Task<bool> CommandFuncNoParams();
+
+    /// <summary>
+    /// Signature for a command function that takes all
+    /// <see cref="Command.Execute(IServiceProvider, object)"/>
+    /// parameters and returns a <see cref="CommandResult"/>.
+    /// </summary>
+    /// <param name="svcProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns a <see cref="CommandResult"/> object that describes
+    /// the result.
+    /// </returns>
+    public delegate Task<CommandResult> CommandFuncFull(IServiceProvider svcProvider, object context);
+
+    /// <summary>
+    /// Signature for a command function that takes all
+    /// <see cref="Command.Execute(IServiceProvider, object)"/>
+    /// parameters and returns a <see cref="CommandResult"/>.
+    /// </summary>
+    /// <param name="svcProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns true if successful, otherwise returns false.
+    /// </returns>
+    public delegate Task<bool> CommandFuncAllParamsBoolResult(IServiceProvider svcProvider, object context);
+
+    private readonly CommandFuncNoParams cmdFuncNoParams;
+    private readonly CommandFuncFull cmdFuncFull;
+    private readonly CommandFuncAllParamsBoolResult cmdFuncAllParamsBoolRes;
+
+    /// <summary>
+    /// Construct a <see cref="DelegateCommand"/> with a
+    /// command function that only returns a bool.
+    /// </summary>
+    /// <param name="cmdFunc">
+    /// Delegate to invoke when this command is executed.
+    /// </param>
+    public DelegateCommand(CommandFuncNoParams cmdFunc)
     {
-        /// <summary>
-        /// Signature for a command function with no
-        /// parameters.
-        /// </summary>
-        /// <returns>
-        /// Returns true if successful, otherwise returns false.
-        /// </returns>
-        public delegate Task<bool> CommandFuncNoParams();
+        this.cmdFuncNoParams = cmdFunc;
+    }
 
-        /// <summary>
-        /// Signature for a command function that takes all
-        /// <see cref="Command.Execute(IServiceProvider, object)"/>
-        /// parameters and returns a <see cref="CommandResult"/>.
-        /// </summary>
-        /// <param name="svcProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        public delegate Task<CommandResult> CommandFuncFull(IServiceProvider svcProvider, object context);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cmdFunc">
+    /// Delegate to invoke when this command is executed.
+    /// </param>
+    public DelegateCommand(CommandFuncFull cmdFunc)
+    {
+        this.cmdFuncFull = cmdFunc;
+    }
 
-        /// <summary>
-        /// Signature for a command function that takes all
-        /// <see cref="Command.Execute(IServiceProvider, object)"/>
-        /// parameters and returns a <see cref="CommandResult"/>.
-        /// </summary>
-        /// <param name="svcProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns true if successful, otherwise returns false.
-        /// </returns>
-        public delegate Task<bool> CommandFuncAllParamsBoolResult(IServiceProvider svcProvider, object context);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cmdFunc">
+    /// Delegate to invoke when this command is executed.
+    /// </param>
+    public DelegateCommand(CommandFuncAllParamsBoolResult cmdFunc)
+    {
+        this.cmdFuncAllParamsBoolRes = cmdFunc;
+    }
 
-        private readonly CommandFuncNoParams cmdFuncNoParams;
-        private readonly CommandFuncFull cmdFuncFull;
-        private readonly CommandFuncAllParamsBoolResult cmdFuncAllParamsBoolRes;
+    /// <summary>
+    /// Executes this command.
+    /// </summary>
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns a <see cref="CommandResult"/> object that describes
+    /// the result.
+    /// </returns>
+    /// <remarks>
+    /// The implementation invokes the delegate function associated
+    /// with this command.
+    /// </remarks>
+    public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+    {
+        CommandResult res = CommandResult.Success;
 
-        /// <summary>
-        /// Construct a <see cref="DelegateCommand"/> with a
-        /// command function that only returns a bool.
-        /// </summary>
-        /// <param name="cmdFunc">
-        /// Delegate to invoke when this command is executed.
-        /// </param>
-        public DelegateCommand(CommandFuncNoParams cmdFunc)
+        if (this.cmdFuncFull != null)
         {
-            this.cmdFuncNoParams = cmdFunc;
+            res = await this.cmdFuncFull(serviceProvider, context);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="cmdFunc">
-        /// Delegate to invoke when this command is executed.
-        /// </param>
-        public DelegateCommand(CommandFuncFull cmdFunc)
+        else if (this.cmdFuncAllParamsBoolRes != null)
         {
-            this.cmdFuncFull = cmdFunc;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="cmdFunc">
-        /// Delegate to invoke when this command is executed.
-        /// </param>
-        public DelegateCommand(CommandFuncAllParamsBoolResult cmdFunc)
-        {
-            this.cmdFuncAllParamsBoolRes = cmdFunc;
-        }
-
-        /// <summary>
-        /// Executes this command.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        /// <remarks>
-        /// The implementation invokes the delegate function associated
-        /// with this command.
-        /// </remarks>
-        public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
-        {
-            CommandResult res = CommandResult.Success;
-
-            if (this.cmdFuncFull != null)
+            if (!await this.cmdFuncAllParamsBoolRes(serviceProvider, context))
             {
-                res = await this.cmdFuncFull(serviceProvider, context);
+                res = CommandResult.Fail;
             }
-            else if (this.cmdFuncAllParamsBoolRes != null)
-            {
-                if (!await this.cmdFuncAllParamsBoolRes(serviceProvider, context))
-                {
-                    res = CommandResult.Fail;
-                }
-            }
-            else if (this.cmdFuncNoParams != null)
-            {
-                if (!await this.cmdFuncNoParams())
-                {
-                    res = CommandResult.Fail;
-                }
-            }
-
-            return res;
         }
+        else if (this.cmdFuncNoParams != null)
+        {
+            if (!await this.cmdFuncNoParams())
+            {
+                res = CommandResult.Fail;
+            }
+        }
+
+        return res;
     }
 }

@@ -22,54 +22,49 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
+namespace Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Metadata
+/// <summary>
+/// Interface to object that contains named
+/// Attributes.
+/// </summary>
+public interface IAttributeContainer
 {
-	/// <summary>
-	/// Interface to object that contains named
-    /// Attributes.
-	/// </summary>
-	public interface IAttributeContainer
-	{
-		/// <summary>
-		/// Gets all attributes matching the specified name.
-		/// </summary>
-		/// <typeparam name="T">
-        /// Type of attributes to return.
-        /// </typeparam>
-		/// <param name="attributeName">
-        /// Name of attributes to get
-        /// </param>
-		/// <returns>
-        /// Collection of attributes matching the specified name.
-        /// </returns>
-		IEnumerable<T> GetAttributes<T>(string attributeName) where T : Attribute;
+    /// <summary>
+    /// Gets all attributes matching the specified name.
+    /// </summary>
+    /// <typeparam name="T">
+    /// Type of attributes to return.
+    /// </typeparam>
+    /// <param name="attributeName">
+    /// Name of attributes to get
+    /// </param>
+    /// <returns>
+    /// Collection of attributes matching the specified name.
+    /// </returns>
+    IEnumerable<T> GetAttributes<T>(string attributeName) where T : Attribute;
 
-		/// <summary>
-		/// Gets a list of the names of all available attributes.
-		/// </summary>
-		/// <returns>Enumerable collection of attribute names.</returns>
-		IEnumerable<string> GetAttributeNames();
-	}
+    /// <summary>
+    /// Gets a list of the names of all available attributes.
+    /// </summary>
+    /// <returns>Enumerable collection of attribute names.</returns>
+    IEnumerable<string> GetAttributeNames();
+}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	public static class AttributeContainerHelper
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="attributeContainer"></param>
-		/// <param name="attributeName"></param>
-		/// <returns></returns>
-		public static T GetAttribute<T>(this IAttributeContainer attributeContainer, string attributeName) where T : Attribute
-		{
-			return attributeContainer.GetAttributes<T>(attributeName).FirstOrDefault();
-		}
-	}
+/// <summary>
+/// 
+/// </summary>
+public static class AttributeContainerHelper
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="attributeContainer"></param>
+    /// <param name="attributeName"></param>
+    /// <returns></returns>
+    public static T GetAttribute<T>(this IAttributeContainer attributeContainer, string attributeName) where T : Attribute
+    {
+        return attributeContainer.GetAttributes<T>(attributeName).FirstOrDefault();
+    }
 }

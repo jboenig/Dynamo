@@ -22,14 +22,11 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
+namespace Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Metadata
+/// <summary>
+/// Encapsulates metadata for a method or function
+/// </summary>
+public abstract class Method : Member
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public abstract class Method : Member
-	{
-	}
 }

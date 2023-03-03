@@ -22,73 +22,70 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
 using Headway.Dynamo.Runtime;
 
-namespace Headway.Dynamo.Metadata
+namespace Headway.Dynamo.Metadata;
+
+/// <summary>
+/// Base class for members of an <see cref="ObjectType"/>.
+/// </summary>
+public abstract class Member : INamedObject, IAttributeContainer
 {
 	/// <summary>
-	/// Base class for members of an <see cref="ObjectType"/>.
+	/// Gets the owner of this member.
 	/// </summary>
-	public abstract class Member : INamedObject, IAttributeContainer
+	public abstract ComplexType Owner
 	{
-		/// <summary>
-		/// Gets the owner of this member.
-		/// </summary>
-		public abstract ComplexType Owner
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the name of the member.
-		/// </summary>
-		public abstract string Name
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the namespace.
-		/// </summary>
-		public string Namespace
-		{
-			get
-			{
-				var owner = this.Owner;
-				if (owner == null)
-				{
-					var msg = string.Format("Member named {0} is not associated with an Owner", this.Name);
-					throw new InvalidOperationException(msg);
-				}
-				return owner.FullName;
-			}
-		}
-
-		/// <summary>
-		/// Gets the fullname.
-		/// </summary>
-		public string FullName
-		{
-			get
-			{
-				return Headway.Dynamo.Runtime.NameHelpers.CreateFullName(this.Namespace, this.Name);
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="attributeName"></param>
-		/// <returns></returns>
-		public abstract IEnumerable<T> GetAttributes<T>(string attributeName) where T : Attribute;
-
-		/// <summary>
-		/// Gets a list of the names of all available attributes.
-		/// </summary>
-		/// <returns>Enumerable collection of attribute names.</returns>
-		public abstract IEnumerable<string> GetAttributeNames();
+		get;
 	}
+
+	/// <summary>
+	/// Gets the name of the member.
+	/// </summary>
+	public abstract string Name
+	{
+		get;
+	}
+
+	/// <summary>
+	/// Gets the namespace.
+	/// </summary>
+	public string Namespace
+	{
+		get
+		{
+			var owner = this.Owner;
+			if (owner == null)
+			{
+				var msg = string.Format("Member named {0} is not associated with an Owner", this.Name);
+				throw new InvalidOperationException(msg);
+			}
+			return owner.FullName;
+		}
+	}
+
+	/// <summary>
+	/// Gets the fullname.
+	/// </summary>
+	public string FullName
+	{
+		get
+		{
+			return Headway.Dynamo.Runtime.NameHelpers.CreateFullName(this.Namespace, this.Name);
+		}
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="attributeName"></param>
+	/// <returns></returns>
+	public abstract IEnumerable<T> GetAttributes<T>(string attributeName) where T : Attribute;
+
+	/// <summary>
+	/// Gets a list of the names of all available attributes.
+	/// </summary>
+	/// <returns>Enumerable collection of attribute names.</returns>
+	public abstract IEnumerable<string> GetAttributeNames();
 }

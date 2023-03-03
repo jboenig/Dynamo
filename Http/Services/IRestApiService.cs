@@ -24,47 +24,46 @@
 
 using Headway.Dynamo.Http.Models;
 
-namespace Headway.Dynamo.Http.Services
+namespace Headway.Dynamo.Http.Services;
+
+/// <summary>
+/// Service interface for discovering and invoking Restful
+/// web services.
+/// </summary>
+public interface IRestApiService
 {
     /// <summary>
-    /// Service interface for discovering and invoking Restful
-    /// web services.
+    /// Gets the <see cref="RestApi"/> matching the specified name.
     /// </summary>
-    public interface IRestApiService
-    {
-        /// <summary>
-        /// Gets the <see cref="RestApi"/> matching the specified name.
-        /// </summary>
-        /// <param name="apiName">
-        /// Name of API to get.
-        /// </param>
-        /// <returns>
-        /// Returns the <see cref="RestApi"/> matching the specified name
-        /// or null if the API is not found.
-        /// </returns>
-        RestApi GetApiByName(string apiName);
+    /// <param name="apiName">
+    /// Name of API to get.
+    /// </param>
+    /// <returns>
+    /// Returns the <see cref="RestApi"/> matching the specified name
+    /// or null if the API is not found.
+    /// </returns>
+    RestApi GetApiByName(string apiName);
 
-        /// <summary>
-        /// Invokes a restful web service given the name of the API,
-        /// name of the service, and a parameters object.
-        /// </summary>
-        /// <param name="apiName">
-        /// Name of the API containing the service to invoke.
-        /// </param>
-        /// <param name="serviceName">
-        /// Name of the service to invoke.
-        /// </param>
-        /// <param name="paramObj">
-        /// Parameter object containing properties that match the
-        /// parameter names declared in the service definition.
-        /// </param>
-        /// <param name="contentObj">
-        /// Object containing content to send with web service request.
-        /// </param>
-        /// <returns>
-        /// Returns a Task that executes the call to the web service
-        /// and returns an HttpResponseMessage.
-        /// </returns>
-        Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null);
-    }
+    /// <summary>
+    /// Invokes a restful web service given the name of the API,
+    /// name of the service, and a parameters object.
+    /// </summary>
+    /// <param name="apiName">
+    /// Name of the API containing the service to invoke.
+    /// </param>
+    /// <param name="serviceName">
+    /// Name of the service to invoke.
+    /// </param>
+    /// <param name="paramObj">
+    /// Parameter object containing properties that match the
+    /// parameter names declared in the service definition.
+    /// </param>
+    /// <param name="contentObj">
+    /// Object containing content to send with web service request.
+    /// </param>
+    /// <returns>
+    /// Returns a Task that executes the call to the web service
+    /// and returns an HttpResponseMessage.
+    /// </returns>
+    Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null);
 }

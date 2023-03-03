@@ -22,20 +22,19 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Interface to objects that need to be initialized.
+/// </summary>
+public interface IObjectInit
 {
     /// <summary>
-    /// Interface to objects that need to be initialized.
+    /// Initializes the object.
     /// </summary>
-    public interface IObjectInit
-    {
-        /// <summary>
-        /// Initializes the object.
-        /// </summary>
-        /// <param name="svcProvider">
-        /// Reference to service provider used to initialize
-        /// the object.
-        /// </param>
-        void Init(IServiceProvider svcProvider);
-    }
+    /// <param name="svcProvider">
+    /// Reference to service provider used to initialize
+    /// the object.
+    /// </param>
+    void Init(IServiceProvider svcProvider);
 }

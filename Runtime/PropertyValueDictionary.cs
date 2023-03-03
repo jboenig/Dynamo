@@ -22,12 +22,11 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Runtime
+namespace Headway.Dynamo.Runtime;
+
+/// <summary>
+/// Container to store name-value pairs.
+/// </summary>
+public sealed class PropertyValueDictionary : Dictionary<string, object>
 {
-    /// <summary>
-    /// Container to store name-value pairs.
-    /// </summary>
-    public sealed class PropertyValueDictionary : Dictionary<string, object>
-    {
-    }
 }

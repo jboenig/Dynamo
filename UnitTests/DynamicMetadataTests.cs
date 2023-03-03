@@ -29,7 +29,7 @@ using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.UnitTests.Mockdata;
 using Headway.Dynamo.Serialization;
-using Headway.Dynamo.Repository.FlatFile;
+using Headway.Dynamo.Repository.Implementation;
 using System.ComponentModel.Design;
 
 namespace Headway.Dynamo.UnitTests

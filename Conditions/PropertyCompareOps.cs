@@ -22,58 +22,57 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Conditions
+namespace Headway.Dynamo.Conditions;
+
+/// <summary>
+/// Comparions operators that can be used to compare
+/// two property values.
+/// </summary>
+/// <seealso cref="PropertyCompare"/>
+public enum PropertyCompareOps
 {
     /// <summary>
-    /// Comparions operators that can be used to compare
-    /// two property values.
+    /// Test for equality
     /// </summary>
-    /// <seealso cref="PropertyCompare"/>
-    public enum PropertyCompareOps
-    {
-        /// <summary>
-        /// Test for equality
-        /// </summary>
-        AreEqual,
+    AreEqual,
 
-        /// <summary>
-        /// Test for inequality
-        /// </summary>
-        AreNotEqual,
+    /// <summary>
+    /// Test for inequality
+    /// </summary>
+    AreNotEqual,
 
-        /// <summary>
-        /// Test for greater than
-        /// </summary>
-        GreaterThan,
+    /// <summary>
+    /// Test for greater than
+    /// </summary>
+    GreaterThan,
 
-        /// <summary>
-        /// Test for less than
-        /// </summary>
-        LessThan,
+    /// <summary>
+    /// Test for less than
+    /// </summary>
+    LessThan,
 
-        /// <summary>
-        /// Test for greater than or equal
-        /// </summary>
-        GreaterThanOrEqual,
+    /// <summary>
+    /// Test for greater than or equal
+    /// </summary>
+    GreaterThanOrEqual,
 
-        /// <summary>
-        /// Test for less than or equal
-        /// </summary>
-        LessThanOrEqual,
+    /// <summary>
+    /// Test for less than or equal
+    /// </summary>
+    LessThanOrEqual,
 
-        /// <summary>
-        /// Test to see if a string contains another string
-        /// </summary>
-        Contains,
+    /// <summary>
+    /// Test to see if a string contains another string
+    /// </summary>
+    Contains,
 
-        /// <summary>
-        /// Test to see if a string starts with another string
-        /// </summary>
-        StartsWith,
+    /// <summary>
+    /// Test to see if a string starts with another string
+    /// </summary>
+    StartsWith,
 
-        /// <summary>
-        /// Test to see if a string ends with another string
-        /// </summary>
-        EndsWith
-    }
+    /// <summary>
+    /// Test to see if a string ends with another string
+    /// </summary>
+    EndsWith
 }

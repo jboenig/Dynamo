@@ -24,95 +24,94 @@
 
 using Headway.Dynamo.Http.Models;
 
-namespace Headway.Dynamo.Http.Services
+namespace Headway.Dynamo.Http.Services;
+
+/// <summary>
+/// Basic implementation of the <see cref="IRestApiService"/>
+/// interface.
+/// </summary>
+public sealed class RestApiServiceImpl : IRestApiService
 {
+    private IEnumerable<RestApi> restServiceApis;
+
     /// <summary>
-    /// Basic implementation of the <see cref="IRestApiService"/>
-    /// interface.
+    /// Default constructor.
     /// </summary>
-    public sealed class RestApiServiceImpl : IRestApiService
+    public RestApiServiceImpl()
     {
-        private IEnumerable<RestApi> restServiceApis;
+        this.restServiceApis = null;
+    }
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public RestApiServiceImpl()
+    /// <summary>
+    /// Gets the <see cref="RestApi"/> matching the specified name.
+    /// </summary>
+    /// <param name="apiName">
+    /// Name of API to get.
+    /// </param>
+    /// <returns>
+    /// Returns the <see cref="RestApi"/> matching the specified name
+    /// or null if the API is not found.
+    /// </returns>
+    public RestApi GetApiByName(string apiName)
+    {
+        if (this.restServiceApis != null)
         {
-            this.restServiceApis = null;
+            return (from a in this.restServiceApis
+                    where a.Name == apiName
+                    select a).FirstOrDefault();
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Invokes a restful web service given the name of the API,
+    /// name of the service, and a parameters object.
+    /// </summary>
+    /// <param name="apiName">
+    /// Name of the API containing the service to invoke.
+    /// </param>
+    /// <param name="serviceName">
+    /// Name of the service to invoke.
+    /// </param>
+    /// <param name="paramObj">
+    /// Parameter object containing properties that match the
+    /// parameter names declared in the service definition.
+    /// </param>
+    /// <param name="contentObj">
+    /// Object containing content to send with web service request.
+    /// </param>
+    /// <returns>
+    /// Returns a Task that executes the call to the web service
+    /// and returns an HttpResponseMessage.
+    /// </returns>
+    public Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null)
+    {
+        var restApi = this.GetApiByName(apiName);
+        if (restApi == null)
+        {
+            var msg = string.Format("API not found - {0}", apiName);
+            throw new ArgumentException(msg, nameof(apiName));
         }
 
-        /// <summary>
-        /// Gets the <see cref="RestApi"/> matching the specified name.
-        /// </summary>
-        /// <param name="apiName">
-        /// Name of API to get.
-        /// </param>
-        /// <returns>
-        /// Returns the <see cref="RestApi"/> matching the specified name
-        /// or null if the API is not found.
-        /// </returns>
-        public RestApi GetApiByName(string apiName)
+        var restSvc = restApi.GetServiceByName(serviceName);
+        if (restSvc == null)
         {
-            if (this.restServiceApis != null)
-            {
-                return (from a in this.restServiceApis
-                        where a.Name == apiName
-                        select a).FirstOrDefault();
-            }
-            return null;
+            var msg = string.Format("Rest service not found - {0}", serviceName);
+            throw new ArgumentException(msg, nameof(serviceName));
         }
 
-        /// <summary>
-        /// Invokes a restful web service given the name of the API,
-        /// name of the service, and a parameters object.
-        /// </summary>
-        /// <param name="apiName">
-        /// Name of the API containing the service to invoke.
-        /// </param>
-        /// <param name="serviceName">
-        /// Name of the service to invoke.
-        /// </param>
-        /// <param name="paramObj">
-        /// Parameter object containing properties that match the
-        /// parameter names declared in the service definition.
-        /// </param>
-        /// <param name="contentObj">
-        /// Object containing content to send with web service request.
-        /// </param>
-        /// <returns>
-        /// Returns a Task that executes the call to the web service
-        /// and returns an HttpResponseMessage.
-        /// </returns>
-        public Task<HttpResponseMessage> Invoke(string apiName, string serviceName, object paramObj, object contentObj = null)
-        {
-            var restApi = this.GetApiByName(apiName);
-            if (restApi == null)
-            {
-                var msg = string.Format("API not found - {0}", apiName);
-                throw new ArgumentException(msg, nameof(apiName));
-            }
+        return restSvc.Invoke(paramObj, contentObj);
+    }
 
-            var restSvc = restApi.GetServiceByName(serviceName);
-            if (restSvc == null)
-            {
-                var msg = string.Format("Rest service not found - {0}", serviceName);
-                throw new ArgumentException(msg, nameof(serviceName));
-            }
-
-            return restSvc.Invoke(paramObj, contentObj);
-        }
-
-        /// <summary>
-        /// Loads the service with <see cref="RestApi"/> objects.
-        /// </summary>
-        /// <param name="source">
-        /// Source collection containing <see cref="RestApi"/>
-        /// objects to load.
-        /// </param>
-        public void Load(IEnumerable<RestApi> source)
-        {
-            this.restServiceApis = source;
-        }
+    /// <summary>
+    /// Loads the service with <see cref="RestApi"/> objects.
+    /// </summary>
+    /// <param name="source">
+    /// Source collection containing <see cref="RestApi"/>
+    /// objects to load.
+    /// </param>
+    public void Load(IEnumerable<RestApi> source)
+    {
+        this.restServiceApis = source;
     }
 }

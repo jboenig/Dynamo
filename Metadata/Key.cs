@@ -22,39 +22,35 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
+namespace Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Metadata
+/// <summary>
+/// Encapsulates one or more properties that comprise a key.
+/// </summary>
+public abstract class Key
 {
 	/// <summary>
-	/// Encapsulates one or more properties that comprise a key.
+	/// Name of the key.
 	/// </summary>
-	public abstract class Key
+	public abstract string Name
 	{
-		/// <summary>
-		/// Name of the key.
-		/// </summary>
-		public abstract string Name
-		{
-			get;
-		}
+		get;
+	}
 
-		/// <summary>
-		/// Properties that make up the key.
-		/// </summary>
-		public abstract IEnumerable<Property> Properties
-		{
-			get;
-		}
+	/// <summary>
+	/// Properties that make up the key.
+	/// </summary>
+	public abstract IEnumerable<Property> Properties
+	{
+		get;
+	}
 
-		/// <summary>
-		/// Gets a flag that indicates whether or not the
-		/// key is unique.
-		/// </summary>
-		public abstract bool IsUnique
-		{
-			get;
-		}
+	/// <summary>
+	/// Gets a flag that indicates whether or not the
+	/// key is unique.
+	/// </summary>
+	public abstract bool IsUnique
+	{
+		get;
 	}
 }

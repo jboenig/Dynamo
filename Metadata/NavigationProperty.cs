@@ -22,48 +22,45 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
+namespace Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Metadata
+/// <summary>
+/// Encapsulates a property that can be used to navigate
+/// a <see cref="Relationship"/>.
+/// </summary>
+public abstract class NavigationProperty : Property
 {
 	/// <summary>
-	/// Encapsulates a property that can be used to navigate
-	/// a <see cref="Relationship"/>.
+	/// Gets the <see cref="Relationship"/> bound to this property.
 	/// </summary>
-	public abstract class NavigationProperty : Property
+	public abstract Relationship Relationship
 	{
-		/// <summary>
-		/// Gets the <see cref="Relationship"/> bound to this property.
-		/// </summary>
-		public abstract Relationship Relationship
-		{
-			get;
-		}
+		get;
+	}
 
-		/// <summary>
-		/// Gets a flag indicating whether this <see cref="NavigationProperty"/> is
-		/// the source or target of the <see cref="Relationship"/>.
-		/// </summary>
-		public abstract bool IsSource
-		{
-			get;
-		}
+	/// <summary>
+	/// Gets a flag indicating whether this <see cref="NavigationProperty"/> is
+	/// the source or target of the <see cref="Relationship"/>.
+	/// </summary>
+	public abstract bool IsSource
+	{
+		get;
+	}
 
-		/// <summary>
-		/// Gets the <see cref="DataType"/> of this property.
-		/// </summary>
-		public override DataType DataType
+	/// <summary>
+	/// Gets the <see cref="DataType"/> of this property.
+	/// </summary>
+	public override DataType DataType
+	{
+		get
 		{
-			get
+			var rel = this.Relationship;
+			if (rel == null)
 			{
-				var rel = this.Relationship;
-				if (rel == null)
-				{
-					var msg = string.Format("Navigation property {0} is not bound to a Relationship", this.Name);
-					throw new InvalidOperationException(msg);
-				}
-				return (this.IsSource) ? (rel.Source) : (rel.Target);
+				var msg = string.Format("Navigation property {0} is not bound to a Relationship", this.Name);
+				throw new InvalidOperationException(msg);
 			}
+			return (this.IsSource) ? (rel.Source) : (rel.Target);
 		}
 	}
 }

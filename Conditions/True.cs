@@ -22,25 +22,24 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Conditions
+namespace Headway.Dynamo.Conditions;
+
+/// <summary>
+/// Implements a <see cref="Condition"/> that always returns
+/// true.
+/// </summary>
+public sealed class True : Condition
 {
     /// <summary>
-    /// Implements a <see cref="Condition"/> that always returns
-    /// true.
+    /// Evaluates the condition.
     /// </summary>
-    public sealed class True : Condition
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Always returns TRUE.
+    /// </returns>
+    public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
     {
-        /// <summary>
-        /// Evaluates the condition.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Always returns TRUE.
-        /// </returns>
-        public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
-        {
-            return Task.FromResult(true);
-        }
+        return Task.FromResult(true);
     }
 }

@@ -22,20 +22,19 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// Thrown when a duplicate key is encountered
+/// </summary>
+public sealed class DuplicateKeyException : Exception
 {
     /// <summary>
-    /// 
+    /// Constructor
     /// </summary>
-    public sealed class DuplicateKeyException : Exception
+    /// <param name="keyVal">Key value that is a dup</param>
+    public DuplicateKeyException(object keyVal) :
+        base(string.Format("Duplicate key value {0}", keyVal))
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyVal"></param>
-        public DuplicateKeyException(object keyVal) :
-            base(string.Format("Duplicate key value {0}", keyVal))
-        {
-        }
     }
 }

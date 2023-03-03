@@ -22,33 +22,35 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Conditions
+namespace Headway.Dynamo.Conditions;
+
+/// <summary>
+/// Encapsulates a condition that can be evaluated to TRUE or FALSE.
+/// </summary>
+/// <remarks>
+/// The <see cref="Evaluate(IServiceProvider, object)"/> method performs
+/// evaluation of the condition.
+/// </remarks>
+public abstract class Condition
 {
     /// <summary>
-    /// Encapsulates a condition that can be evaluated
-    /// as TRUE or FALSE.
+    /// Evaluates the condition.
     /// </summary>
-    public abstract class Condition
-    {
-        /// <summary>
-        /// Evaluates the condition.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns TRUE or FALSE based on evaluation
-        /// of the condition.
-        /// </returns>
-        public abstract Task<bool> Evaluate(IServiceProvider serviceProvider, object context);
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns TRUE or FALSE based on evaluation
+    /// of the condition.
+    /// </returns>
+    public abstract Task<bool> Evaluate(IServiceProvider serviceProvider, object context);
 
-        /// <summary>
-        /// Singleton <see cref="Condition"/> that always evaluates to true.
-        /// </summary>
-        public static Condition True = new True();
+    /// <summary>
+    /// Singleton <see cref="Condition"/> that always evaluates to true.
+    /// </summary>
+    public static readonly Condition True = new True();
 
-        /// <summary>
-        /// Singleton <see cref="Condition"/> that always evaluates to false.
-        /// </summary>
-        public static Condition False = new False();
-    }
+    /// <summary>
+    /// Singleton <see cref="Condition"/> that always evaluates to false.
+    /// </summary>
+    public static readonly Condition False = new False();
 }

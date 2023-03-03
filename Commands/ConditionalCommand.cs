@@ -24,60 +24,59 @@
 
 using Headway.Dynamo.Conditions;
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Commands;
+
+/// <summary>
+/// Implements a command that wraps another <see cref="Command"/>
+/// with a <see cref="Condition"/>.  The <see cref="ExecuteWhen"/>
+/// optionally contains a <see cref="Condition"/> that is evaluated
+/// in order to determine if the <see cref="ConditionalCommand.Command"/>
+/// should execute.  If <see cref="ExecuteWhen"/> is null, then the
+/// command is always executed.
+/// </summary>
+public class ConditionalCommand : Command
 {
     /// <summary>
-    /// Implements a command that wraps another <see cref="Command"/>
-    /// with a <see cref="Condition"/>.  The <see cref="ExecuteWhen"/>
-    /// optionally contains a <see cref="Condition"/> that is evaluated
-    /// in order to determine if the <see cref="ConditionalCommand.Command"/>
-    /// should execute.  If <see cref="ExecuteWhen"/> is null, then the
-    /// command is always executed.
+    /// Gets or sets the <see cref="Condition"/> that determines
+    /// if this command will be executed.
     /// </summary>
-    public class ConditionalCommand : Command
+    public Condition ExecuteWhen
     {
-        /// <summary>
-        /// Gets or sets the <see cref="Condition"/> that determines
-        /// if this command will be executed.
-        /// </summary>
-        public Condition ExecuteWhen
-        {
-            get;
-            set;
-        }
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Gets or sets the <see cref="Command"/> to execute
-        /// when the <see cref="ExecuteWhen"/> condition evaluates
-        /// to true.
-        /// </summary>
-        public Command Command
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Gets or sets the <see cref="Command"/> to execute
+    /// when the <see cref="ExecuteWhen"/> condition evaluates
+    /// to true.
+    /// </summary>
+    public Command Command
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Executes this command.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        /// <remarks>
-        /// If there is no <see cref="ExecuteWhen"/> condition then the
-        /// command is executed.  Also, if <see cref="ExecuteWhen"/> evaluates
-        /// true, then the command is also execute.
-        /// </remarks>
-        public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+    /// <summary>
+    /// Executes this command.
+    /// </summary>
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns a <see cref="CommandResult"/> object that describes
+    /// the result.
+    /// </returns>
+    /// <remarks>
+    /// If there is no <see cref="ExecuteWhen"/> condition then the
+    /// command is executed.  Also, if <see cref="ExecuteWhen"/> evaluates
+    /// true, then the command is also execute.
+    /// </remarks>
+    public override async Task<CommandResult> Execute(IServiceProvider serviceProvider, object context)
+    {
+        if (this.ExecuteWhen == null || await this.ExecuteWhen.Evaluate(serviceProvider, context) == true)
         {
-            if (this.ExecuteWhen == null || await this.ExecuteWhen.Evaluate(serviceProvider, context) == true)
-            {
-                return await this.Command.Execute(serviceProvider, context);
-            }
-            return CommandResult.Success;
+            return await this.Command.Execute(serviceProvider, context);
         }
+        return CommandResult.Success;
     }
 }

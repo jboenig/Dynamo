@@ -22,24 +22,23 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// Thrown when a service cannot be located through injection
+/// or through IServiceProvider.
+/// </summary>
+public sealed class ServiceNotFoundException : Exception
 {
     /// <summary>
-    /// Thrown when a service cannot be located through injection
-    /// or through IServiceProvider.
+    /// Constructs a <see cref="ServiceNotFoundException"/> given
+    /// the type of service that was not found.
     /// </summary>
-    public sealed class ServiceNotFoundException : Exception
+    /// <param name="serviceType">
+    /// Type of service that could not be located.
+    /// </param>
+    public ServiceNotFoundException(Type serviceType) :
+        base(string.Format("Unable to locate the service {0}", serviceType.Name))
     {
-        /// <summary>
-        /// Constructs a <see cref="ServiceNotFoundException"/> given
-        /// the type of service that was not found.
-        /// </summary>
-        /// <param name="serviceType">
-        /// Type of service that could not be located.
-        /// </param>
-        public ServiceNotFoundException(Type serviceType) :
-            base(string.Format("Unable to locate the service {0}", serviceType.Name))
-        {
-        }
     }
 }

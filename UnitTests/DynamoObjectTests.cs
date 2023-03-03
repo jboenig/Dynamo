@@ -33,7 +33,7 @@ using Headway.Dynamo.Metadata;
 using Headway.Dynamo.Metadata.Dynamic;
 using Headway.Dynamo.Serialization;
 using Headway.Dynamo.Exceptions;
-using Headway.Dynamo.Repository.FlatFile;
+using Headway.Dynamo.Repository.Implementation;
 using Headway.Dynamo.UnitTests.Mockdata;
 
 namespace Headway.Dynamo.UnitTests

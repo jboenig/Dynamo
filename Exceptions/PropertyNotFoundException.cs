@@ -24,34 +24,31 @@
 
 using Headway.Dynamo.Metadata;
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// This exception is thrown when a property is referenced that is not
+/// declared on the specified <see cref="ComplexType"/>.
+/// </summary>
+public sealed class PropertyNotFoundException : Exception
 {
     /// <summary>
-    /// This exception is thrown when a property is referenced that is not
-    /// declared on the specified <see cref="ComplexType"/>.
+    /// 
     /// </summary>
-    public sealed class PropertyNotFoundException : Exception
+    /// <param name="dataType"></param>
+    /// <param name="propertyName"></param>
+    public PropertyNotFoundException(ComplexType dataType, string propertyName) :
+        base(string.Format("Property name {0} does not exist on data type {1}", propertyName, dataType.Name))
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataType"></param>
-        /// <param name="propertyName"></param>
-        public PropertyNotFoundException(ComplexType dataType, string propertyName) :
-            base(string.Format("Property name {0} does not exist on data type {1}", propertyName, dataType.Name))
-        {
+    }
 
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clrType"></param>
-        /// <param name="propertyName"></param>
-        public PropertyNotFoundException(Type clrType, string propertyName) :
-            base(string.Format("Property name {0} does not exist on data type {1}", propertyName, clrType.Name))
-        {
-
-        }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="clrType"></param>
+    /// <param name="propertyName"></param>
+    public PropertyNotFoundException(Type clrType, string propertyName) :
+        base(string.Format("Property name {0} does not exist on data type {1}", propertyName, clrType.Name))
+    {
     }
 }

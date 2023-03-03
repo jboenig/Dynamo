@@ -22,20 +22,20 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Exceptions
+namespace Headway.Dynamo.Exceptions;
+
+/// <summary>
+/// Thrown when a datatype cannot be found during a metadata
+/// operation.
+/// </summary>
+public sealed class DataTypeNotFound : Exception
 {
     /// <summary>
-    /// 
+    /// Constructor
     /// </summary>
-    public sealed class DataTypeNotFound : Exception
+    /// <param name="dataTypeName">Name of datatype that cannot be found</param>
+    public DataTypeNotFound(string dataTypeName) :
+        base(string.Format("Data type {0} not found", dataTypeName))
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataTypeName"></param>
-        public DataTypeNotFound(string dataTypeName) :
-            base(string.Format("Data type {0} not found", dataTypeName))
-        {
-        }
     }
 }

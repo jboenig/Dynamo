@@ -22,80 +22,77 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
-namespace Headway.Dynamo.Reflection
+namespace Headway.Dynamo.Reflection;
+
+/// <summary>
+/// Implementation of the <see cref="IAssemblyLoader"/>
+/// interface based on all assemblies in the current
+/// AppDomain.
+/// </summary>
+public sealed class AppDomainAssemblyLoader : IAssemblyLoader
 {
-	/// <summary>
-	/// Implementation of the <see cref="IAssemblyLoader"/>
-    /// interface based on all assemblies in the current
-    /// AppDomain.
-	/// </summary>
-	public sealed class AppDomainAssemblyLoader : IAssemblyLoader
-	{
-		#region Constructors
+    #region Constructors
 
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		public AppDomainAssemblyLoader()
-		{
-		}
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public AppDomainAssemblyLoader()
+    {
+    }
 
-        #endregion
+    #endregion
 
-        #region IAssemblyLoader Interface
+    #region IAssemblyLoader Interface
 
-        /// <summary>
-        /// Loads the specified assembly into the current app domain.
-        /// </summary>
-        /// <param name="assemblyName">Fully qualified name of the assembly.</param>
-        /// <returns>
-        /// Returns the Assembly that was loaded or null if not found.
-        /// </returns>
-        /// <remarks>
-        /// This implementation iterates through all assemblies returned
-        /// by the <see cref="AppDomainAssemblyLoader.GetAllAssemblies"/>
-        /// method and returns the one matching the specified assembly name
-        /// parameter.  If not found, returns null.
-        /// </remarks>
-        public Assembly LoadAssembly(string assemblyName)
-		{
-			foreach (var curAssembly in this.GetAllAssemblies())
-			{
-				if (curAssembly.FullName.CompareTo(assemblyName) == 0)
-				{
-					return curAssembly;
-				}
-			}
+    /// <summary>
+    /// Loads the specified assembly into the current app domain.
+    /// </summary>
+    /// <param name="assemblyName">Fully qualified name of the assembly.</param>
+    /// <returns>
+    /// Returns the Assembly that was loaded or null if not found.
+    /// </returns>
+    /// <remarks>
+    /// This implementation iterates through all assemblies returned
+    /// by the <see cref="AppDomainAssemblyLoader.GetAllAssemblies"/>
+    /// method and returns the one matching the specified assembly name
+    /// parameter.  If not found, returns null.
+    /// </remarks>
+    public Assembly LoadAssembly(string assemblyName)
+    {
+        foreach (var curAssembly in this.GetAllAssemblies())
+        {
+            if (curAssembly.FullName.CompareTo(assemblyName) == 0)
+            {
+                return curAssembly;
+            }
+        }
 
-			return null;
-		}
+        return null;
+    }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="assemblyName"></param>
-		/// <returns></returns>
-		public byte[] GetAssemblyBytes(string assemblyName)
-		{
-			throw new NotImplementedException();
-		}
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="assemblyName"></param>
+    /// <returns></returns>
+    public byte[] GetAssemblyBytes(string assemblyName)
+    {
+        throw new NotImplementedException();
+    }
 
-		/// <summary>
-		/// Returns all assemblies in the current AppDomain.
-		/// </summary>
-		/// <returns>
-        /// Collection of assemblies in the current AppDomain.
-        /// </returns>
-		public IEnumerable<Assembly> GetAllAssemblies()
-		{
-			var appDomain = AppDomain.CurrentDomain;
-			return appDomain.GetAssemblies();
-		}
+    /// <summary>
+    /// Returns all assemblies in the current AppDomain.
+    /// </summary>
+    /// <returns>
+    /// Collection of assemblies in the current AppDomain.
+    /// </returns>
+    public IEnumerable<Assembly> GetAllAssemblies()
+    {
+        var appDomain = AppDomain.CurrentDomain;
+        return appDomain.GetAssemblies();
+    }
 
-		#endregion
-	}
+    #endregion
 }

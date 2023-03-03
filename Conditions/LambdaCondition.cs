@@ -22,60 +22,61 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Conditions
+namespace Headway.Dynamo.Conditions;
+
+/// <summary>
+/// Implements a <see cref="Condition"/> using a lambda expression.
+/// </summary>
+public class LambdaCondition : Condition
 {
+    private Func<object, bool> expr;
+
     /// <summary>
-    /// Implements a <see cref="Condition"/> using a
-    /// lambda expression.
+    /// Default constructor.
     /// </summary>
-    public class LambdaCondition : Condition
+    public LambdaCondition()
     {
-        private Func<object, bool> expr;
+    }
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public LambdaCondition()
-        {
-        }
+    /// <summary>
+    /// Constructs a <see cref="LambdaCondition"/> given
+    /// an expression.
+    /// </summary>
+    /// <param name="expr">
+    /// Expression used to implement <see cref="Evaluate(IServiceProvider, object)"/>
+    /// </param>
+    public LambdaCondition(Func<object, bool> expr)
+    {
+        this.expr = expr;
+    }
 
-        /// <summary>
-        /// Constructs a <see cref="LambdaCondition"/> given
-        /// an expression.
-        /// </summary>
-        /// <param name="expr">
-        /// Expression used to implement <see cref="Evaluate(IServiceProvider, object)"/>
-        /// </param>
-        public LambdaCondition(Func<object, bool> expr)
+    /// <summary>
+    /// Evaluates the condition.
+    /// </summary>
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns TRUE or FALSE based on evaluation
+    /// of the condition.
+    /// </returns>
+    public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
+    {
+        if (this.expr == null)
         {
-            this.expr = expr;
+            return Task.FromResult(false);
         }
+        return Task.FromResult(this.expr(context));
+    }
 
-        /// <summary>
-        /// Evaluates the condition.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns TRUE or FALSE based on evaluation
-        /// of the condition.
-        /// </returns>
-        public override Task<bool> Evaluate(IServiceProvider serviceProvider, object context)
-        {
-            if (this.expr == null)
-            {
-                return Task.FromResult(false);
-            }
-            return Task.FromResult(this.expr(context));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        protected void SetExpression(Func<object, bool> value)
-        {
-            this.expr = value;
-        }
+    /// <summary>
+    /// Assigns a lambda expression to this condition to
+    /// use in <see cref="Evaluate(IServiceProvider, object)"/>
+    /// </summary>
+    /// <param name="value">
+    /// Boolean lambda expression
+    /// </param>
+    protected void SetExpression(Func<object, bool> value)
+    {
+        this.expr = value;
     }
 }

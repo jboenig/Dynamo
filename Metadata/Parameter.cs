@@ -22,30 +22,29 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Metadata
+namespace Headway.Dynamo.Metadata;
+
+/// <summary>
+/// Encapsulates a named parameter to a function
+/// or web service call.
+/// </summary>
+public class Parameter
 {
     /// <summary>
-    /// Encapsulates a named parameter to a function
-    /// or web service call.
+    /// Gets or sets the name of the parameter.
     /// </summary>
-    public class Parameter
+    public string Name
     {
-        /// <summary>
-        /// Gets or sets the name of the parameter.
-        /// </summary>
-        public string Name
-        {
-            get;
-            set;
-        }
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Gets or sets the name of the data type of this parameter.
-        /// </summary>
-        public string DataTypeName
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// Gets or sets the name of the data type of this parameter.
+    /// </summary>
+    public string DataTypeName
+    {
+        get;
+        set;
     }
 }

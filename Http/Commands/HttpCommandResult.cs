@@ -26,89 +26,88 @@ using Newtonsoft.Json.Linq;
 using Headway.Dynamo.Commands;
 using Headway.Dynamo.Http.IO;
 
-namespace Headway.Dynamo.Http.Commands
+namespace Headway.Dynamo.Http.Commands;
+
+/// <summary>
+/// Encapsulates an HttpResponseMessage as a
+/// <see cref="CommandResult"/> object.
+/// </summary>
+public sealed class HttpCommandResult : CommandResult
 {
+    private readonly HttpResponseMessage response;
+
     /// <summary>
-    /// Encapsulates an HttpResponseMessage as a
-    /// <see cref="CommandResult"/> object.
+    /// Constructs an <see cref="HttpCommandResult"/> given
+    /// an HttpResponseMessage.
     /// </summary>
-    public sealed class HttpCommandResult : CommandResult
+    /// <param name="response">
+    /// HttpResponseMessage to wrap in this command result.
+    /// </param>
+    public HttpCommandResult(HttpResponseMessage response)
     {
-        private readonly HttpResponseMessage response;
+        this.response = response;
+    }
 
-        /// <summary>
-        /// Constructs an <see cref="HttpCommandResult"/> given
-        /// an HttpResponseMessage.
-        /// </summary>
-        /// <param name="response">
-        /// HttpResponseMessage to wrap in this command result.
-        /// </param>
-        public HttpCommandResult(HttpResponseMessage response)
+    /// <summary>
+    /// Gets the description.
+    /// </summary>
+    public override string Description
+    {
+        get
         {
-            this.response = response;
+            return this.response.ReasonPhrase;
         }
+    }
 
-        /// <summary>
-        /// Gets the description.
-        /// </summary>
-        public override string Description
+    /// <summary>
+    /// Gets a flag indicating whether result is successful or not.
+    /// </summary>
+    public override bool IsSuccess
+    {
+        get
         {
-            get
-            {
-                return this.response.ReasonPhrase;
-            }
+            return this.response.IsSuccessStatusCode;
         }
+    }
 
-        /// <summary>
-        /// Gets a flag indicating whether result is successful or not.
-        /// </summary>
-        public override bool IsSuccess
+    /// <summary>
+    /// Gets the content from the HTTP response.
+    /// </summary>
+    public HttpContent Content
+    {
+        get
         {
-            get
-            {
-                return this.response.IsSuccessStatusCode;
-            }
+            return this.response.Content;
         }
+    }
 
-        /// <summary>
-        /// Gets the content from the HTTP response.
-        /// </summary>
-        public HttpContent Content
+    /// <summary>
+    /// Returns the result content as a string.
+    /// </summary>
+    public string ContentAsString
+    {
+        get
         {
-            get
+            if (this.response.Content != null && this.response.IsSuccessStatusCode)
             {
-                return this.response.Content;
+                return this.response.Content.GetAsString();
             }
+            return null;
         }
+    }
 
-        /// <summary>
-        /// Returns the result content as a string.
-        /// </summary>
-        public string ContentAsString
+    /// <summary>
+    /// Returns the result content as a JSON object.
+    /// </summary>
+    public JObject ContentAsJObject
+    {
+        get
         {
-            get
+            if (this.response.Content != null && this.response.IsSuccessStatusCode)
             {
-                if (this.response.Content != null && this.response.IsSuccessStatusCode)
-                {
-                    return this.response.Content.GetAsString();
-                }
-                return null;
+                return this.response.Content.GetAsJObject();
             }
-        }
-
-        /// <summary>
-        /// Returns the result content as a JSON object.
-        /// </summary>
-        public JObject ContentAsJObject
-        {
-            get
-            {
-                if (this.response.Content != null && this.response.IsSuccessStatusCode)
-                {
-                    return this.response.Content.GetAsJObject();
-                }
-                return null;
-            }
+            return null;
         }
     }
 }

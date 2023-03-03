@@ -22,64 +22,60 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
-using System.Linq;
+namespace Headway.Dynamo.Repository;
 
-namespace Headway.Dynamo.Repository
+/// <summary>
+/// Interface to an object that stores and retrieves objects
+/// of a specified type.
+/// </summary>
+public interface IObjectRepository<TObject> where TObject : class
 {
-	/// <summary>
-	/// Interface to an object that stores and retrieves objects
-    /// of a specified type.
-	/// </summary>
-    public interface IObjectRepository<TObject> where TObject : class
-    {
-		/// <summary>
-		/// Gets a queryable object for accessing the repository.
-		/// </summary>
-		/// <returns></returns>
-		IQueryable<TObject> GetQueryable();
+    /// <summary>
+    /// Gets a queryable object for accessing the repository.
+    /// </summary>
+    /// <returns></returns>
+    IQueryable<TObject> GetQueryable();
 
-        /// <summary>
-        /// Adds an object to the repository.
-        /// </summary>
-        /// <param name="obj">Object to add</param>
-        void Add(TObject obj);
+    /// <summary>
+    /// Adds an object to the repository.
+    /// </summary>
+    /// <param name="obj">Object to add</param>
+    void Add(TObject obj);
 
-        /// <summary>
-        /// Adds a collection of objects to the repository.
-        /// </summary>
-        /// <param name="objColl">Collection of objects to add</param>
-        void Add(IEnumerable<TObject> objColl);
+    /// <summary>
+    /// Adds a collection of objects to the repository.
+    /// </summary>
+    /// <param name="objColl">Collection of objects to add</param>
+    void Add(IEnumerable<TObject> objColl);
 
-        /// <summary>
-        /// Updates an object in the repository.
-        /// </summary>
-        /// <param name="obj">
-        /// Object to update.
-        /// </param>
-        void Update(TObject obj);
+    /// <summary>
+    /// Updates an object in the repository.
+    /// </summary>
+    /// <param name="obj">
+    /// Object to update.
+    /// </param>
+    void Update(TObject obj);
 
-        /// <summary>
-        /// Removes the specified object from the repository.
-        /// </summary>
-        /// <param name="obj">
-        /// Object to remove.
-        /// </param>
-        void Remove(TObject obj);
+    /// <summary>
+    /// Removes the specified object from the repository.
+    /// </summary>
+    /// <param name="obj">
+    /// Object to remove.
+    /// </param>
+    void Remove(TObject obj);
 
-        /// <summary>
-        /// Removes all objects from the repository.
-        /// </summary>
-        void RemoveAll();
+    /// <summary>
+    /// Removes all objects from the repository.
+    /// </summary>
+    void RemoveAll();
 
-        /// <summary>
-        /// Save changes made to the repository.
-        /// </summary>
-        void SaveChanges();
+    /// <summary>
+    /// Save changes made to the repository.
+    /// </summary>
+    void SaveChanges();
 
-        /// <summary>
-        /// Save changes made to the repository asynchronously.
-        /// </summary>
-        Task SaveChangesAsync();
-    }
+    /// <summary>
+    /// Save changes made to the repository asynchronously.
+    /// </summary>
+    Task SaveChangesAsync();
 }

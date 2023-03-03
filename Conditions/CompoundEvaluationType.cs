@@ -22,26 +22,25 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Conditions
+namespace Headway.Dynamo.Conditions;
+
+/// <summary>
+/// Determines whether all <see cref="Condition"/> objects
+/// associated with a <see cref="CompoundCondition"/> must
+/// evaluate to true in order for the condition to be true
+/// or any conditions can be true.
+/// </summary>
+public enum CompoundEvaluationType
 {
     /// <summary>
-    /// Determines whether all <see cref="Condition"/> objects
-    /// associated with a <see cref="CompoundCondition"/> must
-    /// evaluate to true in order for the condition to be true
-    /// or any conditions can be true.
+    /// Any one condition evaluating to true makes the
+    /// <see cref="CompoundCondition"/> true.
     /// </summary>
-    public enum CompoundEvaluationType
-    {
-        /// <summary>
-        /// Any one condition evaluating to true makes the
-        /// <see cref="CompoundCondition"/> true.
-        /// </summary>
-        Any,
+    Any,
 
-        /// <summary>
-        /// All conditions must be true for the
-        /// <see cref="CompoundCondition"/> true.
-        /// </summary>
-        All
-    };
-}
+    /// <summary>
+    /// All conditions must be true for the
+    /// <see cref="CompoundCondition"/> true.
+    /// </summary>
+    All
+};

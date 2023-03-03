@@ -22,22 +22,21 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Headway.Dynamo.Commands
+namespace Headway.Dynamo.Commands;
+
+/// <summary>
+/// Encapsulates a command that can be executed.
+/// </summary>
+public abstract class Command
 {
     /// <summary>
-    /// Encapsulates a command that can be executed.
+    /// Executes this command asynchrously.
     /// </summary>
-    public abstract class Command
-    {
-        /// <summary>
-        /// Executes this command asynchrously.
-        /// </summary>
-        /// <param name="serviceProvider">Interface to service provider</param>
-        /// <param name="context">User defined context data</param>
-        /// <returns>
-        /// Returns a <see cref="CommandResult"/> object that describes
-        /// the result.
-        /// </returns>
-        public abstract Task<CommandResult> Execute(IServiceProvider serviceProvider, object context);
-    }
+    /// <param name="serviceProvider">Interface to service provider</param>
+    /// <param name="context">User defined context data</param>
+    /// <returns>
+    /// Returns a <see cref="CommandResult"/> object that describes
+    /// the result.
+    /// </returns>
+    public abstract Task<CommandResult> Execute(IServiceProvider serviceProvider, object context);
 }
